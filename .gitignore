@@ -1,0 +1,28 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Source/design files (not part of the published website)
+FrontEndPreview/
+DESIGN.md
+COTSEAL-Design-System.png
+*.md
+COTSEAL Officers
+COTSEAL Presidents
+
+# Original source images (clean copies are in images/)
+COTSEAL Banner.png
+COTSEAL#1.webp
+agustini-jayson-sakti-1.webp
+cropped-coatseallogo-1.webp
+Hoan Nguyen.png
+Jayson Parba.jpeg
+Rahmi Aoyama.jpg
+in-person2.webp
+in-person3.webp
+seassi-indo-instructors.webp
+students4.webp
+virtual-participants1*
+virtual-participants1.webp

@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Community &amp; Membership | COTSEAL</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "surface-container-lowest": "#ffffff",
+          "outline": "#6f797a",
+          "on-tertiary-container": "#4e3d00",
+          "primary-fixed": "#9ff0fb",
+          "surface-container": "#efeeea",
+          "primary-container": "#006d77",
+          "secondary-fixed": "#ffdad4",
+          "on-primary-fixed-variant": "#004f56",
+          "tertiary-fixed": "#ffe088",
+          "background": "#faf9f5",
+          "secondary-container": "#fe8672",
+          "tertiary-container": "#cba72f",
+          "tertiary": "#735c00",
+          "outline-variant": "#bec8ca",
+          "on-secondary": "#ffffff",
+          "secondary-fixed-dim": "#ffb4a7",
+          "surface-container-high": "#e9e8e4",
+          "surface-container-highest": "#e3e2df",
+          "surface-dim": "#dbdad6",
+          "surface": "#faf9f5",
+          "on-surface": "#1b1c1a",
+          "primary": "#00535b",
+          "on-tertiary": "#ffffff",
+          "surface-variant": "#e3e2df",
+          "on-surface-variant": "#3e494a",
+          "on-background": "#1b1c1a",
+          "on-primary": "#ffffff",
+          "on-secondary-container": "#741f13",
+          "surface-container-low": "#f4f4f0",
+          "secondary": "#a03f30",
+        },
+        fontFamily: {
+          "headline": ["Manrope", "sans-serif"],
+          "body": ["Newsreader", "serif"],
+          "label": ["Manrope", "sans-serif"]
+        },
+        borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+      },
+    },
+  }
+</script>
+<style>
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+  .scholarly-underline {
+    position: relative;
+  }
+  .scholarly-underline::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #cba72f;
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+  }
+  .scholarly-underline:hover::after {
+    transform: scaleX(1);
+  }
+</style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-secondary-container selection:text-on-secondary-container">
+
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full flex justify-between items-center px-8 py-4 max-w-full mx-auto bg-white/80 backdrop-blur-md z-50 shadow-sm">
+  <div class="flex items-center gap-8">
+    <a href="index.html" class="text-2xl font-bold tracking-tight text-teal-900 font-headline">COTSEAL</a>
+    <div class="hidden md:flex gap-6 items-center">
+      <a class="text-stone-600 hover:text-teal-800 transition-colors font-label text-xs uppercase tracking-widest" href="index.html">Home</a>
+      <a class="text-stone-600 hover:text-teal-800 transition-colors font-label text-xs uppercase tracking-widest" href="about.html">About Us</a>
+      <a class="text-stone-600 hover:text-teal-800 transition-colors font-label text-xs uppercase tracking-widest" href="resources.html">Resources</a>
+      <a class="text-teal-700 border-b-2 border-amber-500 pb-1 font-semibold font-label text-xs uppercase tracking-widest" href="community.html">Community</a>
+    </div>
+  </div>
+  <div class="flex items-center gap-4">
+    <a href="#join" class="px-6 py-2 bg-primary text-on-primary rounded-lg font-label text-xs uppercase tracking-widest font-bold shadow-sm hover:opacity-90 active:scale-95 transition-all">Join</a>
+  </div>
+</nav>
+
+<main class="pt-24">
+
+  <!-- Hero Section -->
+  <section class="relative px-8 py-20 md:py-32 overflow-hidden bg-surface">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+      <div class="z-10">
+        <span class="text-xs uppercase tracking-widest font-headline font-bold text-tertiary mb-4 block">Our Academic Network</span>
+        <h1 class="text-5xl md:text-7xl font-headline font-extrabold text-primary leading-tight mb-6">A Shared Legacy of Language.</h1>
+        <p class="text-xl md:text-2xl font-body text-on-surface-variant leading-relaxed max-w-xl">
+          Join a distinguished community of educators and scholars dedicated to the preservation and pedagogy of Southeast Asian languages. Membership is open to individuals at all career stages — from graduate students and FLTAs to retired faculty.
+        </p>
+        <div class="mt-10 flex flex-wrap gap-4">
+          <a href="#join" class="px-8 py-4 bg-secondary text-on-secondary rounded-lg font-headline font-bold text-lg hover:shadow-xl transition-all">Become a Member</a>
+          <a href="about.html" class="px-8 py-4 border-b-2 border-primary text-primary font-headline font-bold text-lg scholarly-underline">Learn About COTSEAL</a>
+        </div>
+      </div>
+      <div class="relative">
+        <div class="aspect-[4/5] rounded-xl overflow-hidden shadow-2xl rotate-2 hover:rotate-0 transition-transform duration-700">
+          <img alt="COTSEAL virtual community participants" class="w-full h-full object-cover" src="images/virtual-participants.webp"/>
+        </div>
+        <div class="absolute -bottom-10 -left-10 w-64 h-64 bg-tertiary-container/20 rounded-full blur-3xl"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Membership Benefits (Bento Style) -->
+  <section class="py-24 px-8 bg-surface-container-low">
+    <div class="max-w-7xl mx-auto">
+      <div class="mb-16 text-center lg:text-left">
+        <h2 class="text-3xl md:text-4xl font-headline font-bold text-on-surface mb-4">Membership Benefits</h2>
+        <p class="text-lg font-body text-on-surface-variant max-w-2xl">Investing in your professional growth through resources, advocacy, and collaborative excellence.</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Card 1 -->
+        <div class="md:col-span-2 bg-surface-container-lowest p-10 rounded-xl shadow-sm hover:shadow-md transition-shadow group">
+          <span class="material-symbols-outlined text-primary text-4xl mb-6">menu_book</span>
+          <h3 class="text-2xl font-headline font-bold text-primary mb-4">The COTSEAL Journal (JSEALT)</h3>
+          <p class="text-lg font-body text-on-surface-variant leading-relaxed mb-6">
+            Full access to the Journal of Southeast Asian Language Teaching — our peer-reviewed e-journal featuring the latest research in Southeast Asian linguistics, pedagogy, and cultural studies.
+          </p>
+          <a class="inline-flex items-center text-secondary font-headline font-bold group-hover:gap-2 transition-all" href="https://members.asianstudies.org" target="_blank" rel="noopener">Browse Archives <span class="material-symbols-outlined ml-1">arrow_forward</span></a>
+        </div>
+        <!-- Card 2 -->
+        <div class="bg-primary text-on-primary p-10 rounded-xl flex flex-col justify-between">
+          <div>
+            <span class="material-symbols-outlined text-4xl mb-6">workspace_premium</span>
+            <h3 class="text-2xl font-headline font-bold mb-4">Grants &amp; Awards</h3>
+            <p class="font-body opacity-90">Eligibility for travel grants, research stipends, and the Annual Teacher Excellence Award.</p>
+          </div>
+          <a href="mailto:cotsealofficial@gmail.com" class="mt-8 text-left font-headline font-bold underline decoration-tertiary-container underline-offset-4">Learn More</a>
+        </div>
+        <!-- Card 3 -->
+        <div class="bg-surface-container-highest p-10 rounded-xl">
+          <span class="material-symbols-outlined text-secondary text-4xl mb-6">diversity_3</span>
+          <h3 class="text-xl font-headline font-bold text-on-surface mb-2">Annual Conference</h3>
+          <p class="font-body text-on-surface-variant">Free participation in COTSEAL's flagship annual summer conference on SE Asian language teaching and applied linguistics.</p>
+        </div>
+        <!-- Card 4 -->
+        <div class="bg-surface-container-highest p-10 rounded-xl">
+          <span class="material-symbols-outlined text-primary text-4xl mb-6">hub</span>
+          <h3 class="text-xl font-headline font-bold text-on-surface mb-2">AAS Panel Access</h3>
+          <p class="font-body text-on-surface-variant">Submit proposals to present at COTSEAL-sponsored panels at the Association for Asian Studies annual meeting.</p>
+        </div>
+        <!-- Card 5 -->
+        <div class="bg-surface-container-highest p-10 rounded-xl">
+          <span class="material-symbols-outlined text-tertiary text-4xl mb-6">history_edu</span>
+          <h3 class="text-xl font-headline font-bold text-on-surface mb-2">Publication Rights</h3>
+          <p class="font-body text-on-surface-variant">Submit your work for possible publication in JSEALT, COTSEAL's internationally recognized refereed e-journal.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Membership Tiers -->
+  <section id="join" class="py-24 px-8 bg-surface-container-highest">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-5xl font-headline font-bold text-primary mb-6">Choose Your Membership</h2>
+        <p class="text-xl font-body text-on-surface-variant max-w-2xl mx-auto">We offer flexible memberships to support everyone from graduate students to retired faculty.</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+        <!-- Tier 1 -->
+        <div class="bg-surface p-12 rounded-xl border border-outline-variant/20 hover:border-primary/40 transition-all flex flex-col">
+          <span class="text-xs font-headline font-bold tracking-widest uppercase text-tertiary mb-4">Graduate / FLTA</span>
+          <h3 class="text-3xl font-headline font-bold mb-2">Student</h3>
+          <div class="flex items-baseline gap-1 mb-2">
+            <span class="text-4xl font-headline font-bold text-secondary">Free</span>
+          </div>
+          <p class="text-sm font-body text-on-surface-variant mb-8">First year free — after the first year, continue at the standard instructor rate.</p>
+          <ul class="space-y-4 mb-12 flex-grow">
+            <li class="flex items-center gap-3 font-body"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Digital Journal Access (JSEALT)</li>
+            <li class="flex items-center gap-3 font-body"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Conference Participation</li>
+            <li class="flex items-center gap-3 font-body"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> AAS Panel Access</li>
+          </ul>
+          <a href="https://members.asianstudies.org" target="_blank" rel="noopener" class="w-full py-4 bg-primary-container text-on-primary-container rounded-lg font-headline font-bold hover:opacity-90 text-center block">Start Free</a>
+        </div>
+        <!-- Tier 2 (Highlighted) -->
+        <div class="bg-surface-container-lowest p-12 rounded-xl ring-2 ring-secondary shadow-xl flex flex-col relative overflow-hidden">
+          <div class="absolute top-6 right-6 bg-secondary text-on-secondary px-3 py-1 rounded-full text-[10px] font-headline font-bold uppercase tracking-wider">Most Popular</div>
+          <span class="text-xs font-headline font-bold tracking-widest uppercase text-secondary mb-4">Instructor</span>
+          <h3 class="text-3xl font-headline font-bold mb-2">Full Member</h3>
+          <div class="flex items-baseline gap-1 mb-2">
+            <span class="text-4xl font-headline font-bold">$30</span>
+            <span class="text-on-surface-variant font-body">/ year</span>
+          </div>
+          <p class="text-sm font-body text-on-surface-variant mb-8">Or $55 for a two-year membership.</p>
+          <ul class="space-y-4 mb-12 flex-grow">
+            <li class="flex items-center gap-3 font-body"><span class="material-symbols-outlined text-secondary text-sm">check_circle</span> All Student Benefits</li>
+            <li class="flex items-center gap-3 font-body"><span class="material-symbols-outlined text-secondary text-sm">check_circle</span> Voting Rights</li>
+            <li class="flex items-center gap-3 font-body"><span class="material-symbols-outlined text-secondary text-sm">check_circle</span> Journal Submission Rights</li>
+            <li class="flex items-center gap-3 font-body"><span class="material-symbols-outlined text-secondary text-sm">check_circle</span> Grant &amp; Award Eligibility</li>
+          </ul>
+          <a href="https://members.asianstudies.org" target="_blank" rel="noopener" class="w-full py-4 bg-secondary text-on-secondary rounded-lg font-headline font-bold hover:opacity-95 text-center block">Join as Instructor</a>
+        </div>
+        <!-- Tier 3 -->
+        <div class="bg-surface p-12 rounded-xl border border-outline-variant/20 hover:border-primary/40 transition-all flex flex-col">
+          <span class="text-xs font-headline font-bold tracking-widest uppercase text-tertiary mb-4">Emeritus</span>
+          <h3 class="text-3xl font-headline font-bold mb-2">Retired</h3>
+          <div class="flex items-baseline gap-1 mb-2">
+            <span class="text-4xl font-headline font-bold">$20</span>
+            <span class="text-on-surface-variant font-body">/ year</span>
+          </div>
+          <p class="text-sm font-body text-on-surface-variant mb-8">Discounted rate for retired instructors and faculty.</p>
+          <ul class="space-y-4 mb-12 flex-grow">
+            <li class="flex items-center gap-3 font-body"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> All Full Member Benefits</li>
+            <li class="flex items-center gap-3 font-body"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Continued Voting Rights</li>
+            <li class="flex items-center gap-3 font-body"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Journal Access</li>
+          </ul>
+          <a href="https://members.asianstudies.org" target="_blank" rel="noopener" class="w-full py-4 bg-primary-container text-on-primary-container rounded-lg font-headline font-bold hover:opacity-90 text-center block">Join as Retired</a>
+        </div>
+      </div>
+
+      <!-- Payment Info -->
+      <div class="bg-surface-container-lowest rounded-xl p-10 max-w-3xl mx-auto text-center shadow-sm">
+        <span class="material-symbols-outlined text-primary text-4xl mb-4 block">payment</span>
+        <h3 class="font-headline text-2xl font-bold mb-4">How to Pay</h3>
+        <p class="font-body text-on-surface-variant text-lg leading-relaxed mb-6">
+          Pay your membership fee through the <strong>AAS online portal</strong> at <a href="https://members.asianstudies.org" target="_blank" rel="noopener" class="text-primary underline decoration-tertiary">members.asianstudies.org</a>, then complete the COTSEAL membership form with your payment receipt.
+        </p>
+        <p class="font-body text-on-surface-variant mb-6">For questions, contact the COTSEAL Secretary:</p>
+        <a href="mailto:cotsealofficial@gmail.com" class="inline-flex items-center gap-2 px-8 py-4 bg-primary text-on-primary rounded-lg font-headline font-bold hover:opacity-90 transition-all">
+          <span class="material-symbols-outlined">mail</span>
+          cotsealofficial@gmail.com
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Community CTA -->
+  <section class="py-24 px-8 bg-surface">
+    <div class="max-w-4xl mx-auto bg-primary rounded-3xl p-12 md:p-20 text-center relative overflow-hidden shadow-2xl">
+      <div class="absolute top-0 right-0 w-64 h-64 bg-primary-container rounded-full -mr-20 -mt-20 opacity-50"></div>
+      <div class="absolute bottom-0 left-0 w-64 h-64 bg-tertiary-container rounded-full -ml-20 -mb-20 opacity-20"></div>
+      <h2 class="text-3xl md:text-5xl font-headline font-extrabold text-on-primary mb-8 relative z-10">Start Your Journey Today.</h2>
+      <p class="text-xl font-body text-on-primary/90 mb-10 relative z-10 leading-relaxed">
+        Join a community dedicated to strengthening Southeast Asian language education. Graduate students and FLTAs start free — no cost for your first year.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-6 justify-center relative z-10">
+        <a href="https://members.asianstudies.org" target="_blank" rel="noopener" class="px-10 py-5 bg-tertiary text-on-tertiary rounded-lg font-headline font-extrabold hover:scale-105 transition-all">Join Now →</a>
+        <a href="mailto:cotsealofficial@gmail.com" class="px-10 py-5 border border-on-primary/30 text-on-primary rounded-lg font-headline font-bold hover:bg-white/10 transition-all">Contact Secretary</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Footer -->
+<footer class="w-full py-16 px-12 grid grid-cols-1 md:grid-cols-4 gap-12 bg-stone-100">
+  <div class="md:col-span-1">
+    <a href="index.html" class="text-xl font-black text-teal-900 font-headline block mb-4">COTSEAL</a>
+    <p class="text-sm font-body text-stone-500 leading-relaxed">Empowering Southeast Asian language educators through community, resources, and shared scholarship since 1984.</p>
+  </div>
+  <div>
+    <h6 class="text-lg font-semibold font-headline text-stone-900 mb-6">Explore</h6>
+    <ul class="space-y-3">
+      <li><a class="text-sm font-body text-stone-500 hover:text-teal-800 hover:translate-x-1 transition-all block" href="about.html">About COTSEAL</a></li>
+      <li><a class="text-sm font-body text-stone-500 hover:text-teal-800 hover:translate-x-1 transition-all block" href="resources.html">Resources</a></li>
+      <li><a class="text-sm font-body text-stone-500 hover:text-teal-800 hover:translate-x-1 transition-all block" href="conference.html">Annual Conference</a></li>
+    </ul>
+  </div>
+  <div>
+    <h6 class="text-lg font-semibold font-headline text-stone-900 mb-6">Membership</h6>
+    <ul class="space-y-3">
+      <li><a class="text-sm font-body text-stone-500 hover:text-teal-800 hover:translate-x-1 transition-all block" href="community.html#join">Join COTSEAL</a></li>
+      <li><a class="text-sm font-body text-stone-500 hover:text-teal-800 hover:translate-x-1 transition-all block" href="https://members.asianstudies.org" target="_blank" rel="noopener">AAS Member Portal</a></li>
+      <li><a class="text-sm font-body text-stone-500 hover:text-teal-800 hover:translate-x-1 transition-all block" href="mailto:cotsealofficial@gmail.com">Contact Secretary</a></li>
+    </ul>
+  </div>
+  <div>
+    <h6 class="text-lg font-semibold font-headline text-stone-900 mb-6">Affiliations</h6>
+    <ul class="space-y-3">
+      <li><a class="text-sm font-body text-stone-500 hover:text-teal-800 hover:translate-x-1 transition-all block" href="https://www.asianstudies.org" target="_blank" rel="noopener">Association for Asian Studies</a></li>
+      <li><a class="text-sm font-body text-stone-500 hover:text-teal-800 hover:translate-x-1 transition-all block" href="https://www.ncolctl.org" target="_blank" rel="noopener">NCOLCTL</a></li>
+      <li><a class="text-sm font-body text-stone-500 hover:text-teal-800 hover:translate-x-1 transition-all block" href="https://seassi.wisc.edu" target="_blank" rel="noopener">SEASSI</a></li>
+    </ul>
+  </div>
+  <div class="md:col-span-4 mt-8 pt-8 border-t border-stone-200 text-center">
+    <p class="text-xs font-label text-stone-500">© 2025 Council of Teachers of Southeast Asian Languages (COTSEAL). All rights reserved.</p>
+  </div>
+</footer>
+</body>
+</html>

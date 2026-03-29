@@ -233,12 +233,14 @@
           <p class="font-body text-on-surface-variant">Three days of intensive scholarship and cultural exchange.</p>
         </div>
         <div class="flex gap-8 border-b border-outline-variant/30 overflow-x-auto pb-1">
-          <button class="font-body text-xl font-bold text-primary border-b-[3px] border-tertiary pb-2 whitespace-nowrap">Day 01</button>
-          <button class="font-body text-xl text-on-surface-variant/60 hover:text-primary pb-2 whitespace-nowrap">Day 02</button>
-          <button class="font-body text-xl text-on-surface-variant/60 hover:text-primary pb-2 whitespace-nowrap">Day 03</button>
+          <button data-tab="day1" class="tab-btn font-body text-xl font-bold text-primary border-b-[3px] border-tertiary pb-2 whitespace-nowrap">Day 01</button>
+          <button data-tab="day2" class="tab-btn font-body text-xl text-on-surface-variant/60 hover:text-primary pb-2 whitespace-nowrap">Day 02</button>
+          <button data-tab="day3" class="tab-btn font-body text-xl text-on-surface-variant/60 hover:text-primary pb-2 whitespace-nowrap">Day 03</button>
         </div>
       </div>
-      <div class="space-y-4">
+
+      <!-- Day 1 -->
+      <div id="day1" class="tab-panel space-y-4">
         <div class="flex flex-col md:flex-row gap-6 p-8 bg-surface rounded-xl shadow-sm hover:bg-white transition-colors">
           <div class="md:w-32 font-label font-bold text-secondary text-lg">09:00 AM</div>
           <div class="flex-1">
@@ -272,8 +274,90 @@
           </div>
         </div>
       </div>
+
+      <!-- Day 2 -->
+      <div id="day2" class="tab-panel space-y-4 hidden">
+        <div class="flex flex-col md:flex-row gap-6 p-8 bg-surface rounded-xl shadow-sm hover:bg-white transition-colors">
+          <div class="md:w-32 font-label font-bold text-secondary text-lg">08:30 AM</div>
+          <div class="flex-1">
+            <span class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/60 mb-1 block">Morning Session · Keynote</span>
+            <h4 class="font-headline text-xl font-bold text-primary mb-2">Endangered Languages and Community Revitalization</h4>
+            <p class="font-body text-on-surface-variant">Keynote address exploring grassroots efforts to document and revitalize endangered Southeast Asian languages in diaspora communities.</p>
+          </div>
+        </div>
+        <div class="flex flex-col md:flex-row gap-6 p-8 bg-surface rounded-xl shadow-sm hover:bg-white transition-colors">
+          <div class="md:w-32 font-label font-bold text-secondary text-lg">10:30 AM</div>
+          <div class="flex-1">
+            <span class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/60 mb-1 block">Paper Presentations · Track A</span>
+            <h4 class="font-headline text-xl font-bold text-primary mb-2">Curriculum Development for Less-Commonly Taught Languages</h4>
+            <p class="font-body text-on-surface-variant">Three paper presentations on innovative curricula for Tagalog, Khmer, and Javanese in university settings.</p>
+          </div>
+        </div>
+        <div class="flex flex-col md:flex-row gap-6 p-8 bg-surface rounded-xl shadow-sm hover:bg-white transition-colors">
+          <div class="md:w-32 font-label font-bold text-secondary text-lg">10:30 AM</div>
+          <div class="flex-1">
+            <span class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/60 mb-1 block">Paper Presentations · Track B</span>
+            <h4 class="font-headline text-xl font-bold text-primary mb-2">Corpus Linguistics and Southeast Asian Language Research</h4>
+            <p class="font-body text-on-surface-variant">Presentations examining corpus-based approaches to the study of syntax and morphology across Southeast Asian language families.</p>
+          </div>
+        </div>
+        <div class="flex flex-col md:flex-row gap-6 p-8 bg-surface rounded-xl shadow-sm hover:bg-white transition-colors">
+          <div class="md:w-32 font-label font-bold text-secondary text-lg">12:30 PM</div>
+          <div class="flex-1">
+            <span class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/60 mb-1 block">Lunch Break · Networking</span>
+            <h4 class="font-headline text-xl font-bold text-primary mb-2">Lunch & Informal Roundtables</h4>
+            <p class="font-body text-on-surface-variant">Informal lunch with structured roundtable discussions on current challenges in Southeast Asian language teaching.</p>
+          </div>
+        </div>
+        <div class="flex flex-col md:flex-row gap-6 p-8 bg-surface rounded-xl shadow-sm hover:bg-white transition-colors">
+          <div class="md:w-32 font-label font-bold text-secondary text-lg">02:00 PM</div>
+          <div class="flex-1">
+            <span class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/60 mb-1 block">Workshop · Full Group</span>
+            <h4 class="font-headline text-xl font-bold text-primary mb-2">AI and Machine Translation in the Language Classroom</h4>
+            <p class="font-body text-on-surface-variant">Interactive workshop on critically evaluating and integrating AI-powered tools into Southeast Asian language pedagogy.</p>
+          </div>
+        </div>
+        <div class="flex flex-col md:flex-row gap-6 p-8 bg-surface rounded-xl shadow-sm hover:bg-white transition-colors">
+          <div class="md:w-32 font-label font-bold text-secondary text-lg">04:30 PM</div>
+          <div class="flex-1">
+            <span class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/60 mb-1 block">Special Event · Evening</span>
+            <h4 class="font-headline text-xl font-bold text-primary mb-2">Cultural Showcase & Reception</h4>
+            <p class="font-body text-on-surface-variant">An evening celebrating Southeast Asian cultural heritage through music, poetry readings, and a hosted reception for all conference attendees.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Day 3 -->
+      <div id="day3" class="tab-panel space-y-4 hidden">
+        <div class="flex flex-col md:flex-row gap-6 p-8 bg-surface rounded-xl shadow-sm hover:bg-white transition-colors">
+          <div class="md:w-32 font-label font-bold text-secondary text-lg">09:00 AM</div>
+          <div class="flex-1">
+            <span class="font-label text-[10px] uppercase tracking-widest text-on-surface-variant/60 mb-1 block">Coming Soon</span>
+            <h4 class="font-headline text-xl font-bold text-primary mb-2">Day 3 Program — To Be Announced</h4>
+            <p class="font-body text-on-surface-variant">The full Day 3 schedule will be published once abstract submissions are reviewed. Check back for updates.</p>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
+
+  <script>
+    const tabs = document.querySelectorAll('.tab-btn');
+    const panels = document.querySelectorAll('.tab-panel');
+    tabs.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = btn.dataset.tab;
+        tabs.forEach(t => {
+          t.classList.remove('font-bold', 'text-primary', 'border-b-[3px]', 'border-tertiary');
+          t.classList.add('text-on-surface-variant/60');
+        });
+        btn.classList.add('font-bold', 'text-primary', 'border-b-[3px]', 'border-tertiary');
+        btn.classList.remove('text-on-surface-variant/60');
+        panels.forEach(p => p.classList.add('hidden'));
+        document.getElementById(target).classList.remove('hidden');
+      });
+    });
+  </script>
 
   <!-- Registration Section -->
   <section class="py-24 px-8 lg:px-20 bg-surface" id="registration">

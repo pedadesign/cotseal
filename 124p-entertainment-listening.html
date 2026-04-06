@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Giải Trí Lành Mạnh | Interactive Listening Lesson</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --red:#c0392b;--red-dark:#96281b;--gold:#f39c12;--gold-dark:#e67e22;
+  --green:#27ae60;--blue:#2980b9;--err:#e74c3c;
+  --bg:#f0f4f8;--card:#fff;--text:#2c3e50;--muted:#7f8c8d;
+  --border:#dde3ea;--shadow:0 2px 16px rgba(0,0,0,.09);--r:12px;
+}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh}
+
+/* ─── HEADER ─── */
+.hdr{background:linear-gradient(135deg,var(--red) 0%,#7d1c1c 100%);color:#fff;padding:24px 20px 20px;text-align:center}
+.hdr-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.2);padding:4px 14px;border-radius:20px;font-size:12px;margin-bottom:10px}
+.hdr-title{font-size:26px;font-weight:800;letter-spacing:-0.5px;margin-bottom:3px}
+.hdr-sub{font-size:13px;opacity:.82;margin-bottom:18px}
+.xp-wrap{max-width:380px;margin:0 auto}
+.xp-row{display:flex;justify-content:space-between;font-size:12px;margin-bottom:5px;align-items:center}
+.xp-bar{background:rgba(255,255,255,.25);border-radius:10px;height:10px;overflow:hidden}
+.xp-fill{background:linear-gradient(90deg,var(--gold),#ffcd3c);height:100%;width:0%;border-radius:10px;transition:width .5s ease}
+
+/* ─── STEPS NAV ─── */
+.steps{display:flex;background:#fff;border-bottom:1px solid var(--border);padding:0;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.step{flex:1;display:flex;flex-direction:column;align-items:center;padding:12px 6px 10px;cursor:pointer;border-bottom:3px solid transparent;min-width:72px;transition:all .2s;position:relative}
+.step+.step::before{content:'';position:absolute;left:0;top:17px;width:1px;height:16px;background:var(--border)}
+.step-icon{font-size:18px;margin-bottom:3px}
+.step-label{font-size:10px;color:var(--muted);white-space:nowrap;font-weight:500}
+.step.active{border-bottom-color:var(--red)}
+.step.active .step-label{color:var(--red);font-weight:700}
+.step.done .step-icon::after{content:' ✓'}
+.step.done .step-label{color:var(--green)}
+.step.done{border-bottom-color:var(--green)}
+.step.locked{opacity:.4;cursor:not-allowed}
+
+/* ─── LAYOUT ─── */
+.wrap{max-width:860px;margin:0 auto;padding:20px 16px}
+.section{display:none}
+.section.active{display:block}
+
+/* ─── CARDS ─── */
+.card{background:var(--card);border-radius:var(--r);padding:22px;box-shadow:var(--shadow);margin-bottom:18px}
+.card-head{display:flex;align-items:flex-start;gap:12px;margin-bottom:16px}
+.card-ico{width:42px;height:42px;border-radius:10px;background:rgba(192,57,43,.1);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.card-ttl{font-size:17px;font-weight:700;line-height:1.3}
+.card-sub{font-size:12px;color:var(--muted);margin-top:2px}
+.xp-chip{display:inline-flex;align-items:center;gap:4px;background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:#fff;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700;margin-left:auto;flex-shrink:0}
+
+/* ─── VOCAB STUDY ─── */
+.vocab-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin:12px 0 20px}
+.vcard{background:#fafbfc;border:2px solid var(--border);border-radius:10px;padding:14px 12px;text-align:center;transition:all .2s;cursor:default}
+.vcard:hover{border-color:var(--red);transform:translateY(-2px);box-shadow:0 4px 14px rgba(192,57,43,.12)}
+.vcard-vi{font-size:15px;font-weight:800;color:var(--red);margin-bottom:2px}
+.vcard-cls{font-size:10px;color:var(--muted);margin-bottom:4px}
+.vcard-en{font-size:12px;color:var(--text)}
+.vcard-ex{font-size:11px;color:var(--muted);margin-top:4px;font-style:italic}
+
+/* ─── MATCHING QUIZ ─── */
+.match-wrap{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.match-col{display:flex;flex-direction:column;gap:8px}
+.match-col-head{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;margin-bottom:2px;text-align:center}
+.mbtn{padding:11px 14px;border:2px solid var(--border);border-radius:8px;cursor:pointer;background:#fff;font-size:13px;font-weight:600;transition:all .2s;text-align:center;color:var(--text)}
+.mbtn:hover:not(.matched):not(.wrong-flash){border-color:var(--blue);background:rgba(41,128,185,.06)}
+.mbtn.selected{border-color:var(--blue);background:rgba(41,128,185,.12);color:var(--blue)}
+.mbtn.matched{border-color:var(--green);background:rgba(39,174,96,.1);color:#1a6b3a;cursor:default;font-weight:700}
+.mbtn.wrong-flash{border-color:var(--err);background:rgba(231,76,60,.1);animation:shake .3s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+
+/* ─── VIDEO ─── */
+.video-container{position:relative;padding-top:56.25%;background:#000;border-radius:10px;overflow:hidden;margin-bottom:12px}
+.video-container iframe,.video-container #player{position:absolute;top:0;left:0;width:100%;height:100%}
+.quiz-timeline{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 0 4px}
+.qt-label{font-size:11px;color:var(--muted);font-weight:700;text-transform:uppercase;white-space:nowrap}
+.qt-markers{display:flex;gap:10px;flex-wrap:wrap}
+.qt-marker{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--muted)}
+.qt-dot{width:12px;height:12px;border-radius:50%;background:var(--gold);flex-shrink:0;transition:background .3s}
+.qt-dot.done{background:var(--green)}
+.instructions-box{background:#fffbf0;border:2px solid #fde68a;border-radius:8px;padding:14px 16px;font-size:13px;color:#78450a;margin-bottom:14px;line-height:1.6}
+.instructions-box strong{color:#7c5209}
+
+/* ─── MODAL ─── */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.62);z-index:900;align-items:center;justify-content:center;padding:20px}
+.modal-bg.open{display:flex}
+.modal{background:#fff;border-radius:16px;width:100%;max-width:540px;padding:26px;animation:popIn .25s ease}
+@keyframes popIn{from{transform:scale(.88);opacity:0}to{transform:scale(1);opacity:1}}
+.modal-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.modal-ttl{font-size:13px;font-weight:800;color:var(--red);display:flex;align-items:center;gap:6px}
+.modal-ts{font-size:12px;color:var(--muted)}
+.modal-q{font-size:15px;font-weight:700;line-height:1.5;margin:12px 0 14px;color:var(--text)}
+.modal-opts{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.opt-btn{padding:11px 14px;border:2px solid var(--border);border-radius:8px;cursor:pointer;background:#fff;font-size:13px;text-align:left;display:flex;align-items:center;gap:10px;transition:all .2s;line-height:1.4}
+.opt-btn:hover:not(:disabled){border-color:var(--blue);background:rgba(41,128,185,.06)}
+.opt-chk{width:20px;height:20px;border:2px solid var(--border);border-radius:4px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px;transition:all .2s}
+.opt-btn.sel .opt-chk{background:var(--blue);border-color:var(--blue);color:#fff}
+.opt-btn.correct{border-color:var(--green);background:rgba(39,174,96,.1)}
+.opt-btn.correct .opt-chk{background:var(--green);border-color:var(--green);color:#fff}
+.opt-btn.wrong{border-color:var(--err);background:rgba(231,76,60,.1)}
+.opt-btn.wrong .opt-chk{background:var(--err);border-color:var(--err);color:#fff}
+.opt-btn:disabled{cursor:default}
+.feedback{padding:12px 14px;border-radius:8px;font-size:13px;line-height:1.5;margin-bottom:14px}
+.feedback.ok{background:rgba(39,174,96,.1);border:1px solid var(--green);color:#1a6b3a}
+.feedback.bad{background:rgba(231,76,60,.1);border:1px solid var(--err);color:#8b1c1c}
+.tq{font-style:italic;background:#f8f9fa;padding:8px 12px;border-radius:6px;border-left:3px solid var(--red);margin-top:8px;font-size:12px;color:var(--text)}
+
+/* ─── COMPREHENSION ─── */
+.qblock{margin-bottom:18px;background:#fafbfc;border-radius:10px;padding:16px;border:1px solid var(--border)}
+.q-num{font-size:11px;font-weight:800;color:var(--red);text-transform:uppercase;margin-bottom:4px}
+.q-txt{font-size:14px;font-weight:700;margin-bottom:12px;line-height:1.5}
+.options{display:flex;flex-direction:column;gap:8px}
+.olabel{display:flex;align-items:center;gap:10px;padding:10px 14px;border:2px solid var(--border);border-radius:8px;cursor:pointer;transition:all .2s;font-size:13px}
+.olabel:hover:not(.answered){border-color:var(--blue);background:rgba(41,128,185,.05)}
+.olabel input{display:none}
+.olabel.correct{border-color:var(--green);background:rgba(39,174,96,.1);font-weight:700;color:#1a6b3a}
+.olabel.wrong{border-color:var(--err);background:rgba(231,76,60,.1);color:#8b1c1c}
+.olabel.answered{cursor:default}
+.q-feedback{font-size:12px;margin-top:8px;padding:8px 12px;border-radius:6px;background:#f0f4f8;color:var(--muted);display:none;font-style:italic}
+
+/* ─── FIB ─── */
+.fib-block{background:#fafbfc;border-radius:10px;padding:16px;margin-bottom:14px;border:1px solid var(--border)}
+.fib-num{font-size:11px;font-weight:800;color:var(--red);text-transform:uppercase;margin-bottom:8px}
+.fib-sent{font-size:15px;line-height:2.2;margin-bottom:6px}
+.fib-inp{border:2px solid var(--border);border-radius:6px;padding:5px 12px;font-size:14px;width:140px;font-family:inherit;transition:all .2s;vertical-align:middle}
+.fib-inp:focus{outline:none;border-color:var(--blue)}
+.fib-inp.correct{border-color:var(--green);background:rgba(39,174,96,.08);color:var(--green)}
+.fib-inp.wrong{border-color:var(--err);background:rgba(231,76,60,.08)}
+.word-bank{display:flex;flex-wrap:wrap;gap:8px;background:#f0f4f8;padding:12px;border-radius:8px;margin-bottom:16px}
+.wb-chip{padding:6px 14px;background:#fff;border:2px solid var(--border);border-radius:20px;font-size:13px;font-weight:700;color:var(--red);cursor:pointer;transition:all .2s;user-select:none}
+.wb-chip:hover:not(.used){background:var(--red);color:#fff;border-color:var(--red)}
+.wb-chip.used{opacity:.25;pointer-events:none}
+
+/* ─── WRITING ─── */
+.writing-prompt{background:linear-gradient(135deg,#fff8e6,#fff);border:2px solid #fcd97a;border-radius:10px;padding:16px;margin-bottom:14px}
+.writing-prompt h4{font-size:14px;color:#8b5e08;margin-bottom:6px}
+.writing-prompt p{font-size:13px;color:#7c5209;line-height:1.5}
+textarea.writing-area{width:100%;min-height:160px;border:2px solid var(--border);border-radius:10px;padding:14px;font-size:15px;font-family:inherit;resize:vertical;transition:border-color .2s;line-height:1.7}
+textarea.writing-area:focus{outline:none;border-color:var(--red)}
+.wcount{text-align:right;font-size:12px;color:var(--muted);margin-top:4px}
+.wcount.goal{color:var(--green);font-weight:700}
+.checklist{list-style:none;display:flex;flex-direction:column;gap:8px;margin:12px 0}
+.checklist li{display:flex;align-items:flex-start;gap:8px;font-size:13px}
+.checklist label{display:flex;align-items:flex-start;gap:8px;cursor:pointer}
+.checklist input[type=checkbox]{width:16px;height:16px;accent-color:var(--green);flex-shrink:0;margin-top:2px}
+
+/* ─── BUTTONS ─── */
+.btn{padding:11px 22px;border:none;border-radius:8px;cursor:pointer;font-size:14px;font-weight:700;transition:all .2s;display:inline-flex;align-items:center;gap:7px;font-family:inherit}
+.btn-red{background:var(--red);color:#fff}.btn-red:hover{background:var(--red-dark)}
+.btn-gold{background:var(--gold);color:#fff}.btn-gold:hover{background:var(--gold-dark)}
+.btn-green{background:var(--green);color:#fff}
+.btn-outline{background:#fff;border:2px solid var(--border);color:var(--text)}.btn-outline:hover{border-color:var(--red);color:var(--red)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;align-items:center}
+.btn-lg{padding:14px 28px;font-size:15px;border-radius:10px}
+
+/* ─── COMPLETION ─── */
+.complete-card{text-align:center;padding:32px 20px}
+.trophy{font-size:72px;margin-bottom:12px}
+.complete-title{font-size:26px;font-weight:900;color:var(--red);margin-bottom:6px}
+.complete-sub{font-size:14px;color:var(--muted);margin-bottom:24px}
+.xp-final-box{display:inline-block;background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:#fff;padding:20px 40px;border-radius:14px;margin-bottom:24px}
+.xp-final-num{font-size:52px;font-weight:900;line-height:1}
+.xp-final-label{font-size:14px;margin-top:4px;opacity:.9}
+.score-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:24px;text-align:left}
+.score-item{background:#fafbfc;border:2px solid var(--border);border-radius:10px;padding:12px}
+.score-item-label{font-size:11px;color:var(--muted);margin-bottom:3px}
+.score-item-val{font-size:22px;font-weight:900;color:var(--red)}
+.level-badge{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--red),#7d1c1c);color:#fff;padding:10px 22px;border-radius:30px;font-size:15px;font-weight:700;margin-bottom:12px}
+
+/* ─── XP POPUP ─── */
+#xp-pop{position:fixed;top:42%;left:50%;transform:translate(-50%,-50%) scale(0);background:linear-gradient(135deg,var(--gold),var(--gold-dark));color:#fff;padding:12px 28px;border-radius:30px;font-size:22px;font-weight:900;z-index:9999;pointer-events:none;white-space:nowrap;transition:transform .25s,top .5s;letter-spacing:1px}
+#xp-pop.show{transform:translate(-50%,-50%) scale(1);top:35%}
+
+/* ─── INFO BOX ─── */
+.info-box{background:#eef6ff;border:2px solid #bee3f8;border-radius:8px;padding:14px 16px;font-size:13px;color:#2c5282;margin-bottom:14px;line-height:1.6}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:600px){
+  .hdr-title{font-size:20px}
+  .match-wrap{grid-template-columns:1fr}
+  .score-grid{grid-template-columns:1fr 1fr}
+  .btn-row{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<!-- ════ HEADER ════ -->
+<div class="hdr">
+  <div class="hdr-badge">🎧 Intermediate &nbsp;|&nbsp; 📺 Authentic Video &nbsp;|&nbsp; 🇻🇳 Vietnamese</div>
+  <div class="hdr-title">Giải Trí Lành Mạnh</div>
+  <div class="hdr-sub">Topic: Entertainment &nbsp;·&nbsp; Skills: Listening, Vocabulary, Reading, Writing</div>
+  <div class="xp-wrap">
+    <div class="xp-row">
+      <span id="level-lbl">🎧 Beginner Listener</span>
+      <span id="xp-lbl">0 / 200 XP</span>
+    </div>
+    <div class="xp-bar"><div class="xp-fill" id="xp-fill"></div></div>
+  </div>
+</div>
+
+<!-- ════ STEP NAV ════ -->
+<div class="steps" id="steps-nav">
+  <div class="step active" onclick="tryGo(0)" id="step-0"><div class="step-icon">📚</div><div class="step-label">Pre-Listening</div></div>
+  <div class="step locked" onclick="tryGo(1)" id="step-1"><div class="step-icon">▶️</div><div class="step-label">While-Listening</div></div>
+  <div class="step locked" onclick="tryGo(2)" id="step-2"><div class="step-icon">💡</div><div class="step-label">Comprehension</div></div>
+  <div class="step locked" onclick="tryGo(3)" id="step-3"><div class="step-icon">✏️</div><div class="step-label">Vocabulary</div></div>
+  <div class="step locked" onclick="tryGo(4)" id="step-4"><div class="step-icon">💬</div><div class="step-label">Reflection</div></div>
+  <div class="step locked" id="step-5"><div class="step-icon">🏆</div><div class="step-label">Results</div></div>
+</div>
+
+<div class="wrap">
+
+<!-- ═══════════════════════════════════════════════
+     SECTION 0 — PRE-LISTENING
+     ═══════════════════════════════════════════════ -->
+<div class="section active" id="sec-0">
+
+  <div class="card">
+    <div class="card-head">
+      <div class="card-ico">🎯</div>
+      <div>
+        <div class="card-ttl">Learning Objectives</div>
+        <div class="card-sub">What you will practice in this lesson</div>
+      </div>
+    </div>
+    <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;font-size:13px">
+      <li>🔊 <strong>Listening:</strong> Understand authentic Vietnamese speech about entertainment choices</li>
+      <li>📖 <strong>Vocabulary:</strong> Learn and use key words related to hobbies and well-being</li>
+      <li>🧩 <strong>Reading:</strong> Read and interpret transcript excerpts</li>
+      <li>✍️ <strong>Writing:</strong> Describe your own entertainment preferences in Vietnamese</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="card-ico">🗣️</div>
+      <div>
+        <div class="card-ttl">Key Vocabulary</div>
+        <div class="card-sub">Study these 8 words before watching the video</div>
+      </div>
+      <div class="xp-chip">⭐ 20 XP</div>
+    </div>
+    <div class="vocab-grid" id="vocab-display"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="card-ico">🔗</div>
+      <div>
+        <div class="card-ttl">Vocabulary Matching</div>
+        <div class="card-sub">Click a Vietnamese word, then click its English meaning. 4 XP per correct match.</div>
+      </div>
+    </div>
+    <div class="info-box">💡 <strong>How to play:</strong> Click a word in the <strong>Vietnamese</strong> column to select it (it turns blue), then click the matching <strong>English</strong> meaning. Correct matches turn green!</div>
+    <div class="match-wrap">
+      <div class="match-col">
+        <div class="match-col-head">🇻🇳 Vietnamese</div>
+        <div id="match-vi"></div>
+      </div>
+      <div class="match-col">
+        <div class="match-col-head">🇺🇸 English</div>
+        <div id="match-en"></div>
+      </div>
+    </div>
+    <div id="match-feedback" style="margin-top:12px;font-size:13px;color:var(--muted)"></div>
+    <div class="btn-row">
+      <button class="btn btn-red" id="btn-next-0" style="display:none" onclick="goTo(1)">Continue to Video ▶</button>
+    </div>
+  </div>
+
+</div><!-- /sec-0 -->
+
+
+<!-- ═══════════════════════════════════════════════
+     SECTION 1 — WHILE-LISTENING
+     ═══════════════════════════════════════════════ -->
+<div class="section" id="sec-1">
+
+  <div class="card">
+    <div class="card-head">
+      <div class="card-ico">▶️</div>
+      <div>
+        <div class="card-ttl">Watch & Listen</div>
+        <div class="card-sub">Giải Trí Lành Mạnh — Healthy Entertainment (2:18)</div>
+      </div>
+      <div class="xp-chip">⭐ 80 XP</div>
+    </div>
+
+    <div class="instructions-box">
+      🎬 <strong>Instructions:</strong> Watch the video. It will <strong>pause automatically</strong> at 4 key moments for comprehension checks. Answer each question to earn XP and then continue watching. You can replay the video as many times as you like.
+    </div>
+
+    <div class="video-container">
+      <div id="player"></div>
+    </div>
+
+    <div class="quiz-timeline">
+      <span class="qt-label">Quiz points:</span>
+      <div class="qt-markers">
+        <div class="qt-marker"><div class="qt-dot" id="dot-0"></div>0:16</div>
+        <div class="qt-marker"><div class="qt-dot" id="dot-1"></div>0:49</div>
+        <div class="qt-marker"><div class="qt-dot" id="dot-2"></div>1:47</div>
+        <div class="qt-marker"><div class="qt-dot" id="dot-3"></div>2:08</div>
+      </div>
+    </div>
+
+    <div id="video-progress" style="font-size:13px;color:var(--muted);margin-top:8px">
+      Quizzes answered: <span id="quiz-count">0</span> / 4
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-red" id="btn-next-1" style="display:none" onclick="goTo(2)">Continue to Comprehension 💡</button>
+      <button class="btn btn-outline" onclick="skipVideo()" style="font-size:12px">Skip video quizzes (no XP)</button>
+    </div>
+  </div>
+
+</div><!-- /sec-1 -->
+
+
+<!-- ═══════════════════════════════════════════════
+     SECTION 2 — POST-LISTENING COMPREHENSION
+     ═══════════════════════════════════════════════ -->
+<div class="section" id="sec-2">
+
+  <div class="card">
+    <div class="card-head">
+      <div class="card-ico">💡</div>
+      <div>
+        <div class="card-ttl">Comprehension Check</div>
+        <div class="card-sub">Choose the best answer. 10 XP per correct answer.</div>
+      </div>
+      <div class="xp-chip">⭐ 50 XP</div>
+    </div>
+    <div id="comp-questions"></div>
+    <div class="btn-row">
+      <button class="btn btn-red" id="btn-submit-comp" onclick="submitComp()">Check Answers ✓</button>
+      <button class="btn btn-red" id="btn-next-2" style="display:none" onclick="goTo(3)">Continue to Vocabulary ✏️</button>
+    </div>
+  </div>
+
+</div><!-- /sec-2 -->
+
+
+<!-- ═══════════════════════════════════════════════
+     SECTION 3 — VOCABULARY IN CONTEXT
+     ═══════════════════════════════════════════════ -->
+<div class="section" id="sec-3">
+
+  <div class="card">
+    <div class="card-head">
+      <div class="card-ico">✏️</div>
+      <div>
+        <div class="card-ttl">Vocabulary in Context</div>
+        <div class="card-sub">Fill in the blanks using words from the word bank. 6 XP each.</div>
+      </div>
+      <div class="xp-chip">⭐ 30 XP</div>
+    </div>
+
+    <div>
+      <p style="font-size:13px;margin-bottom:10px;color:var(--muted)">🗃️ <strong>Word Bank</strong> — Click a word to insert it into a selected blank:</p>
+      <div class="word-bank" id="word-bank"></div>
+    </div>
+
+    <div id="fib-questions"></div>
+
+    <div class="btn-row">
+      <button class="btn btn-red" id="btn-submit-fib" onclick="submitFIB()">Check Answers ✓</button>
+      <button class="btn btn-red" id="btn-next-3" style="display:none" onclick="goTo(4)">Continue to Reflection 💬</button>
+    </div>
+  </div>
+
+</div><!-- /sec-3 -->
+
+
+<!-- ═══════════════════════════════════════════════
+     SECTION 4 — REFLECTION WRITING
+     ═══════════════════════════════════════════════ -->
+<div class="section" id="sec-4">
+
+  <div class="card">
+    <div class="card-head">
+      <div class="card-ico">💬</div>
+      <div>
+        <div class="card-ttl">Reflection &amp; Writing</div>
+        <div class="card-sub">Practice using new vocabulary in your own writing. 20 XP for completing.</div>
+      </div>
+      <div class="xp-chip">⭐ 20 XP</div>
+    </div>
+
+    <div class="writing-prompt">
+      <h4>✍️ Writing Prompt</h4>
+      <p>Bạn thường làm gì để thư giãn sau những giờ học căng thẳng? Hình thức giải trí nào phù hợp với bạn nhất và tại sao?<br>
+      <em style="font-size:12px">(What do you usually do to relax after stressful study sessions? What form of entertainment suits you best and why?)</em></p>
+    </div>
+
+    <div class="info-box" style="font-size:12px">
+      💡 <strong>Try to use:</strong> giải trí, thư giãn, căng thẳng, cân bằng, bổ ích, lành mạnh, hướng nội, khoảnh khắc
+    </div>
+
+    <textarea class="writing-area" id="writing-area" placeholder="Viết câu trả lời của bạn ở đây... (Write your answer here...)" oninput="countWords()"></textarea>
+    <div class="wcount" id="wcount">0 words (goal: 40+ words)</div>
+
+    <div style="margin:16px 0">
+      <p style="font-size:13px;font-weight:700;margin-bottom:10px">✅ Self-Assessment Checklist:</p>
+      <ul class="checklist" id="self-check">
+        <li><label><input type="checkbox" onchange="checkWriting()"> I stated my preferred form of entertainment</label></li>
+        <li><label><input type="checkbox" onchange="checkWriting()"> I explained why it helps me relax or find balance</label></li>
+        <li><label><input type="checkbox" onchange="checkWriting()"> I used at least 3 vocabulary words from this lesson</label></li>
+        <li><label><input type="checkbox" onchange="checkWriting()"> I wrote at least 40 words</label></li>
+      </ul>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-red btn-lg" id="btn-submit-writing" onclick="submitWriting()" disabled>Submit Reflection 🏆</button>
+    </div>
+  </div>
+
+</div><!-- /sec-4 -->
+
+
+<!-- ═══════════════════════════════════════════════
+     SECTION 5 — COMPLETION / RESULTS
+     ═══════════════════════════════════════════════ -->
+<div class="section" id="sec-5">
+  <div class="card complete-card">
+    <div class="trophy">🏆</div>
+    <div class="complete-title">Lesson Complete!</div>
+    <div class="complete-sub">Congratulations on finishing <em>Giải Trí Lành Mạnh</em>!</div>
+    <div class="xp-final-box">
+      <div class="xp-final-num" id="final-xp">0</div>
+      <div class="xp-final-label">Total XP Earned</div>
+    </div>
+    <div class="level-badge" id="final-level">🎧 Beginner Listener</div>
+    <div class="score-grid" id="score-breakdown"></div>
+    <div style="background:#f0f4f8;border-radius:10px;padding:16px;text-align:left;margin-bottom:20px">
+      <p style="font-weight:700;margin-bottom:10px;font-size:14px">📝 Key Takeaways from this Lesson:</p>
+      <ul style="list-style:none;display:flex;flex-direction:column;gap:7px;font-size:13px">
+        <li>🎵 Young Vietnamese people enjoy <strong>photography, reading, and music</strong> as healthy entertainment</li>
+        <li>⚖️ The key phrase: <em style="color:var(--red)">"lựa chọn hình thức giải trí phù hợp với bản thân"</em> — choose entertainment that suits you</li>
+        <li>📷 Khánh uses photography to <strong>restore balance (lấy lại cân bằng)</strong> in his life</li>
+        <li>📚 Kim Hồng says books bring <strong>concentration, thinking skills, and a feeling of being yourself</strong></li>
+      </ul>
+    </div>
+    <button class="btn btn-outline" onclick="restartLesson()">🔄 Restart Lesson</button>
+  </div>
+</div><!-- /sec-5 -->
+
+</div><!-- /wrap -->
+
+<!-- ════ QUIZ MODAL ════ -->
+<div class="modal-bg" id="modal-bg">
+  <div class="modal" id="modal-box">
+    <div class="modal-top">
+      <div class="modal-ttl">🎬 <span id="modal-title">Check Your Understanding</span></div>
+      <div class="modal-ts" id="modal-ts"></div>
+    </div>
+    <div class="modal-q" id="modal-q"></div>
+    <div class="modal-opts" id="modal-opts"></div>
+    <div class="feedback" id="modal-feedback" style="display:none"></div>
+    <div style="display:flex;justify-content:flex-end;gap:10px">
+      <button class="btn btn-red" id="modal-submit" onclick="submitModalQuiz()">Submit Answer</button>
+      <button class="btn btn-green" id="modal-continue" onclick="closeModal()" style="display:none">Continue Watching ▶</button>
+    </div>
+  </div>
+</div>
+
+<!-- XP POPUP -->
+<div id="xp-pop"></div>
+
+<script>
+// ═══════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════
+
+const vocabList = [
+  {vi:'giải trí',cls:'(noun)',en:'entertainment / recreation',ex:'Giải trí là nhu cầu không thể thiếu.'},
+  {vi:'căng thẳng',cls:'(adj.)',en:'stressed / stressful',ex:'Học tập gây căng thẳng cho sinh viên.'},
+  {vi:'thư giãn',cls:'(verb)',en:'to relax',ex:'Đọc sách giúp tôi thư giãn.'},
+  {vi:'lành mạnh',cls:'(adj.)',en:'healthy / wholesome',ex:'Chụp ảnh là thú vui lành mạnh.'},
+  {vi:'bổ ích',cls:'(adj.)',en:'beneficial / useful',ex:'Đọc sách rất bổ ích.'},
+  {vi:'hướng nội',cls:'(adj.)',en:'introverted',ex:'Người hướng nội thích ở một mình.'},
+  {vi:'cân bằng',cls:'(noun/verb)',en:'balance / to balance',ex:'Chụp ảnh giúp Khánh lấy lại cân bằng.'},
+  {vi:'khoảnh khắc',cls:'(noun)',en:'moment / instant',ex:'Khánh đi tìm khoảnh khắc đẹp.'},
+];
+
+const matchPairs = [
+  {vi:'căng thẳng',   en:'stressed / stressful'},
+  {vi:'thư giãn',     en:'to relax'},
+  {vi:'bổ ích',       en:'beneficial / useful'},
+  {vi:'hướng nội',    en:'introverted'},
+  {vi:'khoảnh khắc',  en:'moment / instant'},
+];
+
+const videoQuizzes = [
+  {
+    time: 16, dotIdx: 0,
+    ts: '⏱ 0:16',
+    q: 'The narrator mentions three <em>lành mạnh</em> (healthy) forms of entertainment. Select ALL THREE:',
+    type: 'multi',
+    opts: [
+      {text:'📷 Chụp ảnh (Photography)', correct:true},
+      {text:'🎮 Chơi game (Gaming)', correct:false},
+      {text:'📚 Đọc sách (Reading)', correct:true},
+      {text:'🎵 Nghe nhạc (Listening to music)', correct:true},
+      {text:'🎬 Xem phim (Watching films)', correct:false},
+    ],
+    xp: 20,
+    explain: '✅ The narrator says: <strong>"đọc sách, nghe nhạc hay chụp ảnh là những hình thức giải trí lành mạnh bổ ích"</strong>',
+    transcript: '"...đọc sách, nghe nhạc hay chụp ảnh là những hình thức giải trí lành mạnh bổ ích đang trở nên hấp dẫn hơn..."'
+  },
+  {
+    time: 56, dotIdx: 1,
+    ts: '⏱ 0:56',
+    q: 'Khánh says photography and his afternoon wanderings helped him:',
+    type: 'single',
+    opts: [
+      {text:'Earn money for his college tuition', correct:false},
+      {text:'Restore balance in his life', correct:true},
+      {text:'Make new friends at his college', correct:false},
+      {text:'Improve his academic grades', correct:false},
+    ],
+    xp: 20,
+    explain: '✅ Khánh says photography helped him "<strong>lấy lại được cân bằng trong cuộc sống</strong>" (restore balance in life).',
+    transcript: '"...những buổi chiều lang thang đi tìm khoảnh khắc đẹp đã giúp Khánh lấy lại được cân bằng trong cuộc sống..."'
+  },
+  {
+    time: 107, dotIdx: 2,
+    ts: '⏱ 1:47',
+    q: 'What first gave Kim Hồng the opportunity to engage deeply with books?',
+    type: 'single',
+    opts: [
+      {text:'A book fair at her college', correct:false},
+      {text:'A city-level book introduction competition', correct:true},
+      {text:'A school library reading program', correct:false},
+      {text:"A gift of books from her teacher", correct:false},
+    ],
+    xp: 20,
+    explain: '✅ Hồng says she participated in a "<strong>cuộc thi giới thiệu sách cấp thành phố</strong>" (city-level book introduction competition).',
+    transcript: '"...em có tham gia một cái cuộc thi đó là giới thiệu sách cấp thành phố thì qua cuộc thi này thì em đã có cơ hội là được tiếp xúc với sách nhiều hơn..."'
+  },
+  {
+    time: 136, dotIdx: 3,
+    ts: '⏱ 2:08',
+    q: 'According to the narrator\'s conclusion, what gives people motivation and mental balance after stressful work and study?',
+    type: 'single',
+    opts: [
+      {text:'Entertainment that involves physical activity', correct:false},
+      {text:'Reducing time on social media', correct:false},
+      {text:'Choosing entertainment that suits each individual', correct:true},
+      {text:'Following popular trends in entertainment', correct:false},
+    ],
+    xp: 20,
+    explain: '✅ The narrator concludes: "<strong>điều quan trọng là lựa chọn được một hình thức giải trí phù hợp với bản thân</strong>" (the key is choosing entertainment that suits oneself).',
+    transcript: '"...điều quan trọng là lựa chọn được một hình thức giải trí phù hợp với bản thân mỗi người sẽ có thêm động lực tinh thần tốt..."'
+  }
+];
+
+const compQs = [
+  {
+    q: 'What is Su Minh Khánh\'s year of study and school?',
+    opts:['Second-year student at Hanoi University','First-year student at Lào Cai College','Third-year student at HCM University','First-year student at Lào Cai University'],
+    correct:1, xp:10,
+    explain:'The video says Khánh is a "sinh viên năm nhất trường cao đẳng Lào Cai" (first-year student at Lào Cai College).'
+  },
+  {
+    q: 'What styles of photography does Khánh enjoy?',
+    opts:['Wildlife and sports photography','Portrait and landscape photography','Underwater and aerial photography','Street and documentary photography'],
+    correct:1, xp:10,
+    explain:'Khánh says "em thích chụp ảnh theo phong cách chân dung... còn thích chụp phong cảnh" (portrait style and also landscape).'
+  },
+  {
+    q: 'What activity does Trang choose when she has free time to relax?',
+    opts:['Listening to music','Taking photographs','Reading books','Going for walks'],
+    correct:2, xp:10,
+    explain:'Trang says "em lựa chọn phương pháp đọc sách để thư giãn" (I choose reading as a method to relax).'
+  },
+  {
+    q: 'According to Kim Hồng, what feeling does reading give her?',
+    opts:['Excitement and energy for the day','Concentration, better thinking, and a feeling of being herself','A sense of adventure and creativity','Happiness from connecting with others'],
+    correct:1, xp:10,
+    explain:'Hồng says reading raises her "tư duy, kỹ năng giao tiếp" and "cảm giác thoải mái được là chính mình" (concentration, communication skills, and the feeling of being herself).'
+  },
+  {
+    q: 'The video describes Trang and Kim Hồng as "hướng nội" (introverted). How do they prefer to relax?',
+    opts:['Going out to parties or social events','Exercising outdoors','In a quiet space with a drink and books they love','Listening to loud music with friends'],
+    correct:2, xp:10,
+    explain:'The narrator says introverted students like Trang and Hồng relax with "không gian yên tĩnh một ly nước và những cuốn sách yêu thích" (a quiet space, a drink, and beloved books).'
+  }
+];
+
+const fibQs = [
+  {before:'Đọc sách là một hình thức giải trí rất ',after:' vì nó giúp tăng kiến thức.',answer:'bổ ích'},
+  {before:'Sau khi học bài nhiều giờ, tôi cần ',after:' bằng cách nghe nhạc.',answer:'thư giãn'},
+  {before:'Khánh chụp ảnh để tìm lại sự ',after:' trong cuộc sống.',answer:'cân bằng'},
+  {before:'Nhiều bạn trẻ cảm thấy ',after:' vì áp lực học tập và công việc.',answer:'căng thẳng'},
+  {before:'Chụp ảnh, đọc sách, và nghe nhạc là những hình thức giải trí ',after:' cho sức khỏe tinh thần.',answer:'lành mạnh'},
+];
+
+// ═══════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════
+let xp = 0, maxXP = 200;
+let currentSec = 0;
+let secUnlocked = [true,false,false,false,false,false];
+let secDone = [false,false,false,false,false,false];
+let xpBySection = {pre:0, video:0, comp:0, fib:0, writing:0};
+
+// Match state
+let matchSelected = null; // {side:'vi'|'en', idx}
+let matchDone = new Set();
+let matchScore = 0;
+
+// Video state
+let player, timeInterval;
+let videoQuizDone = new Array(videoQuizzes.length).fill(false);
+let currentQuizIdx = -1;
+let videoQuizScore = 0;
+
+// Comp state
+let compSubmitted = false;
+
+// FIB state
+let fibActive = null; // index of focused input
+let fibScore = 0;
+
+// Writing state
+let writingDone = false;
+
+// ═══════════════════════════════════════
+// XP SYSTEM
+// ═══════════════════════════════════════
+function addXP(amount) {
+  xp = Math.min(xp + amount, maxXP);
+  updateXPBar();
+  popXP(amount);
+}
+
+function updateXPBar() {
+  const pct = (xp / maxXP) * 100;
+  document.getElementById('xp-fill').style.width = pct + '%';
+  document.getElementById('xp-lbl').textContent = xp + ' / ' + maxXP + ' XP';
+  const {label} = getLevel();
+  document.getElementById('level-lbl').textContent = label;
+}
+
+function getLevel() {
+  if (xp < 50)  return {label:'🎧 Beginner Listener',   tier:1};
+  if (xp < 100) return {label:'📻 Developing Listener', tier:2};
+  if (xp < 160) return {label:'🎵 Active Listener',     tier:3};
+  return             {label:'⭐ Expert Listener',        tier:4};
+}
+
+function popXP(amount) {
+  const el = document.getElementById('xp-pop');
+  el.textContent = '+' + amount + ' XP ⭐';
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 1600);
+}
+
+// ═══════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════
+function tryGo(idx) {
+  if (!secUnlocked[idx]) return;
+  goTo(idx);
+}
+
+function goTo(idx) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById('sec-' + idx).classList.add('active');
+  currentSec = idx;
+  updateStepNav();
+  window.scrollTo({top: 0, behavior:'smooth'});
+}
+
+function updateStepNav() {
+  for (let i = 0; i <= 5; i++) {
+    const el = document.getElementById('step-' + i);
+    if (!el) continue;
+    el.classList.remove('active','done','locked');
+    if (secDone[i]) el.classList.add('done');
+    else if (!secUnlocked[i]) el.classList.add('locked');
+    if (currentSec === i) el.classList.add('active');
+  }
+}
+
+function unlockSection(idx) {
+  secUnlocked[idx] = true;
+  updateStepNav();
+}
+
+function markSectionDone(idx) {
+  secDone[idx] = true;
+  if (idx + 1 <= 5) unlockSection(idx + 1);
+  updateStepNav();
+}
+
+// ═══════════════════════════════════════
+// SECTION 0 — VOCABULARY MATCHING
+// ═══════════════════════════════════════
+function buildVocabDisplay() {
+  const cont = document.getElementById('vocab-display');
+  cont.innerHTML = vocabList.map(v =>
+    `<div class="vcard">
+      <div class="vcard-vi">${v.vi}</div>
+      <div class="vcard-cls">${v.cls}</div>
+      <div class="vcard-en">${v.en}</div>
+      <div class="vcard-ex">${v.ex}</div>
+    </div>`
+  ).join('');
+}
+
+function buildMatchQuiz() {
+  // Shuffle English answers
+  const engShuffled = [...matchPairs].sort(() => Math.random() - .5);
+
+  const viCont = document.getElementById('match-vi');
+  const enCont = document.getElementById('match-en');
+
+  viCont.innerHTML = matchPairs.map((p, i) =>
+    `<div class="mbtn" id="mvi-${i}" data-side="vi" data-idx="${i}" onclick="matchClick('vi',${i})">${p.vi}</div>`
+  ).join('');
+
+  enCont.innerHTML = engShuffled.map((p, i) => {
+    // find original index
+    const orig = matchPairs.findIndex(x => x.en === p.en);
+    return `<div class="mbtn" id="men-${i}" data-side="en" data-orig="${orig}" data-idx="${i}" onclick="matchClick('en',${i},${orig})">${p.en}</div>`;
+  }).join('');
+}
+
+function matchClick(side, idx, origIdx) {
+  const elId = side === 'vi' ? 'mvi-' + idx : 'men-' + idx;
+  const el = document.getElementById(elId);
+  if (el.classList.contains('matched')) return;
+
+  if (side === 'vi') {
+    // Clear any existing vi selection
+    document.querySelectorAll('[id^="mvi-"]').forEach(e => e.classList.remove('selected'));
+    el.classList.add('selected');
+    matchSelected = {side:'vi', idx};
+  } else {
+    // English clicked — check match
+    if (!matchSelected || matchSelected.side !== 'vi') {
+      // Select English first if no Vi selected (hint)
+      return;
+    }
+    const viIdx = matchSelected.idx;
+    const correct = (viIdx === origIdx);
+
+    if (correct) {
+      document.getElementById('mvi-' + viIdx).classList.remove('selected');
+      document.getElementById('mvi-' + viIdx).classList.add('matched');
+      el.classList.add('matched');
+      matchDone.add(viIdx);
+      matchScore += 4;
+      addXP(4);
+      xpBySection.pre += 4;
+      matchSelected = null;
+      checkMatchComplete();
+    } else {
+      // Wrong — flash both
+      document.getElementById('mvi-' + viIdx).classList.add('wrong-flash');
+      el.classList.add('wrong-flash');
+      setTimeout(() => {
+        document.getElementById('mvi-' + viIdx).classList.remove('wrong-flash','selected');
+        el.classList.remove('wrong-flash');
+        matchSelected = null;
+      }, 400);
+    }
+  }
+}
+
+function checkMatchComplete() {
+  if (matchDone.size === matchPairs.length) {
+    document.getElementById('match-feedback').innerHTML =
+      `<span style="color:var(--green);font-weight:700">🎉 Perfect! All matched! You earned ${matchScore} XP.</span>`;
+    document.getElementById('btn-next-0').style.display = 'inline-flex';
+    markSectionDone(0);
+  } else {
+    document.getElementById('match-feedback').textContent =
+      matchDone.size + ' / ' + matchPairs.length + ' matched';
+  }
+}
+
+// ═══════════════════════════════════════
+// SECTION 1 — YOUTUBE + IN-VIDEO QUIZZES
+// ═══════════════════════════════════════
+var tag = document.createElement('script');
+tag.src = 'https://www.youtube.com/iframe_api';
+document.head.appendChild(tag);
+
+function onYouTubeIframeAPIReady() {
+  player = new YT.Player('player', {
+    videoId: 'ufbrbH-FLY8',
+    playerVars: {rel:0, modestbranding:1, playsinline:1},
+    events: {
+      onStateChange: onStateChange
+    }
+  });
+}
+
+function onStateChange(e) {
+  if (e.data === YT.PlayerState.PLAYING) {
+    clearInterval(timeInterval);
+    timeInterval = setInterval(checkVideoTime, 500);
+  } else {
+    clearInterval(timeInterval);
+  }
+}
+
+function checkVideoTime() {
+  if (!player || !player.getCurrentTime) return;
+  const t = player.getCurrentTime();
+  videoQuizzes.forEach((q, i) => {
+    if (!videoQuizDone[i] && t >= q.time) {
+      videoQuizDone[i] = true; // mark immediately to avoid re-trigger
+      player.pauseVideo();
+      showVideoQuiz(i);
+    }
+  });
+  // Check if all 4 done
+  if (videoQuizzes.every((q,i) => videoQuizDone[i]) && !secDone[1]) {
+    checkVideoComplete();
+  }
+}
+
+function showVideoQuiz(idx) {
+  currentQuizIdx = idx;
+  const q = videoQuizzes[idx];
+  document.getElementById('modal-ts').textContent = q.ts;
+  document.getElementById('modal-q').innerHTML = q.q;
+  document.getElementById('modal-feedback').style.display = 'none';
+  document.getElementById('modal-submit').style.display = 'inline-flex';
+  document.getElementById('modal-continue').style.display = 'none';
+
+  // Build options
+  const optsEl = document.getElementById('modal-opts');
+  optsEl.innerHTML = q.opts.map((o, i) => {
+    const isMulti = q.type === 'multi';
+    return `<button class="opt-btn" id="mopt-${i}" onclick="toggleModalOpt(${i},${isMulti?'true':'false'})">
+      <span class="opt-chk" id="ochk-${i}">${isMulti ? '□' : '○'}</span>
+      <span>${o.text}</span>
+    </button>`;
+  }).join('');
+
+  document.getElementById('modal-bg').classList.add('open');
+}
+
+function toggleModalOpt(idx, isMulti) {
+  const btn = document.getElementById('mopt-' + idx);
+  if (btn.disabled) return;
+  if (!isMulti) {
+    // Single: deselect all others
+    document.querySelectorAll('.opt-btn').forEach((b, i) => {
+      b.classList.remove('sel');
+      document.getElementById('ochk-' + i).textContent = '○';
+    });
+  }
+  const chk = document.getElementById('ochk-' + idx);
+  if (btn.classList.contains('sel')) {
+    btn.classList.remove('sel');
+    chk.textContent = isMulti ? '□' : '○';
+  } else {
+    btn.classList.add('sel');
+    chk.textContent = isMulti ? '☑' : '●';
+  }
+}
+
+function submitModalQuiz() {
+  if (currentQuizIdx < 0) return;
+  const q = videoQuizzes[currentQuizIdx];
+  const selectedIdxs = [];
+  q.opts.forEach((o, i) => {
+    if (document.getElementById('mopt-' + i).classList.contains('sel')) selectedIdxs.push(i);
+  });
+  if (selectedIdxs.length === 0) { alert('Please select an answer.'); return; }
+
+  // Grade
+  let correct = false;
+  if (q.type === 'single') {
+    correct = selectedIdxs.length === 1 && q.opts[selectedIdxs[0]].correct;
+  } else {
+    // multi: all correct selected, none wrong
+    const correctIdxs = q.opts.map((o,i) => o.correct ? i : -1).filter(i => i >= 0);
+    const wrongSelected = selectedIdxs.some(i => !q.opts[i].correct);
+    const allCorrectSelected = correctIdxs.every(i => selectedIdxs.includes(i));
+    correct = allCorrectSelected && !wrongSelected;
+  }
+
+  // Mark buttons
+  q.opts.forEach((o, i) => {
+    const btn = document.getElementById('mopt-' + i);
+    btn.disabled = true;
+    if (o.correct) {
+      btn.classList.add('correct');
+      document.getElementById('ochk-' + i).textContent = '✓';
+    } else if (selectedIdxs.includes(i) && !o.correct) {
+      btn.classList.add('wrong');
+      document.getElementById('ochk-' + i).textContent = '✗';
+    }
+  });
+
+  // Feedback
+  const fb = document.getElementById('modal-feedback');
+  fb.style.display = 'block';
+  if (correct) {
+    fb.className = 'feedback ok';
+    fb.innerHTML = `🌟 <strong>Correct! +${q.xp} XP</strong><br>${q.explain}<div class="tq">${q.transcript}</div>`;
+    addXP(q.xp);
+    xpBySection.video += q.xp;
+    videoQuizScore += q.xp;
+  } else {
+    fb.className = 'feedback bad';
+    fb.innerHTML = `❌ <strong>Not quite.</strong><br>${q.explain}<div class="tq">${q.transcript}</div>`;
+  }
+
+  // Update dot
+  document.getElementById('dot-' + q.dotIdx).classList.add('done');
+  document.getElementById('quiz-count').textContent =
+    videoQuizzes.filter((q,i) => videoQuizDone[i]).length;
+
+  document.getElementById('modal-submit').style.display = 'none';
+  document.getElementById('modal-continue').style.display = 'inline-flex';
+}
+
+function closeModal() {
+  document.getElementById('modal-bg').classList.remove('open');
+  if (player) player.playVideo();
+  checkVideoComplete();
+}
+
+function checkVideoComplete() {
+  const allDone = videoQuizzes.every((q, i) => videoQuizDone[i]);
+  if (allDone && !secDone[1]) {
+    markSectionDone(1);
+    document.getElementById('btn-next-1').style.display = 'inline-flex';
+  }
+}
+
+function skipVideo() {
+  videoQuizzes.forEach((q, i) => videoQuizDone[i] = true);
+  videoQuizzes.forEach(q => document.getElementById('dot-' + q.dotIdx).classList.add('done'));
+  document.getElementById('quiz-count').textContent = 4;
+  markSectionDone(1);
+  document.getElementById('btn-next-1').style.display = 'inline-flex';
+  document.getElementById('btn-next-1').textContent = 'Continue to Comprehension 💡';
+}
+
+// ═══════════════════════════════════════
+// SECTION 2 — COMPREHENSION
+// ═══════════════════════════════════════
+function buildCompQuestions() {
+  const cont = document.getElementById('comp-questions');
+  cont.innerHTML = compQs.map((q, qi) => `
+    <div class="qblock" id="qblock-${qi}">
+      <div class="q-num">Question ${qi+1}</div>
+      <div class="q-txt">${q.q}</div>
+      <div class="options" id="opts-${qi}">
+        ${q.opts.map((o, oi) => `
+          <label class="olabel" id="olbl-${qi}-${oi}">
+            <input type="radio" name="comp-${qi}" value="${oi}">
+            <span>${String.fromCharCode(65+oi)}. ${o}</span>
+          </label>`).join('')}
+      </div>
+      <div class="q-feedback" id="fb-${qi}"></div>
+    </div>
+  `).join('');
+}
+
+function submitComp() {
+  if (compSubmitted) return;
+  let earned = 0;
+  let allAnswered = true;
+
+  compQs.forEach((q, qi) => {
+    const selected = document.querySelector(`input[name="comp-${qi}"]:checked`);
+    if (!selected) { allAnswered = false; return; }
+    const val = parseInt(selected.value);
+
+    // Mark labels
+    q.opts.forEach((o, oi) => {
+      const lbl = document.getElementById(`olbl-${qi}-${oi}`);
+      lbl.classList.add('answered');
+      if (oi === q.correct) lbl.classList.add('correct');
+      else if (oi === val && val !== q.correct) lbl.classList.add('wrong');
+    });
+
+    const fb = document.getElementById('fb-' + qi);
+    fb.style.display = 'block';
+    if (val === q.correct) {
+      fb.textContent = '✅ Correct! ' + q.explain;
+      fb.style.color = 'var(--green)';
+      earned += q.xp;
+    } else {
+      fb.textContent = '❌ ' + q.explain;
+      fb.style.color = 'var(--err)';
+    }
+  });
+
+  if (!allAnswered) { alert('Please answer all questions before submitting.'); return; }
+
+  compSubmitted = true;
+  addXP(earned);
+  xpBySection.comp = earned;
+  document.getElementById('btn-submit-comp').style.display = 'none';
+  document.getElementById('btn-next-2').style.display = 'inline-flex';
+  markSectionDone(2);
+}
+
+// ═══════════════════════════════════════
+// SECTION 3 — FIB
+// ═══════════════════════════════════════
+const fibWords = ['bổ ích','thư giãn','cân bằng','căng thẳng','lành mạnh'];
+
+function buildFIB() {
+  // Word bank
+  const wb = document.getElementById('word-bank');
+  wb.innerHTML = fibWords.map(w =>
+    `<div class="wb-chip" id="chip-${w.replace(' ','-')}" onclick="useChip('${w}')">${w}</div>`
+  ).join('');
+
+  // Questions
+  const cont = document.getElementById('fib-questions');
+  cont.innerHTML = fibQs.map((q, i) => `
+    <div class="fib-block">
+      <div class="fib-num">Câu ${i+1}</div>
+      <div class="fib-sent">
+        ${q.before}<input class="fib-inp" id="fib-${i}" type="text" placeholder="______" onfocus="fibActive=${i}" autocomplete="off">${q.after}
+      </div>
+    </div>
+  `).join('');
+}
+
+function useChip(word) {
+  if (fibActive === null) {
+    // If none focused, find first empty
+    const emptyIdx = fibQs.findIndex((q, i) => !document.getElementById('fib-'+i).value);
+    if (emptyIdx >= 0) fibActive = emptyIdx;
+    else return;
+  }
+  const inp = document.getElementById('fib-' + fibActive);
+  if (inp && !inp.disabled) {
+    inp.value = word;
+    inp.focus();
+    // Mark chip as "used" temporarily (will reset on check)
+  }
+}
+
+function submitFIB() {
+  let earned = 0;
+  let allFilled = true;
+
+  fibQs.forEach((q, i) => {
+    const inp = document.getElementById('fib-' + i);
+    const val = inp.value.trim().toLowerCase();
+    if (!val) { allFilled = false; return; }
+
+    inp.disabled = true;
+    if (val === q.answer.toLowerCase()) {
+      inp.classList.add('correct');
+      inp.value = q.answer;
+      earned += 6;
+      // Mark chip used
+      const chipId = 'chip-' + q.answer.replace(' ','-');
+      const chip = document.getElementById(chipId);
+      if (chip) chip.classList.add('used');
+    } else {
+      inp.classList.add('wrong');
+      setTimeout(() => {
+        inp.value = q.answer;
+        inp.classList.remove('wrong');
+        inp.classList.add('correct');
+      }, 1000);
+    }
+  });
+
+  if (!allFilled) { alert('Please fill in all blanks before submitting.'); return; }
+
+  addXP(earned);
+  xpBySection.fib = earned;
+  fibScore = earned;
+  document.getElementById('btn-submit-fib').style.display = 'none';
+  document.getElementById('btn-next-3').style.display = 'inline-flex';
+  markSectionDone(3);
+}
+
+// ═══════════════════════════════════════
+// SECTION 4 — WRITING
+// ═══════════════════════════════════════
+function countWords() {
+  const text = document.getElementById('writing-area').value.trim();
+  const words = text ? text.split(/\s+/).length : 0;
+  const el = document.getElementById('wcount');
+  el.textContent = words + ' words (goal: 40+ words)';
+  el.className = 'wcount' + (words >= 40 ? ' goal' : '');
+  checkWriting();
+}
+
+function checkWriting() {
+  const text = document.getElementById('writing-area').value.trim();
+  const words = text ? text.split(/\s+/).length : 0;
+  const checks = document.querySelectorAll('#self-check input[type=checkbox]');
+  const allChecked = Array.from(checks).every(c => c.checked);
+  const btn = document.getElementById('btn-submit-writing');
+  btn.disabled = !(words >= 40 && allChecked);
+}
+
+function submitWriting() {
+  writingDone = true;
+  addXP(20);
+  xpBySection.writing = 20;
+  document.getElementById('btn-submit-writing').disabled = true;
+  document.getElementById('btn-submit-writing').textContent = '✅ Reflection Submitted!';
+  markSectionDone(4);
+  goTo(5);
+  buildCompletion();
+}
+
+// ═══════════════════════════════════════
+// SECTION 5 — COMPLETION
+// ═══════════════════════════════════════
+function buildCompletion() {
+  document.getElementById('final-xp').textContent = xp;
+  const {label} = getLevel();
+  document.getElementById('final-level').textContent = label;
+
+  const breakdown = [
+    {label:'Pre-Listening',val: xpBySection.pre + ' / 20 XP'},
+    {label:'Video Quizzes', val: xpBySection.video + ' / 80 XP'},
+    {label:'Comprehension', val: xpBySection.comp + ' / 50 XP'},
+    {label:'Vocabulary',    val: xpBySection.fib + ' / 30 XP'},
+    {label:'Reflection',    val: xpBySection.writing + ' / 20 XP'},
+    {label:'Total',         val: xp + ' / 200 XP'},
+  ];
+
+  document.getElementById('score-breakdown').innerHTML = breakdown.map(b => `
+    <div class="score-item">
+      <div class="score-item-label">${b.label}</div>
+      <div class="score-item-val">${b.val}</div>
+    </div>
+  `).join('');
+}
+
+function restartLesson() {
+  xp = 0; xpBySection = {pre:0,video:0,comp:0,fib:0,writing:0};
+  secUnlocked = [true,false,false,false,false,false];
+  secDone = [false,false,false,false,false,false];
+  matchSelected = null; matchDone = new Set(); matchScore = 0;
+  videoQuizDone = new Array(videoQuizzes.length).fill(false);
+  videoQuizScore = 0; compSubmitted = false;
+  fibActive = null; fibScore = 0; writingDone = false;
+  updateXPBar();
+  updateStepNav();
+  buildMatchQuiz();
+  buildCompQuestions();
+  buildFIB();
+  document.getElementById('btn-next-0').style.display = 'none';
+  document.getElementById('btn-next-1').style.display = 'none';
+  document.getElementById('btn-next-2').style.display = 'none';
+  document.getElementById('btn-next-3').style.display = 'none';
+  document.getElementById('btn-submit-comp').style.display = 'inline-flex';
+  document.getElementById('btn-submit-fib').style.display = 'inline-flex';
+  document.getElementById('btn-submit-writing').disabled = true;
+  document.getElementById('btn-submit-writing').textContent = 'Submit Reflection 🏆';
+  document.getElementById('writing-area').value = '';
+  document.getElementById('wcount').textContent = '0 words (goal: 40+ words)';
+  document.querySelectorAll('#self-check input').forEach(c => c.checked = false);
+  videoQuizzes.forEach(q => document.getElementById('dot-' + q.dotIdx).classList.remove('done'));
+  document.getElementById('quiz-count').textContent = '0';
+  goTo(0);
+}
+
+// ═══════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════
+buildVocabDisplay();
+buildMatchQuiz();
+buildCompQuestions();
+buildFIB();
+updateXPBar();
+updateStepNav();
+</script>
+</body>
+</html>

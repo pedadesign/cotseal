@@ -26,3 +26,10 @@ seassi-indo-instructors.webp
 students4.webp
 virtual-participants1*
 virtual-participants1.webp
+
+# Node / tooling
+node_modules/
+package-lock.json
+package.json
+test.js
+test2.js

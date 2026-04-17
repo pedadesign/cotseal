@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Repository | COTSEAL</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "surface-container-lowest": "#ffffff",
+          "outline": "#6f797a",
+          "on-tertiary-container": "#4e3d00",
+          "primary-fixed": "#9ff0fb",
+          "surface-container": "#efeeea",
+          "primary-container": "#006d77",
+          "secondary-container": "#fe8672",
+          "tertiary-container": "#cba72f",
+          "tertiary": "#735c00",
+          "background": "#faf9f5",
+          "surface": "#faf9f5",
+          "on-surface": "#1b1c1a",
+          "primary": "#00535b",
+          "secondary": "#a03f30",
+          "surface-container-low": "#f4f4f0",
+          "surface-container-high": "#e9e8e4",
+          "surface-container-highest": "#e3e2df",
+          "on-primary": "#ffffff",
+          "on-tertiary": "#ffffff",
+          "on-secondary": "#ffffff",
+          "outline-variant": "#bec8ca",
+          "on-primary-container": "#9becf7",
+          "on-surface-variant": "#3e494a",
+          "on-background": "#1b1c1a",
+        },
+        fontFamily: {
+          "headline": ["Manrope", "sans-serif"],
+          "body": ["Newsreader", "serif"],
+          "label": ["Manrope", "sans-serif"]
+        },
+        borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+      },
+    },
+  }
+</script>
+<style>
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    vertical-align: middle;
+  }
+  .filter-active {
+    background-color: #00535b !important;
+    color: #ffffff !important;
+    border-color: #00535b !important;
+  }
+</style>
+</head>
+<body class="bg-background text-on-surface font-body selection:bg-tertiary-container/30">
+
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full flex justify-between items-center px-8 py-4 max-w-full mx-auto bg-white/80 backdrop-blur-md z-50 shadow-sm">
+  <div class="flex items-center gap-8">
+    <a href="index.html" class="text-2xl font-bold tracking-tight text-teal-900 font-headline">COTSEAL</a>
+    <nav class="hidden md:flex items-center gap-6">
+      <a class="text-stone-600 hover:text-teal-800 transition-colors font-label text-xs uppercase tracking-widest" href="index.html">Home</a>
+      <a class="text-stone-600 hover:text-teal-800 transition-colors font-label text-xs uppercase tracking-widest" href="about.html">About Us</a>
+      <a class="text-stone-600 hover:text-teal-800 transition-colors font-label text-xs uppercase tracking-widest" href="conference.html">Conference</a>
+      <a class="text-stone-600 hover:text-teal-800 transition-colors font-label text-xs uppercase tracking-widest" href="resources.html">Resources</a>
+      <a class="text-teal-700 border-b-2 border-amber-500 pb-1 font-semibold font-label text-xs uppercase tracking-widest" href="repository.html">Repository</a>
+      <a class="text-stone-600 hover:text-teal-800 transition-colors font-label text-xs uppercase tracking-widest" href="community.html">Community</a>
+    </nav>
+  </div>
+  <div class="flex items-center gap-4">
+    <a href="community.html" class="hidden md:inline-flex px-6 py-2 bg-primary text-on-primary rounded-lg font-label text-xs uppercase tracking-widest font-bold hover:opacity-90 transition-all active:scale-95">Join</a>
+    <button id="menu-btn" class="md:hidden flex flex-col justify-center gap-1.5 w-10 h-10 rounded-lg" aria-label="Toggle menu">
+      <span class="block w-6 h-0.5 bg-teal-900"></span>
+      <span class="block w-6 h-0.5 bg-teal-900"></span>
+      <span class="block w-6 h-0.5 bg-teal-900"></span>
+    </button>
+  </div>
+</header>
+<div id="mobile-menu" style="display:none" class="fixed top-16 left-0 w-full bg-white/97 backdrop-blur-md shadow-lg z-40 px-8 py-6 flex-col gap-1 border-t border-stone-100">
+  <a class="block font-label text-sm uppercase tracking-widest text-stone-600 py-3 border-b border-stone-100" href="index.html">Home</a>
+  <a class="block font-label text-sm uppercase tracking-widest text-stone-600 py-3 border-b border-stone-100" href="about.html">About Us</a>
+  <a class="block font-label text-sm uppercase tracking-widest text-stone-600 py-3 border-b border-stone-100" href="conference.html">Conference</a>
+  <a class="block font-label text-sm uppercase tracking-widest text-stone-600 py-3 border-b border-stone-100" href="resources.html">Resources</a>
+  <a class="block font-label text-sm font-bold uppercase tracking-widest text-teal-700 py-3 border-b border-stone-100" href="repository.html">Repository</a>
+  <a class="block font-label text-sm uppercase tracking-widest text-stone-600 py-3 border-b border-stone-100" href="community.html">Community</a>
+  <a href="community.html" class="mt-4 block text-center px-6 py-3 bg-primary text-on-primary rounded-lg font-label text-xs uppercase tracking-widest font-bold">Join COTSEAL</a>
+</div>
+<script>
+  (() => {
+    const btn = document.getElementById('menu-btn');
+    const menu = document.getElementById('mobile-menu');
+    btn.addEventListener('click', () => {
+      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+    });
+    menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { menu.style.display = 'none'; }));
+  })();
+</script>
+
+<main class="pt-24 pb-20">
+  <!-- Hero Section -->
+  <section class="px-8 md:px-12 py-16 text-center max-w-4xl mx-auto">
+    <span class="font-label text-xs uppercase tracking-widest text-secondary font-bold mb-4 block">Instructional Materials</span>
+    <h1 class="font-headline text-5xl md:text-6xl font-bold text-primary leading-tight mb-6">Language Repository</h1>
+    <p class="text-xl text-on-surface/80 font-body leading-relaxed">
+      A curated collection of Southeast Asian language teaching materials, ranging from novice lesson plans to superior-level scholarly texts. Filter by language, proficiency level, or resource type.
+    </p>
+  </section>
+
+  <!-- Search & Filter Interaction -->
+  <section class="px-8 md:px-12 py-20 bg-surface-container-highest/30">
+    <div class="max-w-7xl mx-auto bg-white p-8 md:p-12 rounded-2xl shadow-xl">
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-8 items-start">
+        
+        <!-- Sidebar Filters -->
+        <div class="lg:col-span-1 space-y-6">
+          <div class="flex items-center justify-between">
+            <h4 class="font-headline text-xl font-bold text-primary">Filter Archives</h4>
+            <button class="reset-filters-btn text-xs font-label uppercase tracking-widest text-on-surface/50 hover:text-primary transition-colors">Reset</button>
+          </div>
+          
+          <div class="space-y-6">
+            <!-- Language Select -->
+            <div>
+              <label class="font-label text-[10px] uppercase tracking-widest text-on-surface/50 block mb-2">Language</label>
+              <select id="filter-language-select" class="w-full bg-surface-container-low border-none rounded-lg font-body text-base focus:ring-primary/20">
+                <option value="All">All Languages</option>
+                <option value="Burmese">Burmese</option>
+                <option value="Indonesian">Indonesian</option>
+                <option value="Khmer">Khmer</option>
+                <option value="Lao">Lao</option>
+                <option value="Tagalog / Filipino">Tagalog / Filipino</option>
+                <option value="Thai">Thai</option>
+                <option value="Vietnamese">Vietnamese</option>
+              </select>
+            </div>
+
+            <!-- ACTFL Level Select -->
+            <div>
+              <label class="font-label text-[10px] uppercase tracking-widest text-on-surface/50 block mb-2">ACTFL Level</label>
+              <select id="filter-level-select" class="w-full bg-surface-container-low border-none rounded-lg font-body text-base focus:ring-primary/20">
+                <option value="All">All Levels</option>
+                <option value="Novice">Novice</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Advanced">Advanced</option>
+                <option value="Superior">Superior</option>
+              </select>
+            </div>
+
+            <!-- Year Select -->
+            <div>
+              <label class="font-label text-[10px] uppercase tracking-widest text-on-surface/50 block mb-2">Year Created</label>
+              <select id="filter-year-select" class="w-full bg-surface-container-low border-none rounded-lg font-body text-base focus:ring-primary/20">
+                <option value="All">All Years</option>
+                <option value="2024">2024</option>
+                <option value="2023">2023</option>
+                <option value="2022">2022</option>
+                <option value="2021">2021</option>
+                <option value="2020">2020</option>
+                <option value="2019">2019</option>
+                <option value="2018">2018</option>
+                <option value="2017">2017</option>
+                <option value="2016">2016</option>
+                <option value="2015">2015</option>
+                <option value="2010">2010</option>
+              </select>
+            </div>
+
+            <!-- Resource Type Checkboxes -->
+            <div>
+              <label class="font-label text-[10px] uppercase tracking-widest text-on-surface/50 block mb-2">Resource Type</label>
+              <div class="space-y-2">
+                <label class="flex items-center gap-3 font-body text-on-surface cursor-pointer">
+                  <input class="filter-type-cb rounded border-outline-variant text-primary focus:ring-primary" value="Textbook" type="checkbox"/> Textbook
+                </label>
+                <label class="flex items-center gap-3 font-body text-on-surface cursor-pointer">
+                  <input class="filter-type-cb rounded border-outline-variant text-primary focus:ring-primary" value="Lesson Plan" type="checkbox"/> Lesson Plan
+                </label>
+                <label class="flex items-center gap-3 font-body text-on-surface cursor-pointer">
+                  <input class="filter-type-cb rounded border-outline-variant text-primary focus:ring-primary" value="Audio/Video" type="checkbox"/> Audio/Video
+                </label>
+                <label class="flex items-center gap-3 font-body text-on-surface cursor-pointer">
+                  <input class="filter-type-cb rounded border-outline-variant text-primary focus:ring-primary" value="Research Paper" type="checkbox"/> Research Paper
+                </label>
+                <label class="flex items-center gap-3 font-body text-on-surface cursor-pointer">
+                  <input class="filter-type-cb rounded border-outline-variant text-primary focus:ring-primary" value="Handout/Worksheet" type="checkbox"/> Handout/Worksheet
+                </label>
+                <label class="flex items-center gap-3 font-body text-on-surface cursor-pointer">
+                  <input class="filter-type-cb rounded border-outline-variant text-primary focus:ring-primary" value="Online Tool" type="checkbox"/> Online Tool
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Grid Area -->
+        <div class="lg:col-span-3 space-y-8">
+          <!-- Search Input -->
+          <div class="relative">
+            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-primary text-2xl">search</span>
+            <input id="search-input" class="w-full pl-14 pr-6 py-5 bg-surface-container-low border-none rounded-xl font-body text-xl focus:ring-2 focus:ring-primary/20" placeholder="Search by title, author, or description..." type="text"/>
+          </div>
+
+          <!-- Cards Grid -->
+          <div id="no-results" class="hidden p-6 bg-surface-container-low rounded-lg text-center">
+            <span class="material-symbols-outlined text-4xl text-primary/30 mb-4 block">search_off</span>
+            <p class="font-body text-on-surface/60 text-lg">No resources found.</p>
+            <p class="font-body text-on-surface/40 text-sm mt-2">Try adjusting your filters or search term to see more materials.</p>
+            <button class="reset-filters-btn mt-6 px-6 py-2 bg-primary text-on-primary rounded-lg font-label text-sm font-bold hover:opacity-90 transition-colors">Reset Filters</button>
+          </div>
+          
+          <div id="resource-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Cards rendered via JS -->
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Contribute CTA -->
+  <section class="px-8 md:px-12 py-16">
+    <div class="max-w-4xl mx-auto bg-surface-container-low rounded-2xl p-10 text-center border border-outline-variant/20 shadow-sm">
+      <span class="material-symbols-outlined text-4xl text-secondary mb-4">volunteer_activism</span>
+      <h2 class="font-headline text-3xl font-bold text-on-surface mb-4">Contribute to the Archive</h2>
+      <p class="font-body text-lg text-on-surface/80 mb-8 max-w-2xl mx-auto">
+        Help us grow this repository. If you have created or know of high-quality instructional materials for Southeast Asian languages, we invite you to share them with the COTSEAL community.
+      </p>
+      <a href="mailto:cotsealofficial@gmail.com?subject=Repository Submission" class="inline-flex items-center gap-2 px-8 py-4 bg-primary text-on-primary rounded-lg font-label font-bold tracking-widest uppercase text-sm hover:opacity-90 transition-all shadow-md">
+        Submit Materials <span class="material-symbols-outlined">send</span>
+      </a>
+    </div>
+  </section>
+</main>
+
+<!-- Footer -->
+<footer class="w-full py-16 px-12 grid grid-cols-1 md:grid-cols-4 gap-12 bg-stone-100">
+  <div class="md:col-span-1 space-y-6">
+    <div class="flex items-center gap-3 mb-4">
+      <img src="images/logo.webp" alt="COTSEAL logo" class="h-10 w-auto"/>
+      <a href="index.html" class="text-xl font-black text-teal-900 font-headline uppercase tracking-tighter">COTSEAL</a>
+    </div>
+    <p class="text-sm font-body text-stone-500 leading-relaxed">Advancing the study and teaching of Southeast Asian languages through professional collaboration and scholarly exchange since 1984.</p>
+  </div>
+  <div class="md:col-span-1 space-y-6">
+    <h4 class="text-lg font-semibold font-headline text-stone-800">Explore</h4>
+    <ul class="space-y-3">
+      <li><a class="text-stone-500 hover:text-teal-800 transition-all hover:translate-x-1 inline-block font-body text-sm" href="about.html">About COTSEAL</a></li>
+      <li><a class="text-stone-500 hover:text-teal-800 transition-all hover:translate-x-1 inline-block font-body text-sm" href="conference.html">Annual Conference</a></li>
+      <li><a class="text-stone-500 hover:text-teal-800 transition-all hover:translate-x-1 inline-block font-body text-sm" href="resources.html">Resources</a></li>
+      <li><a class="text-stone-500 hover:text-teal-800 transition-all hover:translate-x-1 inline-block font-body text-sm" href="repository.html">Repository</a></li>
+    </ul>
+  </div>
+  <div class="md:col-span-1 space-y-6">
+    <h4 class="text-lg font-semibold font-headline text-stone-800">Community</h4>
+    <ul class="space-y-3">
+      <li><a class="text-stone-500 hover:text-teal-800 transition-all hover:translate-x-1 inline-block font-body text-sm" href="community.html">Join COTSEAL</a></li>
+      <li><a class="text-stone-500 hover:text-teal-800 transition-all hover:translate-x-1 inline-block font-body text-sm" href="mailto:cotsealofficial@gmail.com">Contact Us</a></li>
+    </ul>
+  </div>
+  <div class="md:col-span-1 space-y-6">
+    <h4 class="text-lg font-semibold font-headline text-stone-800">Affiliations</h4>
+    <ul class="space-y-3">
+      <li><a class="text-stone-500 hover:text-teal-800 transition-all hover:translate-x-1 inline-block font-body text-sm" href="https://www.asianstudies.org" target="_blank" rel="noopener">Association for Asian Studies</a></li>
+      <li><a class="text-stone-500 hover:text-teal-800 transition-all hover:translate-x-1 inline-block font-body text-sm" href="https://www.ncolctl.org" target="_blank" rel="noopener">NCOLCTL</a></li>
+      <li><a class="text-stone-500 hover:text-teal-800 transition-all hover:translate-x-1 inline-block font-body text-sm" href="https://seassi.wisc.edu" target="_blank" rel="noopener">SEASSI</a></li>
+      <li><a class="text-stone-500 hover:text-teal-800 transition-all hover:translate-x-1 inline-block font-body text-sm" href="https://sealc.wisc.edu" target="_blank" rel="noopener">SEALC – UW Madison</a></li>
+    </ul>
+  </div>
+  <div class="md:col-span-4 pt-12 mt-12 border-t border-stone-200 text-center">
+    <p class="text-xs font-label text-stone-400">© 2025 Council of Teachers of Southeast Asian Languages (COTSEAL). All rights reserved.</p>
+    <p class="text-xs font-label text-stone-400 mt-2">This site is maintained by a friend of COTSEAL. Visit <a href="https://cotseal2.com" class="underline hover:text-stone-600 transition-colors">cotseal2.com</a> for the official latest information.</p>
+  </div>
+</footer>
+
+<!-- Filtering Script -->
+<script>
+  const resources = [
+    { type: 'Textbook', lang: 'Indonesian', level: 'Intermediate', title: 'Indonesian: A Comprehensive Grammar', desc: 'A detailed reference guide to modern Indonesian grammar and structure.', author: 'Sneddon et al.', year: 2010, link: '#' },
+    { type: 'Lesson Plan', lang: 'Vietnamese', level: 'Novice', title: 'Introductory Vietnamese Communicative Tasks', desc: 'A set of task-based lesson plans focused on daily communicative situations for first-year learners.', author: 'COTSEAL Task Force', year: 2018, link: '#' },
+    { type: 'Audio/Video', lang: 'Thai', level: 'Advanced', title: 'Thai News Broadcast Corpus', desc: 'Curated clips from Thai news broadcasts complete with transcripts and vocabulary lists.', author: 'SEASSI Resource Center', year: 2022, link: '#' },
+    { type: 'Research Paper', lang: 'Khmer', level: 'Superior', title: 'Syntactic Structures of Spoken Khmer', desc: 'In-depth analysis of spoken Khmer structures in formal and informal contexts.', author: 'Published in JSEALT', year: 2015, link: 'https://seasite.niu.edu/jsealt/aboutjsealt.htm' },
+    { type: 'Online Tool', lang: 'Tagalog / Filipino', level: 'All', title: 'Interactive Tagalog Dictionary', desc: 'Searchable dictionary with audio pronunciations, sample sentences, and affixation rules.', author: 'University of Hawaiʻi', year: 2020, link: 'https://hawaii.edu/filipino' },
+    { type: 'Handout/Worksheet', lang: 'Burmese', level: 'Novice', title: 'Burmese Script Practice Sheets', desc: 'Tracing and writing practice sheets for learning the Burmese alphabet and basic conjuncts.', author: 'Dr. Win', year: 2021, link: '#' },
+    { type: 'Textbook', lang: 'Lao', level: 'Advanced', title: 'Reading Lao Newspapers', desc: 'A textbook designed to help advanced students transition to reading authentic Lao print media.', author: 'S. Luangpraseut', year: 2016, link: '#' },
+    { type: 'Lesson Plan', lang: 'Indonesian', level: 'Intermediate', title: 'Discussing Environmental Issues in Indonesia', desc: 'A thematic lesson unit focusing on environmental vocabulary and debate structures.', author: 'BIPA Instructors', year: 2023, link: '#' },
+    { type: 'Audio/Video', lang: 'Vietnamese', level: 'Intermediate', title: 'Vietnamese Folktales Animated', desc: 'A collection of classic folktales with dual subtitles (Vietnamese/English) for listening practice.', author: 'SEALC Hub', year: 2019, link: '#' },
+    { type: 'Research Paper', lang: 'Thai', level: 'Superior', title: 'Tones in Context: Advanced Thai Phonology', desc: 'A pedagogical approach to teaching tone sandhi and complex intonation in Thai.', author: 'Published in JSEALT', year: 2017, link: 'https://seasite.niu.edu/jsealt/aboutjsealt.htm' },
+    { type: 'Handout/Worksheet', lang: 'Tagalog / Filipino', level: 'Novice', title: 'Verb Focus Handout', desc: 'A quick reference guide explaining actor, object, and locative focus in Tagalog.', author: 'COTSEAL Pedagogy Committee', year: 2022, link: '#' },
+    { type: 'Online Tool', lang: 'All', level: 'All', title: 'SEALC Language Assessment Repository', desc: 'A database of formative and summative assessment tools across multiple SE Asian languages.', author: 'SEALC Project', year: 2024, link: 'https://sealc.wisc.edu' },
+    // Vietnamese SEALC Resources
+    { type: 'Lesson Plan', lang: 'Vietnamese', level: 'Intermediate', title: 'Ngày Tất niên có ý nghĩa như thế nào đối với người Việt?', desc: 'Reading lesson focused on Vietnamese cultural practices for Tet.', author: 'Chung Nguyen, Hanh Nguyen', year: 2022, link: 'https://drive.google.com/file/d/1vCwUGYv30vAqnvMLljRwhgckZeiqs8xy/view?usp=drive_link' },
+    { type: 'Lesson Plan', lang: 'Vietnamese', level: 'Intermediate', title: 'Những lưu ý khi đi máy bay', desc: 'Reading lesson centered around air travel preparations.', author: 'Chu Phong Lan, Bui Duy Duong', year: 2022, link: 'https://drive.google.com/file/d/1ORBoaaH57VHNgba2fAy3OwWs5ki8CR8P/view?usp=drive_link' },
+    { type: 'Lesson Plan', lang: 'Vietnamese', level: 'Intermediate', title: 'Những điều cần biết khi đi du lịch Sapa', desc: 'Reading lesson on travel tips and tourism in Sapa.', author: 'Hong Dinh, Diep Le', year: 2022, link: 'https://drive.google.com/file/d/1Vl3jJVgGRDqBc-6DSlXKEQae_vN-DLqL/view?usp=drive_link' },
+    { type: 'Lesson Plan', lang: 'Vietnamese', level: 'Intermediate', title: 'Giới trẻ đang chuộng gì?', desc: 'Reading lesson exploring popular trends among youth.', author: 'Thuy Tranviet, An Sakach', year: 2022, link: 'https://drive.google.com/file/d/1HgX7tEXAFe1HbxTQps7Va9SNWq5mEqNs/view?usp=drive_link' },
+    { type: 'Lesson Plan', lang: 'Vietnamese', level: 'Intermediate', title: 'BỐ GIÀ PHẦN 2: XEM PHIM MỚI NHẤT', desc: 'Reading lesson about the popular movie Bo Gia.', author: 'Trang Phan, Thach Ngoc Minh', year: 2022, link: 'https://drive.google.com/file/d/1616-8NJ1q7r_ThLyIp174_G1d6czegUF/view?usp=drive_link' },
+    { type: 'Lesson Plan', lang: 'Vietnamese', level: 'Advanced', title: 'Tiểu sử nhà thơ Nguyễn Đình Chiểu', desc: 'Reading lesson on the biography of poet Nguyen Dinh Chieu.', author: 'Hong Dinh, Diep Le', year: 2022, link: 'https://drive.google.com/file/d/1jhO6CHkRzDknbjRIRVxYOTh2sZiquHdU/view?usp=drive_link' },
+    { type: 'Lesson Plan', lang: 'Vietnamese', level: 'Advanced', title: 'Bụi mịn ở Hà Nội', desc: 'Reading lesson concerning air pollution in Hanoi.', author: 'Trang Phan, Thach Ngoc Minh', year: 2022, link: 'https://drive.google.com/file/d/1Er2sHRm6VAwzRPRwZzO0wJ2Fl8JcZtIy/view?usp=drive_link' },
+    { type: 'Lesson Plan', lang: 'Vietnamese', level: 'Advanced', title: 'Người Hà Nội ở Sài Gòn', desc: 'Reading lesson discussing regional differences and migration.', author: 'Chung Nguyen, Hanh Nguyen', year: 2022, link: 'https://drive.google.com/file/d/14YuFm45S3kiPfIBPeD_bwOrEckc6cSHO/view?usp=drive_link' },
+    { type: 'Lesson Plan', lang: 'Vietnamese', level: 'Advanced', title: 'Từ tranh chấp thương hiệu Phở Thìn', desc: 'Reading lesson based on the Pho Thin trademark dispute.', author: 'SEALC', year: 2022, link: 'https://drive.google.com/file/d/1YReEbRjLw_JIwB2gn6R2K3pYh_PMNZoA/view?usp=drive_link' },
+    { type: 'Lesson Plan', lang: 'Vietnamese', level: 'Intermediate', title: 'Grocery Shopping / Shopping for Services / Housing', desc: 'Oral proficiency lessons for 2nd/3rd semester learners.', author: 'SEALC', year: 2022, link: 'https://drive.google.com/file/d/1DROICqnFLlIy3AP0kMy7oNUauZICDY-x/view?usp=drive_link' },
+    { type: 'Lesson Plan', lang: 'Vietnamese', level: 'Novice', title: 'Ordering food at a Pho restaurant', desc: 'Task-based material for novice learners.', author: 'SEALC', year: 2022, link: 'https://drive.google.com/file/d/1KZ1MgKzb158HY_XM-JpUhMtSMO5yPE6n/view?usp=drive_link' },
+    { type: 'Lesson Plan', lang: 'Vietnamese', level: 'Novice', title: 'Setting up an appointment', desc: 'Task-based material for novice learners scheduling appointments.', author: 'SEALC', year: 2022, link: 'https://drive.google.com/file/d/1mXH1kf1jNuyHyekOZiMpgyDSqHznu46c/view?usp=drive_link' },
+    // Filipino SEALC Resources
+    { type: 'Lesson Plan', lang: 'Tagalog / Filipino', level: 'Intermediate', title: 'Mahal niya kaya ako?', desc: 'Reading lesson material designed for intermediate low learners.', author: 'Jayson Parba, Lady Aileen Orsal, Irene Gonzaga', year: 2022, link: 'https://drive.google.com/file/d/1CLRkon52RtZ9O7cGL7s5pPOs-YFb3U4T/view?usp=drive_link' },
+    { type: 'Lesson Plan', lang: 'Tagalog / Filipino', level: 'Advanced', title: 'Sariling Trip: Sa Lente ng Isang Introvert', desc: 'Reading lesson for advanced mid learners.', author: 'Ken Calang, Karryl Angelie Abon-Amis', year: 2022, link: 'https://drive.google.com/file/d/1J8gpme-NtUAgpxPVucfDq5At3Q0qal7S/view?usp=drive_link' },
+    { type: 'Lesson Plan', lang: 'Tagalog / Filipino', level: 'Intermediate', title: 'Jeepney: Mga karanasan', desc: 'Reading lesson on jeepney experiences for intermediate high.', author: 'Amy Peria, Precious Arao, Richard Nicolas', year: 2022, link: 'https://drive.google.com/file/d/1NcGwewldDXIE7ciqDgxmi5CcKbS7ZEA4/view?usp=drive_link' },
+    { type: 'Lesson Plan', lang: 'Tagalog / Filipino', level: 'Advanced', title: 'Opinyon: Mental Health program sa mga paaralan', desc: 'Reading lesson discussing mental health programs in schools.', author: 'Amy Peria, Precious Arao, Richard Nicolas', year: 2022, link: 'https://drive.google.com/file/d/1sYSw2EHJVpEXlVhxcZfcPrEePhtIud-q/view?usp=drive_link' },
+    { type: 'Lesson Plan', lang: 'Tagalog / Filipino', level: 'Intermediate', title: 'Mga dapat tandaan kapag ibiniyahe ang mga fur baby', desc: 'Reading lesson for intermediate low students.', author: 'SEALC', year: 2022, link: 'https://drive.google.com/file/d/1NbZjT5r-N5-i0nDVerDEOkAOKXGplWus/view?usp=drive_link' },
+    { type: 'Lesson Plan', lang: 'Tagalog / Filipino', level: 'Advanced', title: 'Maging Fact-Check Champion', desc: 'Reading lesson for advanced mid learners on fact-checking.', author: 'SEALC', year: 2022, link: 'https://drive.google.com/file/d/1Xioza58aHEnxnYJzifHnT6or0I19Vb1W/view?usp=drive_link' },
+    // Burmese SEALC Resources
+    { type: 'Lesson Plan', lang: 'Burmese', level: 'All', title: 'Burmese Oral Proficiency Guidelines', desc: 'Proficiency guidelines for Burmese instructors.', author: 'SEALC', year: 2022, link: 'https://drive.google.com/file/d/12_Naw-YIXux_ZNWaDNj2mzCHK1CWLsQW/view?usp=drive_link' },
+    { type: 'Lesson Plan', lang: 'Burmese', level: 'Intermediate', title: 'George Orwell’s House', desc: 'Reading lesson material for intermediate mid learners.', author: 'Chan Lwin, Maw Maw Tun, Ye Min Tun', year: 2022, link: 'https://drive.google.com/file/d/1_gi4-_BLi9-g2OkkN_jYC4XkbpI5BHNs/view?usp=drive_link' },
+    { type: 'Lesson Plan', lang: 'Burmese', level: 'Advanced', title: 'Loudspeaker Season', desc: 'Reading lesson material for advanced low learners.', author: 'Chan Lwin, Maw Maw Tun, Ye Min Tun', year: 2022, link: 'https://drive.google.com/file/d/17vUkw9Aftgini-uIHX9GByRYl4yyY2ic/view?usp=drive_link' },
+    // Indonesian SEALC Resources
+    { type: 'Lesson Plan', lang: 'Indonesian', level: 'All', title: 'Indonesian Oral Proficiency Guidelines', desc: 'Proficiency guidelines for Indonesian instructors.', author: 'SEALC', year: 2022, link: 'https://drive.google.com/file/d/1nBdk4wyJlSxqfBnCowDC3sWr-7rhkoJl/view?usp=drive_link' },
+    { type: 'Lesson Plan', lang: 'Indonesian', level: 'All', title: 'Indonesian Heritage & Project-Based Language Learning lesson', desc: 'Heritage and PBL lesson for Indonesian.', author: 'SEALC', year: 2022, link: 'https://drive.google.com/file/d/1DHVpMXKe3WA9TkqooSLP3uiNKaSh7AoE/view?usp=drive_link' },
+    { type: 'Lesson Plan', lang: 'Indonesian', level: 'Intermediate', title: '7 Pekerjaan dengan Tingkat Stres Tertinggi di Dunia', desc: 'Reading lesson material for intermediate mid learners.', author: 'Aprilia Nissa, Imam Mashuri, Indrianti', year: 2022, link: 'https://drive.google.com/file/d/1KRojY8nh75MN34H6SuVsQ4rIU8yF1AO1/view?usp=sharing' },
+    { type: 'Lesson Plan', lang: 'Indonesian', level: 'Advanced', title: 'Gastrodiplomasi dan Mimpi Besar Nation Branding Indonesia', desc: 'Reading lesson material for advanced high learners.', author: 'Aprilia Nissa, Imam Mashuri, Indrianti', year: 2022, link: 'https://drive.google.com/file/d/10OycCAqbDXOozug4XkEcDxrlXYxZ3P0N/view?usp=drive_link' },
+    { type: 'Lesson Plan', lang: 'Indonesian', level: 'Intermediate', title: 'Kafe Kucing di Yogyakarta Ini Sangat Cocok Bagi Para Pencinta Anabul', desc: 'Reading lesson material for intermediate low learners.', author: 'Liana Kosasih, Nanang Syaiful Rohman, Petrus Ari Santoso', year: 2022, link: 'https://drive.google.com/file/d/1_Ee56dY60FYRXo_Y_Zb1t7sxzC0sgwkz/view?usp=drive_link' },
+    // Khmer SEALC Resources
+    { type: 'Lesson Plan', lang: 'Khmer', level: 'All', title: 'Khmer Heritage & Project-based Language Learning lesson', desc: 'Heritage and PBL lesson for Khmer.', author: 'SEALC', year: 2022, link: 'https://drive.google.com/file/d/1fHYbEwPeA5SfP515T2YYcBdgyXV5I9v_/view?usp=drive_link' },
+    { type: 'Lesson Plan', lang: 'Khmer', level: 'Intermediate', title: 'A Guest-House Owner in Koh Kong Vows to Contribute to Environmental Care', desc: 'Reading lesson material for intermediate mid learners.', author: 'Chhany Sak-Humphry, Hannah Phan', year: 2022, link: 'https://drive.google.com/file/d/1-oe92FEJDkCmvDygJZBGM_InX3IeusAz/view?usp=drive_link' },
+    { type: 'Lesson Plan', lang: 'Khmer', level: 'Advanced', title: 'UNICEF Announces Situation Analysis Report on Children in Cambodia', desc: 'Reading lesson material for advanced mid learners.', author: 'Chhany Sak-Humphry, Hannah Phan', year: 2022, link: 'https://drive.google.com/file/d/1hg9THsBkC1oAQ0TdbDpMosEde-FP2URv/view?usp=drive_link' },
+    // Lao SEALC Resources
+    { type: 'Lesson Plan', lang: 'Lao', level: 'Intermediate', title: 'Naga fireworks festival at Thabhat', desc: 'Reading lesson material for intermediate mid learners.', author: 'Sam Inthaly, Vatsana Vongsila', year: 2022, link: 'https://drive.google.com/file/d/1_NA4xOJqq0cwVAWafmhI_tSHAs_21xMw/view?usp=drive_link' },
+    { type: 'Lesson Plan', lang: 'Lao', level: 'Advanced', title: 'Trash Burning: A Problem Too Many Take for Granted', desc: 'Reading lesson material for advanced mid learners.', author: 'Sam Inthaly, Vatsana Vongsila', year: 2022, link: 'https://drive.google.com/file/d/1h0zKVkB3beLuAw8XD_J8De-D5wGdCEC1/view?usp=drive_link' },
+    // Thai SEALC Resources
+    { type: 'Lesson Plan', lang: 'Thai', level: 'All', title: 'Thai Oral Proficiency Guidelines', desc: 'Proficiency guidelines for Thai instructors.', author: 'SEALC', year: 2022, link: 'https://drive.google.com/file/d/10RnWPDx-6O6JZvyWGb4KegXY2gglyzyw/view?usp=drive_link' },
+    { type: 'Lesson Plan', lang: 'Thai', level: 'All', title: 'Thai Heritage & Project-Based Language Learning lesson', desc: 'Heritage and PBL lesson for Thai.', author: 'SEALC', year: 2022, link: 'https://drive.google.com/file/d/1ZXl_MpF3HYtLi8vKpsG1bBv0GzmF9Fwi/view?usp=drive_link' },
+    { type: 'Lesson Plan', lang: 'Thai', level: 'Intermediate', title: 'Blog: Travel around Thailand, September 3, 2022', desc: 'Reading lesson material for intermediate mid learners.', author: 'Janpanit Surasin, Pittaya Paladroi-Shane, Nattaporn Luangpipat', year: 2022, link: 'https://drive.google.com/file/d/1miJ8rASyv34MZFuRqP_eemCmpksI6mXp/view?usp=drive_link' },
+    { type: 'Lesson Plan', lang: 'Thai', level: 'Advanced', title: 'Slave of Technology', desc: 'Reading lesson material for advanced mid learners.', author: 'Kiat Thepchuaysuk, Sasiwimol Klayklueng', year: 2022, link: 'https://drive.google.com/file/d/1Uw_i08qhXqZw4PNqCQ2FrY9Q-sYO2nRs/view?usp=drive_link' },
+    // Archive: COTSEAL 2015/2016 Workshop 1 & 2
+    { type: 'Lesson Plan', lang: 'Burmese', level: 'All', title: 'CBI Lesson Plan - Set 1', desc: 'Content-based instruction lesson produced during the 2015 workshop.', author: 'COTSEAL', year: 2016, link: 'https://web.archive.org/web/20191020050320/http://www.studykhmer.com/Burmese_Lesson_Final.pdf' },
+    { type: 'Lesson Plan', lang: 'Tagalog / Filipino', level: 'All', title: 'CBI Lesson Plan - Set 1', desc: 'Content-based instruction lesson produced during the 2015 workshop.', author: 'COTSEAL', year: 2016, link: 'https://web.archive.org/web/20191020050320/http://www.studykhmer.com/Filipino_Lesson_Final.pdf' },
+    { type: 'Lesson Plan', lang: 'Indonesian', level: 'All', title: 'CBI Lesson Plan - Set 1', desc: 'Content-based instruction lesson produced during the 2015 workshop.', author: 'COTSEAL', year: 2016, link: 'https://web.archive.org/web/20191020050320/http://www.studykhmer.com/Indonesian_Lesson_Final.pdf' },
+    { type: 'Lesson Plan', lang: 'Khmer', level: 'All', title: 'CBI Lesson Plan - Set 1', desc: 'Content-based instruction lesson produced during the 2015 workshop.', author: 'COTSEAL', year: 2016, link: 'https://web.archive.org/web/20211224063057/http://cotseal.net/Khmer_Lesson_Final.pdf' },
+    { type: 'Lesson Plan', lang: 'Thai', level: 'All', title: 'CBI Lesson Plan - Set 1', desc: 'Content-based instruction lesson produced during the 2015 workshop.', author: 'COTSEAL', year: 2016, link: 'https://web.archive.org/web/20211224063057/http://cotseal.net/Thai_Lesson_Final.pdf' },
+    { type: 'Lesson Plan', lang: 'Vietnamese', level: 'All', title: 'CBI Lesson Plan - Set 1', desc: 'Content-based instruction lesson produced during the 2015 workshop.', author: 'COTSEAL', year: 2016, link: 'https://web.archive.org/web/20211224063057/http://cotseal.net/Vietnamese_Lesson_Final.pdf' },
+    { type: 'Lesson Plan', lang: 'Tagalog / Filipino', level: 'All', title: 'CBI Lesson Plan - Set 2', desc: 'Second set of content-based instruction lessons from the 2015 workshop.', author: 'COTSEAL', year: 2016, link: 'https://web.archive.org/web/20211224063057/http://cotseal.net/Filipino_lesson2.pdf' },
+    { type: 'Lesson Plan', lang: 'Indonesian', level: 'All', title: 'CBI Lesson Plan - Set 2', desc: 'Second set of content-based instruction lessons from the 2015 workshop.', author: 'COTSEAL', year: 2016, link: 'https://web.archive.org/web/20211224063057/http://cotseal.net/Indonesian_lesson2.pdf' },
+    { type: 'Lesson Plan', lang: 'Khmer', level: 'All', title: 'CBI Lesson Plan - Set 2', desc: 'Second set of content-based instruction lessons from the 2015 workshop.', author: 'COTSEAL', year: 2016, link: 'https://web.archive.org/web/20211224063057/http://cotseal.net/Khmer_lesson2.pdf' },
+    { type: 'Lesson Plan', lang: 'Thai', level: 'All', title: 'CBI Lesson Plan - Set 2', desc: 'Second set of content-based instruction lessons from the 2015 workshop.', author: 'COTSEAL', year: 2016, link: 'https://web.archive.org/web/20211224063057/http://cotseal.net/Thai_lesson2.pdf' },
+    { type: 'Lesson Plan', lang: 'Vietnamese', level: 'All', title: 'CBI Lesson Plan - Set 2', desc: 'Second set of content-based instruction lessons from the 2015 workshop.', author: 'COTSEAL', year: 2016, link: 'https://web.archive.org/web/20211224063057/http://cotseal.net/Vietnamese_lesson2.pdf' },
+    // Archive: COTSEAL 2016 Workshop
+    { type: 'Lesson Plan', lang: 'Burmese', level: 'Intermediate', title: 'CBI Lesson - Intermediate High', desc: 'Content-based instruction lesson for intermediate high learners.', author: 'COTSEAL', year: 2016, link: 'https://web.archive.org/web/20211224063057/http://cotseal.net/Burmese2016.pdf' },
+    { type: 'Lesson Plan', lang: 'Burmese', level: 'Intermediate', title: 'CBI Lesson - Beginning High / Intermediate Low', desc: 'Content-based instruction lesson for beginning high to intermediate low learners.', author: 'COTSEAL', year: 2016, link: 'https://web.archive.org/web/20211224063057/http://cotseal.net/Burmese2016_2.pdf' },
+    { type: 'Lesson Plan', lang: 'Tagalog / Filipino', level: 'Intermediate', title: 'CBI Lesson - Intermediate Low', desc: 'Content-based instruction lesson for intermediate low learners.', author: 'COTSEAL', year: 2016, link: 'https://web.archive.org/web/20190803051505/http://www.studykhmer.com/Filipino2016.pdf' },
+    { type: 'Lesson Plan', lang: 'Tagalog / Filipino', level: 'Advanced', title: 'CBI Lesson - Intermediate High / Advanced Mid', desc: 'Content-based instruction lesson for intermediate high to advanced mid learners.', author: 'COTSEAL', year: 2016, link: 'https://web.archive.org/web/20211224063057/http://cotseal.net/Filipino_Int-High2016.pdf' },
+    { type: 'Lesson Plan', lang: 'Indonesian', level: 'Intermediate', title: 'CBI Lesson - Intermediate (in English)', desc: 'Content-based instruction lesson for intermediate learners, documented in English.', author: 'COTSEAL', year: 2016, link: 'https://web.archive.org/web/20190803051505/http://www.studykhmer.com/Indonesian2016_English.pdf' },
+    { type: 'Lesson Plan', lang: 'Indonesian', level: 'Intermediate', title: 'CBI Lesson - Intermediate (in Indonesian)', desc: 'Content-based instruction lesson for intermediate learners, documented in Indonesian.', author: 'COTSEAL', year: 2016, link: 'https://web.archive.org/web/20190803051505/http://www.studykhmer.com/Indonesian2016_Indonesian.pdf' },
+    { type: 'Lesson Plan', lang: 'Indonesian', level: 'Advanced', title: 'CBI Lesson - Intermediate High / Advanced Low', desc: 'Content-based instruction lesson for intermediate high to advanced low learners.', author: 'COTSEAL', year: 2016, link: 'https://web.archive.org/web/20211224063057/http://cotseal.net/Indonesian2016_2.pdf' },
+    { type: 'Lesson Plan', lang: 'Khmer', level: 'Intermediate', title: 'CBI Lesson - Intermediate Low', desc: 'Content-based instruction lesson for intermediate low learners.', author: 'COTSEAL', year: 2016, link: 'https://web.archive.org/web/20211224063057/http://cotseal.net/Khmer2016.pdf' },
+    { type: 'Lesson Plan', lang: 'Khmer', level: 'Advanced', title: 'CBI Lesson - Advanced Low', desc: 'Content-based instruction lesson for advanced low learners.', author: 'COTSEAL', year: 2016, link: 'https://web.archive.org/web/20211224063057/http://cotseal.net/Khmer_Advanced-Low2016.pdf' },
+    { type: 'Lesson Plan', lang: 'Thai', level: 'Intermediate', title: 'CBI Lesson - Intermediate Mid', desc: 'Content-based instruction lesson for intermediate mid learners.', author: 'COTSEAL', year: 2016, link: 'https://web.archive.org/web/20211224063057/http://cotseal.net/Thai2016.pdf' },
+    { type: 'Lesson Plan', lang: 'Vietnamese', level: 'Intermediate', title: 'CBI Lesson - Intermediate', desc: 'Content-based instruction lesson for intermediate learners.', author: 'COTSEAL', year: 2016, link: 'https://web.archive.org/web/20190803051505/http://www.studykhmer.com/Vietnamese2016_Intermed.pdf' },
+    { type: 'Lesson Plan', lang: 'Vietnamese', level: 'Advanced', title: 'CBI Lesson - Upper Intermediate 1', desc: 'Content-based instruction lesson one for upper intermediate learners.', author: 'COTSEAL', year: 2016, link: 'https://web.archive.org/web/20190803051505/http://www.studykhmer.com/Vietnamese2016_Upper_Intermed.pdf' },
+    { type: 'Lesson Plan', lang: 'Vietnamese', level: 'Advanced', title: 'CBI Lesson - Upper Intermediate 2', desc: 'Content-based instruction lesson two for upper intermediate learners.', author: 'COTSEAL', year: 2016, link: 'https://web.archive.org/web/20211224063057/http://cotseal.net/Vietnamese2016_Upper_Intermed2.pdf' }
+  ];
+
+  const state = {
+    language: 'All',
+    level: 'All',
+    year: 'All',
+    types: [],
+    search: ''
+  };
+
+  const grid = document.getElementById('resource-grid');
+  const noResults = document.getElementById('no-results');
+
+  function getTypeColor(type) {
+    switch (type) {
+      case 'Textbook': return 'bg-primary/10 text-primary';
+      case 'Lesson Plan': return 'bg-tertiary-container/80 text-on-tertiary-container';
+      case 'Audio/Video': return 'bg-secondary/10 text-secondary';
+      case 'Research Paper': return 'bg-surface-container-highest text-on-surface';
+      case 'Online Tool': return 'bg-primary text-on-primary';
+      default: return 'bg-surface-container-high text-on-surface-variant';
+    }
+  }
+
+  function renderCards() {
+    const searchLower = state.search.toLowerCase();
+    const filtered = resources.filter(r => {
+      const matchLang = state.language === 'All' || r.lang === state.language || r.lang === 'All';
+      const matchLevel = state.level === 'All' || r.level === state.level || r.level === 'All';
+      const matchYear = state.year === 'All' || r.year.toString() === state.year;
+      const matchType = state.types.length === 0 || state.types.includes(r.type);
+      const matchSearch = state.search === '' || 
+        r.title.toLowerCase().includes(searchLower) || 
+        r.desc.toLowerCase().includes(searchLower) || 
+        r.author.toLowerCase().includes(searchLower);
+      
+      return matchLang && matchLevel && matchYear && matchType && matchSearch;
+    });
+
+    grid.innerHTML = '';
+
+    if (filtered.length === 0) {
+      grid.classList.add('hidden');
+      noResults.classList.remove('hidden');
+      return;
+    }
+
+    grid.classList.remove('hidden');
+    noResults.classList.add('hidden');
+
+    filtered.forEach(r => {
+      const card = document.createElement('div');
+      card.className = 'bg-surface-container-lowest rounded-xl p-6 shadow-sm border border-outline-variant/10 hover:shadow-md hover:-translate-y-1 transition-all flex flex-col justify-between';
+      
+      card.innerHTML = `
+        <div>
+          <div class="flex items-start justify-between mb-4 gap-2 flex-wrap">
+            <span class="px-3 py-1 rounded-full text-[10px] font-label uppercase tracking-widest font-bold ${getTypeColor(r.type)}">${r.type}</span>
+            <div class="flex gap-2">
+              <span class="px-2 py-1 rounded text-[10px] font-label uppercase text-on-surface/50 border border-outline-variant/30">${r.lang}</span>
+              <span class="px-2 py-1 rounded text-[10px] font-label uppercase text-on-surface/50 border border-outline-variant/30">${r.level}</span>
+            </div>
+          </div>
+          <h3 class="font-headline text-xl font-bold text-on-surface mb-2 leading-tight">${r.title}</h3>
+          <p class="font-body text-sm text-on-surface/70 mb-6 leading-relaxed">${r.desc}</p>
+        </div>
+        <div>
+          <div class="flex items-center justify-between text-xs font-label text-on-surface-variant mb-4 pt-4 border-t border-outline-variant/10">
+            <span class="font-bold">${r.author}</span>
+            <span>${r.year}</span>
+          </div>
+          <a href="${r.link || '#'}" target="${r.link && r.link !== '#' ? '_blank' : '_self'}" rel="noopener" class="w-full py-2 block text-center rounded-lg border border-primary text-primary font-label text-xs uppercase tracking-widest font-bold hover:bg-primary hover:text-on-primary transition-colors">
+            Access Resource
+          </a>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+  }
+
+  const langSelect = document.getElementById('filter-language-select');
+  langSelect.addEventListener('change', (e) => {
+    state.language = e.target.value;
+    renderCards();
+  });
+
+  const levelSelect = document.getElementById('filter-level-select');
+  levelSelect.addEventListener('change', (e) => {
+    state.level = e.target.value;
+    renderCards();
+  });
+
+  const yearSelect = document.getElementById('filter-year-select');
+  yearSelect.addEventListener('change', (e) => {
+    state.year = e.target.value;
+    renderCards();
+  });
+
+  const typeCheckboxes = document.querySelectorAll('.filter-type-cb');
+  typeCheckboxes.forEach(cb => {
+    cb.addEventListener('change', () => {
+      state.types = Array.from(document.querySelectorAll('.filter-type-cb:checked')).map(el => el.value);
+      renderCards();
+    });
+  });
+
+  const searchInput = document.getElementById('search-input');
+  searchInput.addEventListener('input', (e) => {
+    state.search = e.target.value;
+    renderCards();
+  });
+
+  document.querySelectorAll('.reset-filters-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.language = 'All';
+      state.level = 'All';
+      state.year = 'All';
+      state.types = [];
+      state.search = '';
+      
+      langSelect.value = 'All';
+      levelSelect.value = 'All';
+      yearSelect.value = 'All';
+      searchInput.value = '';
+      typeCheckboxes.forEach(cb => cb.checked = false);
+      
+      renderCards();
+    });
+  });
+
+  // Initial render
+  renderCards();
+</script>
+
+</body>
+</html>

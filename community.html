@@ -92,9 +92,32 @@
     </div>
   </div>
   <div class="flex items-center gap-4">
-    <a href="#join" class="px-6 py-2 bg-primary text-on-primary rounded-lg font-label text-xs uppercase tracking-widest font-bold shadow-sm hover:opacity-90 active:scale-95 transition-all">Join</a>
+    <a href="#join" class="hidden md:inline-flex px-6 py-2 bg-primary text-on-primary rounded-lg font-label text-xs uppercase tracking-widest font-bold shadow-sm hover:opacity-90 active:scale-95 transition-all">Join</a>
+    <button id="menu-btn" class="md:hidden flex flex-col justify-center gap-1.5 w-10 h-10 rounded-lg" aria-label="Toggle menu">
+      <span class="block w-6 h-0.5 bg-teal-900"></span>
+      <span class="block w-6 h-0.5 bg-teal-900"></span>
+      <span class="block w-6 h-0.5 bg-teal-900"></span>
+    </button>
   </div>
 </nav>
+<div id="mobile-menu" style="display:none" class="fixed top-16 left-0 w-full bg-white/97 backdrop-blur-md shadow-lg z-40 px-8 py-6 flex-col gap-1 border-t border-stone-100">
+  <a class="block font-label text-sm uppercase tracking-widest text-stone-600 py-3 border-b border-stone-100" href="index.html">Home</a>
+  <a class="block font-label text-sm uppercase tracking-widest text-stone-600 py-3 border-b border-stone-100" href="about.html">About Us</a>
+  <a class="block font-label text-sm uppercase tracking-widest text-stone-600 py-3 border-b border-stone-100" href="conference.html">Conference</a>
+  <a class="block font-label text-sm uppercase tracking-widest text-stone-600 py-3 border-b border-stone-100" href="resources.html">Resources</a>
+  <a class="block font-label text-sm font-bold uppercase tracking-widest text-teal-700 py-3 border-b border-stone-100" href="community.html">Community</a>
+  <a href="#join" class="mt-4 block text-center px-6 py-3 bg-primary text-on-primary rounded-lg font-label text-xs uppercase tracking-widest font-bold">Join COTSEAL</a>
+</div>
+<script>
+  (() => {
+    const btn = document.getElementById('menu-btn');
+    const menu = document.getElementById('mobile-menu');
+    btn.addEventListener('click', () => {
+      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+    });
+    menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { menu.style.display = 'none'; }));
+  })();
+</script>
 
 <main class="pt-24">
 

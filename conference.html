@@ -63,16 +63,41 @@
 <nav class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-md shadow-sm">
   <div class="flex justify-between items-center px-8 py-4 max-w-7xl mx-auto">
     <a href="index.html" class="font-headline font-black text-2xl text-primary tracking-tight">COTSEAL</a>
-    <div class="hidden md:flex gap-8 items-center">
-      <a class="font-label font-bold tracking-tight text-stone-600 hover:text-primary transition-colors duration-300 text-xs uppercase tracking-widest" href="index.html">Home</a>
-      <a class="font-label font-bold tracking-tight text-stone-600 hover:text-primary transition-colors duration-300 text-xs uppercase tracking-widest" href="about.html">About Us</a>
-      <a class="font-label font-bold tracking-tight text-primary border-b-2 border-amber-500 pb-1 text-xs uppercase tracking-widest" href="conference.html">Conference</a>
-      <a class="font-label font-bold tracking-tight text-stone-600 hover:text-primary transition-colors duration-300 text-xs uppercase tracking-widest" href="resources.html">Resources</a>
-      <a class="font-label font-bold tracking-tight text-stone-600 hover:text-primary transition-colors duration-300 text-xs uppercase tracking-widest" href="community.html">Community</a>
-      <a href="community.html" class="bg-primary hover:opacity-90 text-on-primary px-6 py-2 rounded-lg font-label font-bold tracking-tight text-xs uppercase active:opacity-80 transition-all">Join COTSEAL</a>
+    <div class="flex items-center gap-4">
+      <div class="hidden md:flex gap-8 items-center">
+        <a class="font-label font-bold tracking-tight text-stone-600 hover:text-primary transition-colors duration-300 text-xs uppercase tracking-widest" href="index.html">Home</a>
+        <a class="font-label font-bold tracking-tight text-stone-600 hover:text-primary transition-colors duration-300 text-xs uppercase tracking-widest" href="about.html">About Us</a>
+        <a class="font-label font-bold tracking-tight text-primary border-b-2 border-amber-500 pb-1 text-xs uppercase tracking-widest" href="conference.html">Conference</a>
+        <a class="font-label font-bold tracking-tight text-stone-600 hover:text-primary transition-colors duration-300 text-xs uppercase tracking-widest" href="resources.html">Resources</a>
+        <a class="font-label font-bold tracking-tight text-stone-600 hover:text-primary transition-colors duration-300 text-xs uppercase tracking-widest" href="community.html">Community</a>
+        <a href="community.html" class="bg-primary hover:opacity-90 text-on-primary px-6 py-2 rounded-lg font-label font-bold tracking-tight text-xs uppercase active:opacity-80 transition-all">Join COTSEAL</a>
+      </div>
+      <button id="menu-btn" class="md:hidden flex flex-col justify-center gap-1.5 w-10 h-10 rounded-lg" aria-label="Toggle menu">
+        <span class="block w-6 h-0.5 bg-teal-900"></span>
+        <span class="block w-6 h-0.5 bg-teal-900"></span>
+        <span class="block w-6 h-0.5 bg-teal-900"></span>
+      </button>
     </div>
   </div>
 </nav>
+<div id="mobile-menu" style="display:none" class="fixed top-16 left-0 w-full bg-white/97 backdrop-blur-md shadow-lg z-40 px-8 py-6 flex-col gap-1 border-t border-stone-100">
+  <a class="block font-label text-sm uppercase tracking-widest text-stone-600 py-3 border-b border-stone-100" href="index.html">Home</a>
+  <a class="block font-label text-sm uppercase tracking-widest text-stone-600 py-3 border-b border-stone-100" href="about.html">About Us</a>
+  <a class="block font-label text-sm font-bold uppercase tracking-widest text-teal-700 py-3 border-b border-stone-100" href="conference.html">Conference</a>
+  <a class="block font-label text-sm uppercase tracking-widest text-stone-600 py-3 border-b border-stone-100" href="resources.html">Resources</a>
+  <a class="block font-label text-sm uppercase tracking-widest text-stone-600 py-3 border-b border-stone-100" href="community.html">Community</a>
+  <a href="community.html" class="mt-4 block text-center px-6 py-3 bg-primary text-on-primary rounded-lg font-label text-xs uppercase tracking-widest font-bold">Join COTSEAL</a>
+</div>
+<script>
+  (() => {
+    const btn = document.getElementById('menu-btn');
+    const menu = document.getElementById('mobile-menu');
+    btn.addEventListener('click', () => {
+      menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+    });
+    menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { menu.style.display = 'none'; }));
+  })();
+</script>
 
 <!-- SideNavBar (Desktop) -->
 <aside class="hidden lg:flex flex-col py-8 h-screen w-64 fixed left-0 top-0 bg-[#f4f4f0] border-r border-primary/10 z-40">

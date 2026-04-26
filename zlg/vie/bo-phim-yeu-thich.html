@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bộ Phim Yêu Thích – Hoạt động học tập</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #F5A623;
+  --gold-pale: #FEF3DC;
+  --dark: #1A1008;
+  --red: #D94F3D;
+  --red-pale: #FDECEA;
+  --teal: #2A7C6F;
+  --teal-pale: #DFF2EE;
+  --bg: #FAF7F2;
+  --white: #FFFFFF;
+  --border: #E8DFC8;
+  --muted: #7A6E60;
+  --ink: #1A1008;
+  --radius: 12px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400;
+  line-height: 1.75;
+}
+
+/* NAV */
+.nav {
+  background: var(--dark);
+  display: flex;
+  gap: 4px;
+  padding: 12px 16px 0;
+  overflow-x: auto;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.3);
+}
+
+.nav-tab {
+  background: rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.65);
+  border: none;
+  border-radius: 8px 8px 0 0;
+  padding: 10px 18px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+.nav-tab:hover { background: rgba(255,255,255,0.2); color: white; }
+.nav-tab.active { background: var(--bg); color: var(--dark); }
+
+/* SECTIONS */
+.section { display: none; max-width: 780px; margin: 0 auto; padding: 36px 20px 60px; }
+.section.active { display: block; }
+
+/* HEADER */
+.page-header { text-align: center; margin-bottom: 32px; }
+
+.page-header .tag {
+  display: inline-block;
+  background: var(--gold);
+  color: var(--dark);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 4px 14px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+}
+
+.page-header h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 36px;
+  letter-spacing: 2px;
+  color: var(--dark);
+  margin-bottom: 6px;
+}
+
+.page-header p { color: var(--muted); font-size: 14px; }
+
+/* CARD */
+.card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 20px;
+}
+
+.card-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--dark);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 2px solid var(--gold);
+  padding-bottom: 10px;
+}
+
+/* FILM CARD */
+.film-banner {
+  background: var(--dark);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  margin-bottom: 20px;
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.film-banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    -45deg, transparent, transparent 20px,
+    rgba(245,166,35,0.04) 20px, rgba(245,166,35,0.04) 40px
+  );
+}
+
+.film-poster {
+  width: 80px; height: 110px;
+  background: linear-gradient(135deg, #F5A623, #D94F3D);
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 32px;
+  flex-shrink: 0;
+  position: relative;
+  box-shadow: 4px 4px 16px rgba(0,0,0,0.4);
+}
+
+.film-info { position: relative; }
+.film-title { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--gold); letter-spacing: 2px; }
+.film-meta { font-size: 13px; color: rgba(255,255,255,0.6); margin-top: 4px; line-height: 1.8; }
+.film-meta span { color: rgba(255,255,255,0.9); font-weight: 600; }
+
+/* VOCAB CARDS */
+.vocab-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 10px;
+}
+
+.vocab-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.vocab-card:hover { border-color: var(--gold); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+.vocab-word { font-weight: 700; font-size: 15px; color: var(--teal); margin-bottom: 2px; }
+.vocab-eng { font-size: 12px; color: var(--muted); }
+.vocab-def {
+  display: none;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--border);
+  font-size: 13px;
+  color: #444;
+  line-height: 1.6;
+}
+.vocab-hint { font-size: 11px; color: #bbb; margin-top: 3px; }
+.vocab-card.revealed { border-color: var(--gold); background: var(--gold-pale); }
+.vocab-card.revealed .vocab-def { display: block; }
+
+/* READING */
+.reading-text {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--gold);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  font-size: 15px;
+  line-height: 2;
+  margin-bottom: 20px;
+}
+.reading-text p { margin-bottom: 16px; }
+.reading-text p:last-child { margin-bottom: 0; }
+
+.hl {
+  background: var(--gold-pale);
+  padding: 1px 4px;
+  border-radius: 3px;
+  cursor: help;
+  font-weight: 600;
+  color: #8B6914;
+  border-bottom: 1.5px dotted var(--gold);
+}
+
+.tooltip-wrap { position: relative; display: inline; }
+.tooltip-box {
+  display: none;
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--dark);
+  color: white;
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+  z-index: 10;
+  font-weight: 400;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+.tooltip-wrap:hover .tooltip-box { display: block; }
+
+/* MATCHING */
+.match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.match-col { display: flex; flex-direction: column; gap: 7px; }
+.match-col-title { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+
+.match-item {
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  padding: 9px 13px;
+  font-size: 13.5px;
+  cursor: pointer;
+  transition: all 0.2s;
+  user-select: none;
+  line-height: 1.4;
+}
+.match-item:hover { border-color: var(--gold); }
+.match-item.selected { border-color: var(--gold); background: var(--gold-pale); }
+.match-item.correct { border-color: var(--teal); background: var(--teal-pale); color: var(--teal); font-weight: 600; pointer-events: none; }
+.match-item.wrong { border-color: var(--red); background: var(--red-pale); animation: shake 0.3s; }
+
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+/* COMPREHENSION */
+.question-block {
+  background: var(--bg);
+  border-radius: 10px;
+  padding: 18px 20px;
+  margin-bottom: 14px;
+}
+.q-text { font-size: 15px; font-weight: 600; margin-bottom: 14px; color: var(--ink); }
+.q-num {
+  display: inline-block;
+  background: var(--gold);
+  color: var(--dark);
+  font-size: 12px;
+  font-weight: 700;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 22px;
+  margin-right: 8px;
+}
+.options { display: flex; flex-direction: column; gap: 8px; }
+.option {
+  background: var(--white);
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.option:hover { border-color: var(--gold); }
+.option.correct { border-color: var(--teal); background: var(--teal-pale); color: var(--teal); font-weight: 600; }
+.option.wrong { border-color: var(--red); background: var(--red-pale); }
+.option.disabled { pointer-events: none; opacity: 0.6; }
+.option.correct.disabled { opacity: 1; }
+.option-dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--border); flex-shrink: 0; }
+.option.correct .option-dot { background: var(--teal); border-color: var(--teal); }
+.option.wrong .option-dot { background: var(--red); border-color: var(--red); }
+.feedback { margin-top: 10px; font-size: 13px; padding: 8px 12px; border-radius: 6px; display: none; }
+.feedback.show { display: block; }
+.feedback.correct-fb { background: var(--teal-pale); color: var(--teal); }
+.feedback.wrong-fb { background: var(--red-pale); color: var(--red); }
+
+/* SCORE */
+.score-bar {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 50px;
+  padding: 10px 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+.score-dot { width: 10px; height: 10px; background: var(--gold); border-radius: 50%; }
+
+/* FILL BLANK */
+.fill-sentence { font-size: 15px; line-height: 2.4; margin-bottom: 8px; }
+.fill-input {
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  width: 160px;
+  transition: border 0.2s;
+  outline: none;
+}
+.fill-input:focus { border-color: var(--gold); }
+.fill-input.correct { border-color: var(--teal); background: var(--teal-pale); color: var(--teal); font-weight: 600; }
+.fill-input.wrong { border-color: var(--red); background: var(--red-pale); }
+
+/* WORD BANK */
+.word-bank {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  background: var(--gold-pale);
+  border: 1px dashed var(--gold);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 20px;
+}
+.word-chip {
+  background: white;
+  border: 1px solid var(--gold);
+  border-radius: 20px;
+  padding: 4px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: default;
+}
+
+/* TRUE FALSE */
+.tf-item {
+  background: var(--bg);
+  border-radius: 10px;
+  padding: 16px 18px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.tf-sentence { font-size: 14.5px; font-weight: 500; }
+.tf-buttons { display: flex; gap: 8px; }
+.tf-btn {
+  background: white;
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 20px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.tf-btn:hover { border-color: var(--gold); }
+.tf-btn.correct { border-color: var(--teal); background: var(--teal-pale); color: var(--teal); }
+.tf-btn.wrong { border-color: var(--red); background: var(--red-pale); color: var(--red); }
+.tf-btn.disabled { pointer-events: none; opacity: 0.5; }
+.tf-btn.correct.disabled { opacity: 1; }
+.tf-feedback { font-size: 12.5px; display: none; padding: 6px 10px; border-radius: 6px; }
+.tf-feedback.show { display: block; }
+.tf-feedback.correct-fb { background: var(--teal-pale); color: var(--teal); }
+.tf-feedback.wrong-fb { background: var(--red-pale); color: var(--red); }
+
+/* DISCUSS */
+.discuss-card {
+  background: linear-gradient(135deg, var(--gold-pale), #FEF8E8);
+  border: 1px solid #F0D080;
+  border-radius: var(--radius);
+  padding: 18px 22px;
+  margin-bottom: 12px;
+}
+.discuss-q { font-size: 15px; font-weight: 600; color: #8B6914; margin-bottom: 6px; }
+.discuss-prompt { font-size: 13px; color: var(--muted); font-style: italic; }
+
+/* BUTTONS */
+.btn {
+  background: var(--gold);
+  color: var(--dark);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 22px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 8px;
+}
+.btn:hover { background: #e09510; transform: translateY(-1px); }
+.btn.secondary { background: var(--bg); color: var(--dark); border: 2px solid var(--gold); }
+.btn.secondary:hover { background: var(--gold-pale); }
+
+/* ORDERING */
+.order-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+.order-item {
+  background: white;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  padding: 11px 16px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: grab;
+  transition: all 0.15s;
+  user-select: none;
+}
+.order-item:hover { border-color: var(--gold); }
+.order-item.dragging { opacity: 0.4; }
+.order-item.over { border-color: var(--gold); background: var(--gold-pale); }
+.order-handle { color: #ccc; font-size: 18px; flex-shrink: 0; }
+.order-num {
+  width: 24px; height: 24px;
+  background: var(--dark);
+  color: white;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700;
+  flex-shrink: 0;
+}
+.order-item.correct-pos .order-num { background: var(--teal); }
+.order-item.wrong-pos .order-num { background: var(--red); }
+
+@media (max-width: 600px) {
+  .match-grid { grid-template-columns: 1fr; }
+  .film-banner { flex-direction: column; text-align: center; }
+  .vocab-grid { grid-template-columns: 1fr 1fr; }
+  .reading-text { padding: 18px; }
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <button class="nav-tab active" onclick="showSection('vocab-pre')">1. Từ vựng</button>
+  <button class="nav-tab" onclick="showSection('reading')">2. Bài đọc</button>
+  <button class="nav-tab" onclick="showSection('comprehension')">3. Đọc hiểu</button>
+  <button class="nav-tab" onclick="showSection('vocab-practice')">4. Luyện từ vựng</button>
+  <button class="nav-tab" onclick="showSection('extension')">5. Mở rộng</button>
+</nav>
+
+<!-- ══════════════════════════════
+     SECTION 1: VOCAB
+══════════════════════════════ -->
+<div id="vocab-pre" class="section active">
+  <div class="page-header">
+    <div class="tag">Trước khi đọc</div>
+    <h1>Làm Quen Từ Vựng</h1>
+    <p>Nhấn vào mỗi thẻ để xem nghĩa và ví dụ</p>
+  </div>
+
+  <div class="film-banner">
+    <div class="film-poster">🎬</div>
+    <div class="film-info">
+      <div class="film-title">Bố Già</div>
+      <div class="film-meta">
+        Thể loại: <span>Hài – Chính kịch</span><br>
+        Đạo diễn: <span>Trấn Thành & Vũ Ngọc Đãng</span><br>
+        Nhân vật chính: <span>Ông Sang & Quắn</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🃏 Từ vựng trong bài</div>
+    <div class="vocab-grid">
+      <div class="vocab-card" onclick="this.classList.toggle('revealed')">
+        <div class="vocab-word">đạo diễn</div>
+        <div class="vocab-eng">director</div>
+        <div class="vocab-hint">👆 nhấn để xem</div>
+        <div class="vocab-def"><em>"Đạo diễn của phim Bố Già là Trấn Thành và Vũ Ngọc Đãng."</em></div>
+      </div>
+      <div class="vocab-card" onclick="this.classList.toggle('revealed')">
+        <div class="vocab-word">nhân vật chính</div>
+        <div class="vocab-eng">main character</div>
+        <div class="vocab-hint">👆 nhấn để xem</div>
+        <div class="vocab-def"><em>"Nhân vật chính trong phim là ông Sang và con trai ông."</em></div>
+      </div>
+      <div class="vocab-card" onclick="this.classList.toggle('revealed')">
+        <div class="vocab-word">tốt bụng</div>
+        <div class="vocab-eng">kind-hearted</div>
+        <div class="vocab-hint">👆 nhấn để xem</div>
+        <div class="vocab-def"><em>"Ông Sang là một người cha rất tốt bụng, luôn giúp đỡ mọi người."</em></div>
+      </div>
+      <div class="vocab-card" onclick="this.classList.toggle('revealed')">
+        <div class="vocab-word">lo lắng</div>
+        <div class="vocab-eng">to worry</div>
+        <div class="vocab-hint">👆 nhấn để xem</div>
+        <div class="vocab-def"><em>"Ông Sang luôn lo lắng cho gia đình và những người xung quanh."</em></div>
+      </div>
+      <div class="vocab-card" onclick="this.classList.toggle('revealed')">
+        <div class="vocab-word">nội dung</div>
+        <div class="vocab-eng">content, plot</div>
+        <div class="vocab-hint">👆 nhấn để xem</div>
+        <div class="vocab-def"><em>"Nội dung phim kể về những rắc rối trong gia đình."</em></div>
+      </div>
+      <div class="vocab-card" onclick="this.classList.toggle('revealed')">
+        <div class="vocab-word">rắc rối</div>
+        <div class="vocab-eng">trouble, problem</div>
+        <div class="vocab-hint">👆 nhấn để xem</div>
+        <div class="vocab-def"><em>"Hai cha con gặp nhiều rắc rối vì có suy nghĩ khác nhau."</em></div>
+      </div>
+      <div class="vocab-card" onclick="this.classList.toggle('revealed')">
+        <div class="vocab-word">mâu thuẫn</div>
+        <div class="vocab-eng">conflict</div>
+        <div class="vocab-hint">👆 nhấn để xem</div>
+        <div class="vocab-def"><em>"Hai cha con thường xuyên xảy ra mâu thuẫn vì suy nghĩ khác nhau."</em></div>
+      </div>
+      <div class="vocab-card" onclick="this.classList.toggle('revealed')">
+        <div class="vocab-word">thông điệp</div>
+        <div class="vocab-eng">message, lesson</div>
+        <div class="vocab-hint">👆 nhấn để xem</div>
+        <div class="vocab-def"><em>"Phim mang đến thông điệp ý nghĩa cho cha mẹ và con cái."</em></div>
+      </div>
+      <div class="vocab-card" onclick="this.classList.toggle('revealed')">
+        <div class="vocab-word">đam mê</div>
+        <div class="vocab-eng">passion</div>
+        <div class="vocab-hint">👆 nhấn để xem</div>
+        <div class="vocab-def"><em>"Cha mẹ nên để con sống theo đam mê của chúng."</em></div>
+      </div>
+      <div class="vocab-card" onclick="this.classList.toggle('revealed')">
+        <div class="vocab-word">cảm động</div>
+        <div class="vocab-eng">touching, moving</div>
+        <div class="vocab-hint">👆 nhấn để xem</div>
+        <div class="vocab-def"><em>"Mình thấy bộ phim này rất hay và cảm động."</em></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VI–EN MATCHING -->
+  <div class="card">
+    <div class="card-title">🔤 Ghép tiếng Việt với tiếng Anh</div>
+    <p style="font-size:14px; color:var(--muted); margin-bottom:16px;">Nhấn một từ bên trái, rồi nhấn nghĩa tương ứng bên phải.</p>
+    <div class="match-grid">
+      <div class="match-col">
+        <div class="match-col-title">Tiếng Việt</div>
+        <div class="match-item" data-pair="m1" data-game="vien" onclick="selectMatchGame(this,'left','vien')">đạo diễn</div>
+        <div class="match-item" data-pair="m2" data-game="vien" onclick="selectMatchGame(this,'left','vien')">tốt bụng</div>
+        <div class="match-item" data-pair="m3" data-game="vien" onclick="selectMatchGame(this,'left','vien')">rắc rối</div>
+        <div class="match-item" data-pair="m4" data-game="vien" onclick="selectMatchGame(this,'left','vien')">thông điệp</div>
+        <div class="match-item" data-pair="m5" data-game="vien" onclick="selectMatchGame(this,'left','vien')">đam mê</div>
+        <div class="match-item" data-pair="m6" data-game="vien" onclick="selectMatchGame(this,'left','vien')">cảm động</div>
+        <div class="match-item" data-pair="m7" data-game="vien" onclick="selectMatchGame(this,'left','vien')">lo lắng</div>
+        <div class="match-item" data-pair="m8" data-game="vien" onclick="selectMatchGame(this,'left','vien')">nội dung</div>
+      </div>
+      <div class="match-col">
+        <div class="match-col-title">English</div>
+        <div class="match-item" data-pair="m5" data-game="vien" onclick="selectMatchGame(this,'right','vien')">passion</div>
+        <div class="match-item" data-pair="m1" data-game="vien" onclick="selectMatchGame(this,'right','vien')">director</div>
+        <div class="match-item" data-pair="m7" data-game="vien" onclick="selectMatchGame(this,'right','vien')">to worry</div>
+        <div class="match-item" data-pair="m3" data-game="vien" onclick="selectMatchGame(this,'right','vien')">trouble, problem</div>
+        <div class="match-item" data-pair="m6" data-game="vien" onclick="selectMatchGame(this,'right','vien')">touching, moving</div>
+        <div class="match-item" data-pair="m8" data-game="vien" onclick="selectMatchGame(this,'right','vien')">content, plot</div>
+        <div class="match-item" data-pair="m2" data-game="vien" onclick="selectMatchGame(this,'right','vien')">kind-hearted</div>
+        <div class="match-item" data-pair="m4" data-game="vien" onclick="selectMatchGame(this,'right','vien')">message, lesson</div>
+      </div>
+    </div>
+    <div style="margin-top:12px; display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+      <div id="vien-result" style="font-size:14px; font-weight:600;"></div>
+      <button class="btn secondary" onclick="resetMatchGame('vien')" style="margin-top:0; padding:6px 16px; font-size:13px;">Làm lại</button>
+    </div>
+  </div>
+
+  <div style="text-align:right">
+    <button class="btn" onclick="showSection('reading')">Đọc bài →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     SECTION 2: READING
+══════════════════════════════ -->
+<div id="reading" class="section">
+  <div class="page-header">
+    <div class="tag">Bài đọc</div>
+    <h1>Bộ Phim Yêu Thích</h1>
+    <p>Di chuột vào từ gạch chân để xem nghĩa tiếng Anh</p>
+  </div>
+
+  <div class="reading-text">
+    <p>"<span class="tooltip-wrap"><span class="hl">Bố Già</span><span class="tooltip-box">Dad / Old Man (film title)</span></span>" là bộ phim mình yêu thích nhất. Đây là phim hài-chính kịch.
+    <span class="tooltip-wrap"><span class="hl">Đạo diễn</span><span class="tooltip-box">director</span></span>
+    của phim là Trấn Thành và Vũ Ngọc Đãng.</p>
+
+    <p>Mình xem bộ phim này hai năm trước cùng với chị gái.
+    <span class="tooltip-wrap"><span class="hl">Nhân vật chính</span><span class="tooltip-box">main character</span></span>
+    trong phim là ông Sang và con trai ông là Quắn. Ông Sang là một người cha rất
+    <span class="tooltip-wrap"><span class="hl">tốt bụng</span><span class="tooltip-box">kind-hearted</span></span>,
+    ông luôn
+    <span class="tooltip-wrap"><span class="hl">lo lắng</span><span class="tooltip-box">worry</span></span>
+    và thích giúp đỡ mọi người. Quắn là một Youtuber và rất yêu gia đình của mình.
+    <span class="tooltip-wrap"><span class="hl">Nội dung</span><span class="tooltip-box">content, plot</span></span>
+    phim kể về những
+    <span class="tooltip-wrap"><span class="hl">rắc rối</span><span class="tooltip-box">troubles, problems</span></span>
+    trong gia đình họ. Vì ông Sang và Quắn có suy nghĩ khác nhau về cuộc sống, nên hai cha con thường xuyên xảy ra
+    <span class="tooltip-wrap"><span class="hl">mâu thuẫn</span><span class="tooltip-box">conflict</span></span>.</p>
+
+    <p>Phim mang đến
+    <span class="tooltip-wrap"><span class="hl">thông điệp</span><span class="tooltip-box">message, lesson</span></span>
+    cho cha mẹ và con cái. Cha mẹ nên lắng nghe con và để con sống theo
+    <span class="tooltip-wrap"><span class="hl">đam mê</span><span class="tooltip-box">passion</span></span>
+    của chúng. Con cái cũng cần biết cảm ơn và xin lỗi cha mẹ khi còn có thể. Mình thấy bộ phim này rất hay và
+    <span class="tooltip-wrap"><span class="hl">cảm động</span><span class="tooltip-box">touching, moving</span></span>.</p>
+  </div>
+
+  <div style="text-align:right">
+    <button class="btn" onclick="showSection('comprehension')">Làm bài đọc hiểu →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     SECTION 3: COMPREHENSION
+══════════════════════════════ -->
+<div id="comprehension" class="section">
+  <div class="page-header">
+    <div class="tag">Đọc hiểu</div>
+    <h1>Câu Hỏi Đọc Hiểu</h1>
+    <p>Chọn câu trả lời đúng nhất</p>
+  </div>
+
+  <div class="score-bar">
+    <div class="score-dot"></div>
+    <span id="comp-score">0 / 5 câu đúng</span>
+  </div>
+
+  <!-- Q1 -->
+  <div class="question-block">
+    <div class="q-text"><span class="q-num">1</span>"Bố Già" là phim thể loại gì?</div>
+    <div class="options">
+      <div class="option" onclick="checkAnswer(this,false,1,'Phim hành động không được nhắc trong bài.')">
+        <div class="option-dot"></div>Phim hành động
+      </div>
+      <div class="option" onclick="checkAnswer(this,true,1,'✓ Đúng! Bài viết nói đây là "phim hài-chính kịch".')">
+        <div class="option-dot"></div>Phim hài-chính kịch
+      </div>
+      <div class="option" onclick="checkAnswer(this,false,1,'Phim hoạt hình không được nhắc trong bài.')">
+        <div class="option-dot"></div>Phim hoạt hình
+      </div>
+    </div>
+    <div id="fb-1" class="feedback"></div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="question-block">
+    <div class="q-text"><span class="q-num">2</span>Nhân vật ông Sang được mô tả như thế nào?</div>
+    <div class="options">
+      <div class="option" onclick="checkAnswer(this,false,2,'Bài không nói ông Sang nổi tiếng.')">
+        <div class="option-dot"></div>Nổi tiếng và giàu có
+      </div>
+      <div class="option" onclick="checkAnswer(this,false,2,'Bài không mô tả ông Sang như vậy.')">
+        <div class="option-dot"></div>Nghiêm khắc và ít nói
+      </div>
+      <div class="option" onclick="checkAnswer(this,true,2,'✓ Đúng! Bài viết nói ông Sang "tốt bụng, luôn lo lắng và thích giúp đỡ mọi người".')">
+        <div class="option-dot"></div>Tốt bụng, hay lo lắng và thích giúp đỡ mọi người
+      </div>
+    </div>
+    <div id="fb-2" class="feedback"></div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="question-block">
+    <div class="q-text"><span class="q-num">3</span>Tại sao hai cha con thường xảy ra mâu thuẫn?</div>
+    <div class="options">
+      <div class="option" onclick="checkAnswer(this,true,3,'✓ Đúng! Bài viết nói "vì ông Sang và Quắn có suy nghĩ khác nhau về cuộc sống".')">
+        <div class="option-dot"></div>Vì họ có suy nghĩ khác nhau về cuộc sống
+      </div>
+      <div class="option" onclick="checkAnswer(this,false,3,'Bài không đề cập đến tiền bạc.')">
+        <div class="option-dot"></div>Vì họ tranh cãi về tiền bạc
+      </div>
+      <div class="option" onclick="checkAnswer(this,false,3,'Bài không nói về điều này.')">
+        <div class="option-dot"></div>Vì Quắn không muốn đi học
+      </div>
+    </div>
+    <div id="fb-3" class="feedback"></div>
+  </div>
+
+  <!-- Q4 TRUE/FALSE style as MC -->
+  <div class="question-block">
+    <div class="q-text"><span class="q-num">4</span>Theo bài, thông điệp của phim dành cho ai?</div>
+    <div class="options">
+      <div class="option" onclick="checkAnswer(this,false,4,'Thông điệp không chỉ dành cho trẻ em.')">
+        <div class="option-dot"></div>Chỉ dành cho trẻ em
+      </div>
+      <div class="option" onclick="checkAnswer(this,true,4,'✓ Đúng! Bài viết nói phim mang thông điệp cho "cha mẹ và con cái".')">
+        <div class="option-dot"></div>Dành cho cả cha mẹ lẫn con cái
+      </div>
+      <div class="option" onclick="checkAnswer(this,false,4,'Bài không nói thông điệp chỉ dành cho đạo diễn.')">
+        <div class="option-dot"></div>Chỉ dành cho các đạo diễn phim
+      </div>
+    </div>
+    <div id="fb-4" class="feedback"></div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="question-block">
+    <div class="q-text"><span class="q-num">5</span>Người viết cảm thấy thế nào về bộ phim?</div>
+    <div class="options">
+      <div class="option" onclick="checkAnswer(this,false,5,'Bài không nói người viết thấy phim nhàm chán.')">
+        <div class="option-dot"></div>Nhàm chán và không muốn xem lại
+      </div>
+      <div class="option" onclick="checkAnswer(this,false,5,'Bài không nói người viết sợ.')">
+        <div class="option-dot"></div>Sợ và không thích
+      </div>
+      <div class="option" onclick="checkAnswer(this,true,5,'✓ Đúng! Bài viết kết thúc bằng câu "Mình thấy bộ phim này rất hay và cảm động".')">
+        <div class="option-dot"></div>Rất hay và cảm động
+      </div>
+    </div>
+    <div id="fb-5" class="feedback"></div>
+  </div>
+
+  <!-- TRUE / FALSE -->
+  <div class="card" style="margin-top:24px;">
+    <div class="card-title">✅ Đúng hay Sai?</div>
+    <p style="font-size:14px; color:var(--muted); margin-bottom:16px;">Đọc câu và chọn <strong>Đúng</strong> hoặc <strong>Sai</strong> dựa vào bài.</p>
+
+    <div class="tf-item">
+      <div class="tf-sentence">1. Người viết xem phim này một mình.</div>
+      <div class="tf-buttons">
+        <button class="tf-btn" onclick="checkTF(this, false, 'tf1', 'Sai. Người viết xem cùng với chị gái.')">Đúng</button>
+        <button class="tf-btn" onclick="checkTF(this, true, 'tf1', '✓ Đúng! Người viết xem "cùng với chị gái".')">Sai</button>
+      </div>
+      <div id="tf1" class="tf-feedback"></div>
+    </div>
+
+    <div class="tf-item">
+      <div class="tf-sentence">2. Quắn là một Youtuber.</div>
+      <div class="tf-buttons">
+        <button class="tf-btn" onclick="checkTF(this, true, 'tf2', '✓ Đúng! Bài viết nói "Quắn là một Youtuber".')">Đúng</button>
+        <button class="tf-btn" onclick="checkTF(this, false, 'tf2', 'Sai. Bài viết nói Quắn là một Youtuber.')">Sai</button>
+      </div>
+      <div id="tf2" class="tf-feedback"></div>
+    </div>
+
+    <div class="tf-item">
+      <div class="tf-sentence">3. Phim nói con cái không cần xin lỗi cha mẹ.</div>
+      <div class="tf-buttons">
+        <button class="tf-btn" onclick="checkTF(this, false, 'tf3', 'Sai. Phim nói con cái "cần biết cảm ơn và xin lỗi cha mẹ khi còn có thể".')">Đúng</button>
+        <button class="tf-btn" onclick="checkTF(this, true, 'tf3', '✓ Đúng! Phim nói ngược lại — con cái cần biết xin lỗi cha mẹ.')">Sai</button>
+      </div>
+      <div id="tf3" class="tf-feedback"></div>
+    </div>
+
+    <div class="tf-item">
+      <div class="tf-sentence">4. Đạo diễn phim là Trấn Thành và Vũ Ngọc Đãng.</div>
+      <div class="tf-buttons">
+        <button class="tf-btn" onclick="checkTF(this, true, 'tf4', '✓ Đúng! Bài viết nói "Đạo diễn của phim là Trấn Thành và Vũ Ngọc Đãng".')">Đúng</button>
+        <button class="tf-btn" onclick="checkTF(this, false, 'tf4', 'Sai. Đây là thông tin đúng trong bài.')">Sai</button>
+      </div>
+      <div id="tf4" class="tf-feedback"></div>
+    </div>
+  </div>
+
+  <div style="text-align:right; margin-top:8px">
+    <button class="btn" onclick="showSection('vocab-practice')">Luyện từ vựng →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     SECTION 4: VOCAB PRACTICE
+══════════════════════════════ -->
+<div id="vocab-practice" class="section">
+  <div class="page-header">
+    <div class="tag">Luyện tập</div>
+    <h1>Luyện Từ Vựng</h1>
+    <p>Điền từ đúng vào chỗ trống</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📦 Ngân hàng từ</div>
+    <div class="word-bank">
+      <div class="word-chip">đạo diễn</div>
+      <div class="word-chip">tốt bụng</div>
+      <div class="word-chip">mâu thuẫn</div>
+      <div class="word-chip">thông điệp</div>
+      <div class="word-chip">đam mê</div>
+      <div class="word-chip">cảm động</div>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:20px;">
+      <div>
+        <div class="fill-sentence">1. <input class="fill-input" id="fill-1" placeholder="___" data-answer="đạo diễn"> của bộ phim này là một người rất nổi tiếng ở Việt Nam.</div>
+      </div>
+      <div>
+        <div class="fill-sentence">2. Ông ấy rất <input class="fill-input" id="fill-2" placeholder="___" data-answer="tốt bụng">, ông luôn giúp đỡ hàng xóm khi họ gặp khó khăn.</div>
+      </div>
+      <div>
+        <div class="fill-sentence">3. Hai anh em thường xảy ra <input class="fill-input" id="fill-3" placeholder="___" data-answer="mâu thuẫn"> vì có ý kiến khác nhau.</div>
+      </div>
+      <div>
+        <div class="fill-sentence">4. Bộ phim mang <input class="fill-input" id="fill-4" placeholder="___" data-answer="thông điệp"> rằng gia đình là quan trọng nhất.</div>
+      </div>
+      <div>
+        <div class="fill-sentence">5. Cha mẹ nên ủng hộ con sống theo <input class="fill-input" id="fill-5" placeholder="___" data-answer="đam mê"> của chúng.</div>
+      </div>
+      <div>
+        <div class="fill-sentence">6. Cuối phim rất <input class="fill-input" id="fill-6" placeholder="___" data-answer="cảm động">, mình đã khóc khi xem.</div>
+      </div>
+    </div>
+
+    <div style="margin-top:20px; display:flex; gap:10px; flex-wrap:wrap;">
+      <button class="btn" onclick="checkFillBlanks()">Kiểm tra</button>
+      <button class="btn secondary" onclick="resetFill()">Làm lại</button>
+    </div>
+    <div id="fill-result" style="margin-top:12px; font-size:14px; font-weight:600;"></div>
+  </div>
+
+  <div style="text-align:right">
+    <button class="btn" onclick="showSection('extension')">Hoạt động mở rộng →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════
+     SECTION 5: EXTENSION
+══════════════════════════════ -->
+<div id="extension" class="section">
+  <div class="page-header">
+    <div class="tag">Mở rộng</div>
+    <h1>Hoạt Động Mở Rộng</h1>
+    <p>Kết nối bài đọc với bản thân</p>
+  </div>
+
+  <!-- SENTENCE ORDERING -->
+  <div class="card">
+    <div class="card-title">🔀 Sắp xếp theo đúng thứ tự trong bài</div>
+    <p style="font-size:14px; color:var(--muted); margin-bottom:16px;">Kéo và thả để sắp xếp các câu theo thứ tự xuất hiện trong bài đọc.</p>
+    <div class="order-list" id="order-list">
+      <div class="order-item" draggable="true" data-order="3">
+        <span class="order-handle">⠿</span>
+        <span class="order-num">?</span>
+        <span>Phim mang thông điệp cho cha mẹ và con cái.</span>
+      </div>
+      <div class="order-item" draggable="true" data-order="1">
+        <span class="order-handle">⠿</span>
+        <span class="order-num">?</span>
+        <span>"Bố Già" là bộ phim mình yêu thích nhất.</span>
+      </div>
+      <div class="order-item" draggable="true" data-order="4">
+        <span class="order-handle">⠿</span>
+        <span class="order-num">?</span>
+        <span>Mình thấy bộ phim này rất hay và cảm động.</span>
+      </div>
+      <div class="order-item" draggable="true" data-order="2">
+        <span class="order-handle">⠿</span>
+        <span class="order-num">?</span>
+        <span>Nhân vật chính là ông Sang và Quắn.</span>
+      </div>
+    </div>
+    <button class="btn" onclick="checkOrder()">Kiểm tra thứ tự</button>
+    <div id="order-result" style="margin-top:10px; font-size:14px; font-weight:600;"></div>
+  </div>
+
+  <!-- DISCUSSION -->
+  <div class="card">
+    <div class="card-title">💬 Thảo luận</div>
+    <p style="font-size:14px; color:var(--muted); margin-bottom:16px;">Thảo luận theo cặp · 5 phút</p>
+
+    <div class="discuss-card">
+      <div class="discuss-q">1. Bạn có xem phim "Bố Già" chưa? Bạn biết gì về bộ phim này?</div>
+      <div class="discuss-prompt">Gợi ý: "Tôi (chưa / đã) xem phim này. Tôi thấy / nghe nói..."</div>
+    </div>
+    <div class="discuss-card">
+      <div class="discuss-q">2. Bạn có đồng ý với thông điệp của phim không? Tại sao?</div>
+      <div class="discuss-prompt">Gợi ý: "Tôi đồng ý / không đồng ý vì..."</div>
+    </div>
+    <div class="discuss-card">
+      <div class="discuss-q">3. Bộ phim yêu thích của bạn là gì? Phim đó nói về chủ đề gì?</div>
+      <div class="discuss-prompt">Gợi ý: "Bộ phim tôi yêu thích là... Phim nói về..."</div>
+    </div>
+  </div>
+
+  <!-- WRITING -->
+  <div class="card">
+    <div class="card-title">✍️ Viết ngắn</div>
+    <p style="font-size:14px; color:var(--muted); margin-bottom:14px;">Viết 3–5 câu giới thiệu bộ phim hoặc bộ phim truyền hình yêu thích của bạn. Dùng các từ vựng đã học.</p>
+    <div style="background:var(--gold-pale); border:1px dashed var(--gold); border-radius:8px; padding:16px; font-size:13.5px; color:#8B6914; line-height:1.9;">
+      <strong>Gợi ý cấu trúc:</strong><br>
+      "... là bộ phim tôi yêu thích nhất. Đây là phim... Nhân vật chính là... Nội dung phim kể về... Tôi thấy bộ phim này..."
+    </div>
+  </div>
+
+  <!-- HOMEWORK -->
+  <div class="card" style="background: var(--dark); border:none; color:white;">
+    <div class="card-title" style="color:var(--gold); border-bottom-color: rgba(245,166,35,0.3);">📚 Bài tập về nhà</div>
+    <p style="font-size:14px; opacity:0.85; line-height:1.9;">
+      Hỏi một người thân về bộ phim Việt Nam mà họ yêu thích. Sau đó viết một đoạn văn ngắn (5–7 câu) giới thiệu bộ phim đó theo mẫu bài đọc hôm nay.<br><br>
+      Nhớ bao gồm: <span style="color:var(--gold); font-weight:600;">tên phim · thể loại · nhân vật · nội dung · thông điệp · cảm nhận</span>
+    </p>
+  </div>
+</div>
+
+<script>
+// ── TABS ──
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const map = {'vocab-pre':0,'reading':1,'comprehension':2,'vocab-practice':3,'extension':4};
+  document.querySelectorAll('.nav-tab')[map[id]].classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// ── MATCHING ──
+const matchState = {};
+function selectMatchGame(el, side, game) {
+  if (el.classList.contains('correct')) return;
+  if (!matchState[game]) matchState[game] = { left: null, right: null, score: 0 };
+  const state = matchState[game];
+  const allLeft = document.querySelectorAll(`[data-game="${game}"][onclick*="'left'"]`);
+  const allRight = document.querySelectorAll(`[data-game="${game}"][onclick*="'right'"]`);
+  if (side === 'left') {
+    allLeft.forEach(i => { if (!i.classList.contains('correct')) i.classList.remove('selected'); });
+    state.left = el; el.classList.add('selected');
+  } else {
+    allRight.forEach(i => { if (!i.classList.contains('correct')) i.classList.remove('selected'); });
+    state.right = el; el.classList.add('selected');
+  }
+  if (state.left && state.right) {
+    const total = allLeft.length;
+    if (state.left.dataset.pair === state.right.dataset.pair) {
+      state.left.classList.remove('selected'); state.left.classList.add('correct');
+      state.right.classList.remove('selected'); state.right.classList.add('correct');
+      state.score++;
+      const r = document.getElementById(game + '-result');
+      r.style.color = 'var(--teal)';
+      r.textContent = state.score === total ? '🎉 Hoàn thành! Bạn ghép đúng tất cả.' : `✓ Đúng! (${state.score}/${total})`;
+    } else {
+      state.left.classList.add('wrong'); state.right.classList.add('wrong');
+      setTimeout(() => { state.left.classList.remove('wrong','selected'); state.right.classList.remove('wrong','selected'); }, 600);
+      const r = document.getElementById(game + '-result');
+      r.style.color = 'var(--red)'; r.textContent = '✗ Chưa đúng, thử lại nhé!';
+    }
+    state.left = null; state.right = null;
+  }
+}
+function resetMatchGame(game) {
+  if (matchState[game]) matchState[game] = { left: null, right: null, score: 0 };
+  document.querySelectorAll(`[data-game="${game}"]`).forEach(el => el.classList.remove('correct','wrong','selected'));
+  const r = document.getElementById(game + '-result');
+  if (r) r.textContent = '';
+}
+
+// ── COMPREHENSION ──
+let compScore = 0;
+const answered = {};
+function checkAnswer(el, isCorrect, qNum, feedback) {
+  if (answered[qNum]) return;
+  answered[qNum] = true;
+  el.parentElement.querySelectorAll('.option').forEach(o => o.classList.add('disabled'));
+  const fb = document.getElementById('fb-' + qNum);
+  if (isCorrect) {
+    el.classList.add('correct');
+    compScore++;
+    fb.textContent = feedback; fb.className = 'feedback show correct-fb';
+  } else {
+    el.classList.add('wrong');
+    fb.textContent = feedback; fb.className = 'feedback show wrong-fb';
+    el.parentElement.querySelectorAll('.option').forEach(o => {
+      if (o.getAttribute('onclick') && o.getAttribute('onclick').includes('true')) o.classList.add('correct');
+    });
+  }
+  document.getElementById('comp-score').textContent = `${compScore} / 5 câu đúng`;
+}
+
+// ── TRUE/FALSE ──
+function checkTF(btn, isCorrect, id, msg) {
+  const container = btn.closest('.tf-item');
+  container.querySelectorAll('.tf-btn').forEach(b => b.classList.add('disabled'));
+  const fb = document.getElementById(id);
+  if (isCorrect) {
+    btn.classList.add('correct');
+    fb.textContent = msg; fb.className = 'tf-feedback show correct-fb';
+  } else {
+    btn.classList.add('wrong');
+    fb.textContent = msg; fb.className = 'tf-feedback show wrong-fb';
+    container.querySelectorAll('.tf-btn').forEach(b => {
+      if (b.getAttribute('onclick') && b.getAttribute('onclick').includes('true,')) b.classList.add('correct');
+    });
+  }
+}
+
+// ── FILL BLANKS ──
+function checkFillBlanks() {
+  let correct = 0;
+  for (let i = 1; i <= 6; i++) {
+    const input = document.getElementById('fill-' + i);
+    const val = input.value.trim().toLowerCase();
+    input.classList.remove('correct','wrong');
+    if (val === input.dataset.answer.toLowerCase()) { input.classList.add('correct'); correct++; }
+    else input.classList.add('wrong');
+  }
+  const r = document.getElementById('fill-result');
+  r.textContent = correct === 6 ? '🎉 Xuất sắc! Tất cả đều đúng!' : `${correct}/6 đúng. Kiểm tra lại những ô đỏ nhé.`;
+  r.style.color = correct === 6 ? 'var(--teal)' : 'var(--red)';
+}
+function resetFill() {
+  for (let i = 1; i <= 6; i++) {
+    const input = document.getElementById('fill-' + i);
+    input.value = ''; input.classList.remove('correct','wrong');
+  }
+  document.getElementById('fill-result').textContent = '';
+}
+
+// ── DRAG & DROP ORDER ──
+let dragSrc = null;
+document.querySelectorAll('.order-item').forEach(item => {
+  item.addEventListener('dragstart', function() { dragSrc = this; this.classList.add('dragging'); });
+  item.addEventListener('dragend', function() { this.classList.remove('dragging'); document.querySelectorAll('.order-item').forEach(i => i.classList.remove('over')); });
+  item.addEventListener('dragover', function(e) { e.preventDefault(); this.classList.add('over'); });
+  item.addEventListener('dragleave', function() { this.classList.remove('over'); });
+  item.addEventListener('drop', function(e) {
+    e.preventDefault();
+    if (dragSrc !== this) {
+      const list = document.getElementById('order-list');
+      const items = [...list.querySelectorAll('.order-item')];
+      const srcIdx = items.indexOf(dragSrc);
+      const tgtIdx = items.indexOf(this);
+      if (srcIdx < tgtIdx) list.insertBefore(dragSrc, this.nextSibling);
+      else list.insertBefore(dragSrc, this);
+    }
+    this.classList.remove('over');
+  });
+});
+
+function checkOrder() {
+  const items = document.querySelectorAll('#order-list .order-item');
+  let correct = 0;
+  items.forEach((item, idx) => {
+    item.classList.remove('correct-pos','wrong-pos');
+    const num = item.querySelector('.order-num');
+    if (parseInt(item.dataset.order) === idx + 1) { item.classList.add('correct-pos'); num.textContent = idx+1; correct++; }
+    else { item.classList.add('wrong-pos'); num.textContent = idx+1; }
+  });
+  const r = document.getElementById('order-result');
+  r.textContent = correct === 4 ? '🎉 Đúng rồi! Thứ tự hoàn toàn chính xác.' : `${correct}/4 đúng vị trí. Thử lại nhé!`;
+  r.style.color = correct === 4 ? 'var(--teal)' : 'var(--red)';
+}
+</script>
+</body>
+</html>

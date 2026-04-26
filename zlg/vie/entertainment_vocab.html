@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🎬 Từ Vựng Giải Trí</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0e17;
+    --surface: #1a1829;
+    --card: #242237;
+    --accent1: #ff6b6b;
+    --accent2: #ffd93d;
+    --accent3: #6bcb77;
+    --accent4: #4d96ff;
+    --accent5: #c77dff;
+    --text: #fffffe;
+    --muted: #a7a9be;
+    --border: #2e2c47;
+    --success: #6bcb77;
+    --error: #ff6b6b;
+    --radius: 16px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    font-family: 'Nunito', sans-serif;
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Stars background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 80% 10%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 50% 60%, rgba(255,255,255,0.25) 0%, transparent 100%),
+      radial-gradient(1px 1px at 10% 80%, rgba(255,255,255,0.2) 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 70%, rgba(255,255,255,0.15) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  header {
+    text-align: center;
+    padding: 40px 0 30px;
+  }
+
+  header h1 {
+    font-family: 'Baloo 2', cursive;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent2), var(--accent1), var(--accent5));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+  }
+
+  header p {
+    color: var(--muted);
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  /* Progress bar */
+  .progress-bar {
+    background: var(--border);
+    border-radius: 99px;
+    height: 8px;
+    margin: 20px 0;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent4), var(--accent5));
+    border-radius: 99px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  /* Nav tabs */
+  .nav-tabs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 30px;
+  }
+
+  .tab-btn {
+    padding: 10px 18px;
+    border: 2px solid var(--border);
+    background: var(--surface);
+    color: var(--muted);
+    border-radius: 99px;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .tab-btn:hover { border-color: var(--accent4); color: var(--text); }
+  .tab-btn.active {
+    background: linear-gradient(135deg, var(--accent4), var(--accent5));
+    border-color: transparent;
+    color: white;
+    box-shadow: 0 4px 20px rgba(77,150,255,0.4);
+  }
+
+  /* Section */
+  .section { display: none; }
+  .section.active { display: block; animation: fadeIn 0.3s ease; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Section title */
+  .section-title {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  /* ===== FLASHCARDS ===== */
+  .flashcard-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .card-counter {
+    color: var(--muted);
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+
+  .flashcard-wrapper {
+    width: 100%;
+    max-width: 500px;
+    height: 240px;
+    perspective: 1000px;
+    cursor: pointer;
+  }
+
+  .flashcard {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .flashcard.flipped { transform: rotateY(180deg); }
+
+  .card-face {
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    backface-visibility: hidden;
+    padding: 30px;
+    text-align: center;
+  }
+
+  .card-front {
+    background: linear-gradient(135deg, #242237, #2e2c47);
+    border: 2px solid var(--accent4);
+    box-shadow: 0 8px 30px rgba(77,150,255,0.2);
+  }
+
+  .card-back {
+    background: linear-gradient(135deg, #1e2a1e, #1a291e);
+    border: 2px solid var(--accent3);
+    box-shadow: 0 8px 30px rgba(107,203,119,0.2);
+    transform: rotateY(180deg);
+  }
+
+  .card-vi {
+    font-family: 'Baloo 2', cursive;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .card-hint {
+    color: var(--muted);
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  .card-en {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--accent3);
+    margin-bottom: 6px;
+  }
+
+  .card-emoji {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+  }
+
+  .flashcard-controls {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  /* Buttons */
+  .btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 99px;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 0.95rem;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent4), var(--accent5));
+    color: white;
+    box-shadow: 0 4px 15px rgba(77,150,255,0.3);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(77,150,255,0.5); }
+
+  .btn-secondary {
+    background: var(--surface);
+    color: var(--text);
+    border: 2px solid var(--border);
+  }
+  .btn-secondary:hover { border-color: var(--accent4); }
+
+  .btn-success {
+    background: linear-gradient(135deg, var(--accent3), #4caf69);
+    color: white;
+  }
+
+  .btn-danger {
+    background: linear-gradient(135deg, var(--accent1), #e84a4a);
+    color: white;
+  }
+
+  /* ===== MATCHING ===== */
+  .matching-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .match-col { display: flex; flex-direction: column; gap: 10px; }
+
+  .match-item {
+    padding: 14px 18px;
+    background: var(--card);
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-align: center;
+    transition: all 0.2s;
+    user-select: none;
+  }
+
+  .match-item:hover { border-color: var(--accent4); background: #2a2840; }
+  .match-item.selected { border-color: var(--accent2); background: #2a2618; color: var(--accent2); }
+  .match-item.matched { border-color: var(--accent3); background: #1a2a1e; color: var(--accent3); pointer-events: none; }
+  .match-item.wrong { border-color: var(--accent1); background: #2a1818; animation: shake 0.3s; }
+
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+  }
+
+  /* ===== UNSCRAMBLE ===== */
+  .unscramble-card {
+    background: var(--card);
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+
+  .unscramble-prompt {
+    font-size: 1rem;
+    color: var(--muted);
+    margin-bottom: 6px;
+    font-weight: 600;
+  }
+
+  .unscramble-vi {
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+
+  .tiles-area {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    min-height: 50px;
+    padding: 12px;
+    background: var(--surface);
+    border-radius: 12px;
+    margin-bottom: 12px;
+    border: 2px dashed var(--border);
+  }
+
+  .tiles-area.answer-zone {
+    border-color: var(--accent4);
+    background: rgba(77,150,255,0.05);
+  }
+
+  .tile {
+    padding: 8px 14px;
+    background: linear-gradient(135deg, var(--accent4), var(--accent5));
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 800;
+    font-size: 1rem;
+    transition: all 0.15s;
+    box-shadow: 0 3px 10px rgba(77,150,255,0.3);
+  }
+
+  .tile:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(77,150,255,0.5); }
+  .tile.used { opacity: 0.3; pointer-events: none; }
+
+  .unscramble-result {
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding: 8px 16px;
+    border-radius: 8px;
+    display: none;
+    margin-top: 8px;
+  }
+  .unscramble-result.correct { background: rgba(107,203,119,0.2); color: var(--accent3); display: block; }
+  .unscramble-result.wrong { background: rgba(255,107,107,0.2); color: var(--accent1); display: block; }
+
+  /* ===== DICTATION ===== */
+  .dictation-card {
+    background: var(--card);
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .audio-btn {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent1), #ff8e53);
+    border: none;
+    cursor: pointer;
+    font-size: 2rem;
+    transition: all 0.2s;
+    box-shadow: 0 6px 25px rgba(255,107,107,0.4);
+    margin-bottom: 20px;
+  }
+
+  .audio-btn:hover { transform: scale(1.1); box-shadow: 0 8px 30px rgba(255,107,107,0.6); }
+  .audio-btn:active { transform: scale(0.95); }
+
+  .dictation-input {
+    width: 100%;
+    max-width: 400px;
+    padding: 14px 20px;
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    color: var(--text);
+    font-family: 'Nunito', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-align: center;
+    outline: none;
+    transition: border-color 0.2s;
+    margin-bottom: 16px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .dictation-input:focus { border-color: var(--accent4); }
+
+  .hint-text {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 12px;
+  }
+
+  /* ===== FILL IN THE BLANK ===== */
+  .fitb-card {
+    background: var(--card);
+    border: 2px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+
+  .sentence {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: var(--text);
+  }
+
+  .blank {
+    display: inline-block;
+    min-width: 120px;
+    border-bottom: 3px solid var(--accent4);
+    text-align: center;
+    color: var(--accent4);
+    font-weight: 800;
+    font-family: 'Baloo 2', cursive;
+    font-size: 1.1rem;
+    padding: 0 8px;
+  }
+
+  .choices {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .choice-btn {
+    padding: 12px 16px;
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    color: var(--text);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+  }
+
+  .choice-btn:hover { border-color: var(--accent4); background: #1e2035; }
+  .choice-btn.correct { border-color: var(--accent3); background: rgba(107,203,119,0.15); color: var(--accent3); }
+  .choice-btn.wrong { border-color: var(--accent1); background: rgba(255,107,107,0.15); color: var(--accent1); }
+  .choice-btn:disabled { pointer-events: none; }
+
+  /* Score display */
+  .score-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 20px;
+    background: var(--surface);
+    border: 2px solid var(--border);
+    border-radius: 99px;
+    font-weight: 800;
+    font-size: 0.9rem;
+    color: var(--accent2);
+  }
+
+  .result-banner {
+    padding: 20px;
+    border-radius: var(--radius);
+    text-align: center;
+    font-weight: 800;
+    font-size: 1.1rem;
+    margin-top: 16px;
+    display: none;
+  }
+
+  .result-banner.show { display: block; }
+  .result-banner.correct { background: rgba(107,203,119,0.2); color: var(--accent3); border: 2px solid var(--accent3); }
+  .result-banner.wrong { background: rgba(255,107,107,0.2); color: var(--accent1); border: 2px solid var(--accent1); }
+
+  /* Exercise navigation */
+  .exercise-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  /* Completion modal */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    display: none;
+    backdrop-filter: blur(4px);
+  }
+
+  .modal-overlay.show { display: flex; }
+
+  .modal {
+    background: var(--card);
+    border: 2px solid var(--accent2);
+    border-radius: 24px;
+    padding: 40px;
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    animation: popIn 0.3s cubic-bezier(0.34,1.56,0.64,1);
+  }
+
+  @keyframes popIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  .modal-emoji { font-size: 4rem; margin-bottom: 12px; }
+  .modal-title { font-family: 'Baloo 2', cursive; font-size: 1.8rem; font-weight: 800; margin-bottom: 8px; }
+  .modal-score { font-size: 1.1rem; color: var(--muted); margin-bottom: 24px; }
+  .modal-score span { color: var(--accent2); font-weight: 800; }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .matching-grid { grid-template-columns: 1fr; }
+    .choices { grid-template-columns: 1fr; }
+    .nav-tabs { gap: 6px; }
+    .tab-btn { padding: 8px 12px; font-size: 0.8rem; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>🎬 Từ Vựng Giải Trí</h1>
+    <p>Entertainment Vocabulary • Novice High – Intermediate Low</p>
+    <div class="progress-bar"><div class="progress-fill" id="globalProgress"></div></div>
+  </header>
+
+  <!-- Nav -->
+  <div class="nav-tabs">
+    <button class="tab-btn active" onclick="showSection('flashcard')">🃏 Flash Cards</button>
+    <button class="tab-btn" onclick="showSection('matching')">🔗 Matching</button>
+    <button class="tab-btn" onclick="showSection('unscramble')">🔀 Unscramble</button>
+    <button class="tab-btn" onclick="showSection('dictation')">🎧 Dictation</button>
+    <button class="tab-btn" onclick="showSection('fillblank')">✏️ Fill in Blank</button>
+  </div>
+
+  <!-- ===== FLASHCARDS ===== -->
+  <div class="section active" id="sec-flashcard">
+    <div class="section-title">🃏 Flash Cards
+      <span class="score-badge" id="fcScore">⭐ 0 / 0</span>
+    </div>
+    <div class="flashcard-area">
+      <div class="card-counter" id="fcCounter">Thẻ 1 / 36</div>
+      <div class="flashcard-wrapper" id="fcWrapper" onclick="flipCard()">
+        <div class="flashcard" id="fcInner">
+          <div class="card-face card-front">
+            <div class="card-emoji" id="fcEmoji">🎬</div>
+            <div class="card-vi" id="fcVi">rảnh</div>
+            <div class="card-hint">👆 Nhấn để xem nghĩa</div>
+          </div>
+          <div class="card-face card-back">
+            <div class="card-emoji" id="fcEmojiB">🎬</div>
+            <div class="card-en" id="fcEn">when (I am) free</div>
+            <div class="card-hint">Nhấn để lật lại</div>
+          </div>
+        </div>
+      </div>
+      <div class="flashcard-controls">
+        <button class="btn btn-danger" onclick="rateCard(false)">❌ Chưa nhớ</button>
+        <button class="btn btn-secondary" onclick="flipCard()">🔄 Lật thẻ</button>
+        <button class="btn btn-success" onclick="rateCard(true)">✅ Đã nhớ</button>
+      </div>
+      <button class="btn btn-secondary" onclick="shuffleFlashcards()">🔀 Trộn thẻ</button>
+    </div>
+  </div>
+
+  <!-- ===== MATCHING ===== -->
+  <div class="section" id="sec-matching">
+    <div class="section-title">🔗 Matching
+      <span class="score-badge" id="matchScore">⭐ 0 / 0</span>
+    </div>
+    <p style="color:var(--muted);font-size:0.9rem;margin-bottom:16px;">Chọn từ tiếng Việt, sau đó chọn nghĩa tiếng Anh tương ứng.</p>
+    <div class="matching-grid">
+      <div class="match-col" id="matchLeft"></div>
+      <div class="match-col" id="matchRight"></div>
+    </div>
+    <div class="exercise-nav">
+      <span id="matchProgress" style="color:var(--muted);font-size:0.9rem;font-weight:700;"></span>
+      <button class="btn btn-primary" onclick="newMatchRound()">🔀 Vòng mới</button>
+    </div>
+  </div>
+
+  <!-- ===== UNSCRAMBLE ===== -->
+  <div class="section" id="sec-unscramble">
+    <div class="section-title">🔀 Unscramble
+      <span class="score-badge" id="unsScore">⭐ 0 / 0</span>
+    </div>
+    <div class="unscramble-card">
+      <div class="unscramble-prompt">Sắp xếp các âm tiết để tạo thành từ tiếng Việt có nghĩa là:</div>
+      <div class="unscramble-vi" id="unsEn">when (I am) free</div>
+      <div style="color:var(--muted);font-size:0.85rem;margin-bottom:10px;">Đáp án của bạn:</div>
+      <div class="tiles-area answer-zone" id="answerZone" onclick="removeTileFromAnswer(event)"></div>
+      <div style="color:var(--muted);font-size:0.85rem;margin-bottom:10px;">Các ký tự:</div>
+      <div class="tiles-area" id="tilePool" onclick="addTileToAnswer(event)"></div>
+      <div class="unscramble-result" id="unsResult"></div>
+    </div>
+    <div class="exercise-nav">
+      <button class="btn btn-secondary" onclick="clearAnswer()">🗑️ Xóa</button>
+      <div style="display:flex;gap:10px;">
+        <button class="btn btn-primary" onclick="checkUnscramble()">✅ Kiểm tra</button>
+        <button class="btn btn-secondary" onclick="nextUnscramble()">⏭️ Tiếp</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== DICTATION ===== -->
+  <div class="section" id="sec-dictation">
+    <div class="section-title">🎧 Dictation
+      <span class="score-badge" id="dictScore">⭐ 0 / 0</span>
+    </div>
+    <div class="dictation-card">
+      <button class="audio-btn" id="audioBtn" onclick="playDictation()">🔊</button>
+      <div class="hint-text" id="dictHint">Nhấn loa để nghe tiếng Việt, sau đó gõ lại từ bạn vừa nghe</div>
+      <input class="dictation-input" id="dictInput" type="text" placeholder="Gõ từ tiếng Việt vừa nghe..." onkeydown="if(event.key==='Enter')checkDictation()">
+      <button class="btn btn-primary" onclick="checkDictation()">✅ Kiểm tra</button>
+      <div class="result-banner" id="dictResult"></div>
+    </div>
+    <div class="exercise-nav">
+      <span id="dictProgress" style="color:var(--muted);font-size:0.9rem;font-weight:700;"></span>
+      <button class="btn btn-secondary" onclick="nextDictation()">⏭️ Từ tiếp theo</button>
+    </div>
+  </div>
+
+  <!-- ===== FILL IN THE BLANK ===== -->
+  <div class="section" id="sec-fillblank">
+    <div class="section-title">✏️ Fill in the Blank
+      <span class="score-badge" id="fitbScore">⭐ 0 / 0</span>
+    </div>
+    <div class="fitb-card" id="fitbCard">
+      <div class="sentence" id="fitbSentence"></div>
+      <div class="choices" id="fitbChoices"></div>
+      <div class="result-banner" id="fitbResult"></div>
+    </div>
+    <div class="exercise-nav">
+      <span id="fitbProgress" style="color:var(--muted);font-size:0.9rem;font-weight:700;"></span>
+      <button class="btn btn-secondary" onclick="nextFitb()">⏭️ Câu tiếp theo</button>
+    </div>
+  </div>
+</div>
+
+<!-- Completion Modal -->
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="modal-emoji" id="modalEmoji">🎉</div>
+    <div class="modal-title" id="modalTitle">Xuất sắc!</div>
+    <div class="modal-score" id="modalScore">Bạn đạt <span>10/10</span> điểm!</div>
+    <button class="btn btn-primary" onclick="closeModal()">🔄 Làm lại</button>
+  </div>
+</div>
+
+<script>
+// ===== VOCABULARY DATA =====
+const vocab = [
+  {vi:"rảnh", en:"when (I am) free", emoji:"🕐"},
+  {vi:"thể loại", en:"type / genre", emoji:"🎭"},
+  {vi:"sở thích", en:"hobbies / likes", emoji:"❤️"},
+  {vi:"khám phá", en:"to explore", emoji:"🔭"},
+  {vi:"đọc sách", en:"to read books", emoji:"📚"},
+  {vi:"kiến thức", en:"knowledge", emoji:"🧠"},
+  {vi:"chơi thể thao", en:"to play sports", emoji:"⚽"},
+  {vi:"đạo diễn", en:"director", emoji:"🎬"},
+  {vi:"thư giãn", en:"to relax", emoji:"😌"},
+  {vi:"nhân vật chính", en:"main character", emoji:"🦸"},
+  {vi:"căng thẳng", en:"stress", emoji:"😰"},
+  {vi:"tốt bụng", en:"kind-hearted", emoji:"💛"},
+  {vi:"phim hành động", en:"action movie", emoji:"💥"},
+  {vi:"lo lắng", en:"to worry", emoji:"😟"},
+  {vi:"phim hoạt hình", en:"cartoon / anime", emoji:"🐭"},
+  {vi:"nội dung", en:"content", emoji:"📋"},
+  {vi:"khoa học viễn tưởng", en:"science fiction", emoji:"🚀"},
+  {vi:"rắc rối", en:"trouble", emoji:"😬"},
+  {vi:"phim tình cảm", en:"romance movie", emoji:"💕"},
+  {vi:"mâu thuẫn", en:"conflict", emoji:"⚡"},
+  {vi:"phim hài", en:"comedy", emoji:"😂"},
+  {vi:"thông điệp", en:"message / lesson", emoji:"💌"},
+  {vi:"phim kinh dị", en:"horror movie", emoji:"👻"},
+  {vi:"đam mê", en:"passion", emoji:"🔥"},
+  {vi:"vui nhộn", en:"funny", emoji:"🤣"},
+  {vi:"cảm động", en:"touching", emoji:"😢"},
+  {vi:"gay cấn", en:"intense", emoji:"😮"},
+  {vi:"lãng mạn", en:"romantic", emoji:"🌹"},
+  {vi:"sáng tạo", en:"creative", emoji:"🎨"},
+  {vi:"sợ hãi", en:"scary", emoji:"😱"},
+  {vi:"kịch tính", en:"dramatic", emoji:"🎭"},
+  {vi:"thú vị", en:"enjoyable", emoji:"😃"},
+  {vi:"hài hước", en:"humorous", emoji:"🃏"},
+  {vi:"ấn tượng", en:"impressive", emoji:"🌟"},
+];
+
+// Fill in the blank sentences
+const sentences = [
+  {
+    template: "Khi ___ , tôi thích xem phim.",
+    answer: "rảnh",
+    choices: ["rảnh", "căng thẳng", "lo lắng", "vui nhộn"],
+    translation: "When I am free, I like to watch movies."
+  },
+  {
+    template: "Bộ phim này có ___ rất hay — tình bạn và lòng dũng cảm.",
+    answer: "thông điệp",
+    choices: ["nội dung", "thông điệp", "mâu thuẫn", "đạo diễn"],
+    translation: "This movie has a great message — friendship and courage."
+  },
+  {
+    template: "Em muốn xem phim gì? Anh thích mọi ___ .",
+    answer: "thể loại",
+    choices: ["nhân vật chính", "thể loại", "rắc rối", "đam mê"],
+    translation: "What movie do you want to watch? I like all genres."
+  },
+  {
+    template: "___ của phim rất phức tạp và thú vị.",
+    answer: "nội dung",
+    choices: ["thư giãn", "kiến thức", "nội dung", "sở thích"],
+    translation: "The content of the movie is very complex and interesting."
+  },
+  {
+    template: "Nhân vật ___ của phim rất tốt bụng.",
+    answer: "chính",
+    choices: ["hài hước", "chính", "lãng mạn", "kịch tính"],
+    translation: "The main character of the film is very kind-hearted."
+  },
+  {
+    template: "Tôi thích xem ___ để thư giãn sau giờ học.",
+    answer: "phim hài",
+    choices: ["phim hành động", "phim hài", "phim kinh dị", "khoa học viễn tưởng"],
+    translation: "I like to watch comedy to relax after school."
+  },
+  {
+    template: "Bộ phim ___ này làm tôi rất sợ hãi!",
+    answer: "kinh dị",
+    choices: ["tình cảm", "hoạt hình", "kinh dị", "hài hước"],
+    translation: "This horror film made me very scared!"
+  },
+  {
+    template: "Xem phim giúp tôi ___ sau một ngày mệt mỏi.",
+    answer: "thư giãn",
+    choices: ["đọc sách", "thư giãn", "chơi thể thao", "khám phá"],
+    translation: "Watching movies helps me relax after a tiring day."
+  },
+  {
+    template: "Cảnh kết phim rất ___, tôi muốn khóc.",
+    answer: "cảm động",
+    choices: ["gay cấn", "cảm động", "sợ hãi", "ấn tượng"],
+    translation: "The ending scene is very touching, I want to cry."
+  },
+  {
+    template: "Phim ___ thường có những cảnh chiến đấu gay cấn.",
+    answer: "hành động",
+    choices: ["tình cảm", "hoạt hình", "hành động", "hài hước"],
+    translation: "Action movies usually have intense fighting scenes."
+  },
+];
+
+// ===== FLASHCARD LOGIC =====
+let fcDeck = [...vocab];
+let fcIndex = 0;
+let fcKnown = 0;
+let fcTotal = 0;
+
+function updateFC() {
+  const card = fcDeck[fcIndex];
+  document.getElementById('fcVi').textContent = card.vi;
+  document.getElementById('fcEn').textContent = card.en;
+  document.getElementById('fcEmoji').textContent = card.emoji;
+  document.getElementById('fcEmojiB').textContent = card.emoji;
+  document.getElementById('fcCounter').textContent = `Thẻ ${fcIndex+1} / ${fcDeck.length}`;
+  document.getElementById('fcScore').textContent = `⭐ ${fcKnown} / ${fcTotal}`;
+  document.getElementById('fcInner').classList.remove('flipped');
+}
+
+function flipCard() {
+  document.getElementById('fcInner').classList.toggle('flipped');
+}
+
+function rateCard(known) {
+  fcTotal++;
+  if (known) fcKnown++;
+  fcIndex = (fcIndex + 1) % fcDeck.length;
+  updateFC();
+  updateProgress();
+}
+
+function shuffleFlashcards() {
+  fcDeck = [...vocab].sort(() => Math.random() - 0.5);
+  fcIndex = 0;
+  updateFC();
+}
+
+// ===== MATCHING LOGIC =====
+let matchSelected = null;
+let matchSelectedType = null;
+let matchPairs = [];
+let matchCorrect = 0;
+let matchTotal = 0;
+let matchMatched = 0;
+
+function newMatchRound() {
+  matchSelected = null;
+  matchSelectedType = null;
+  matchMatched = 0;
+
+  // Pick 6 random pairs
+  const pool = [...vocab].sort(() => Math.random() - 0.5).slice(0, 6);
+  matchPairs = pool;
+
+  const leftItems = pool.map((p, i) => ({id: i, text: p.vi, type: 'vi'}));
+  const rightItems = pool.map((p, i) => ({id: i, text: p.en, type: 'en'})).sort(() => Math.random() - 0.5);
+
+  const leftCol = document.getElementById('matchLeft');
+  const rightCol = document.getElementById('matchRight');
+  leftCol.innerHTML = '';
+  rightCol.innerHTML = '';
+
+  leftItems.forEach(item => {
+    const el = document.createElement('div');
+    el.className = 'match-item';
+    el.textContent = item.text;
+    el.dataset.id = item.id;
+    el.dataset.type = 'vi';
+    el.onclick = () => selectMatch(el);
+    leftCol.appendChild(el);
+  });
+
+  rightItems.forEach(item => {
+    const el = document.createElement('div');
+    el.className = 'match-item';
+    el.textContent = item.text;
+    el.dataset.id = item.id;
+    el.dataset.type = 'en';
+    el.onclick = () => selectMatch(el);
+    rightCol.appendChild(el);
+  });
+
+  updateMatchProgress();
+}
+
+function selectMatch(el) {
+  if (el.classList.contains('matched')) return;
+
+  if (!matchSelected) {
+    // First selection
+    if (matchSelectedType) {
+      // Deselect previous same-side
+      document.querySelectorAll('.match-item.selected').forEach(e => e.classList.remove('selected'));
+    }
+    el.classList.add('selected');
+    matchSelected = el;
+    matchSelectedType = el.dataset.type;
+  } else {
+    // Second selection — must be different side
+    if (el.dataset.type === matchSelectedType) {
+      document.querySelectorAll('.match-item.selected').forEach(e => e.classList.remove('selected'));
+      el.classList.add('selected');
+      matchSelected = el;
+      matchSelectedType = el.dataset.type;
+      return;
+    }
+
+    el.classList.add('selected');
+    const id1 = matchSelected.dataset.id;
+    const id2 = el.dataset.id;
+
+    if (id1 === id2) {
+      // Correct!
+      matchSelected.classList.remove('selected');
+      el.classList.remove('selected');
+      matchSelected.classList.add('matched');
+      el.classList.add('matched');
+      matchCorrect++;
+      matchMatched++;
+      matchTotal++;
+    } else {
+      // Wrong
+      matchSelected.classList.add('wrong');
+      el.classList.add('wrong');
+      matchTotal++;
+      setTimeout(() => {
+        matchSelected.classList.remove('selected', 'wrong');
+        el.classList.remove('selected', 'wrong');
+      }, 600);
+    }
+
+    matchSelected = null;
+    matchSelectedType = null;
+    document.getElementById('matchScore').textContent = `⭐ ${matchCorrect} / ${matchTotal}`;
+    updateMatchProgress();
+
+    if (matchMatched === matchPairs.length) {
+      setTimeout(() => showModal(matchCorrect, matchTotal, 'matching'), 400);
+    }
+    updateProgress();
+  }
+}
+
+function updateMatchProgress() {
+  const total = matchPairs.length;
+  document.getElementById('matchProgress').textContent = `${matchMatched} / ${total} cặp đúng`;
+}
+
+// ===== UNSCRAMBLE LOGIC =====
+let unsIndex = 0;
+let unsCorrect = 0;
+let unsTotal = 0;
+let unsOrder = [...vocab].sort(() => Math.random() - 0.5);
+let answerTiles = [];
+let sourceTiles = [];
+let unsCurrentWord = null;
+
+function scrambleChars(str) {
+  const chars = [...str];
+  if (chars.length <= 1) return chars;
+  let result;
+  let tries = 0;
+  do { result = [...chars].sort(() => Math.random() - 0.5); tries++; }
+  while (result.join('') === str && tries < 30);
+  return result;
+}
+
+function loadUnscramble() {
+  const word = unsOrder[unsIndex % unsOrder.length];
+  unsCurrentWord = word;
+  document.getElementById('unsEn').textContent = word.en;
+  document.getElementById('unsResult').className = 'unscramble-result';
+  document.getElementById('unsResult').textContent = '';
+
+  const syllables = word.vi.split(/\s+/);
+
+  // Build char tiles, each tagged with their syllable index
+  const allTiles = [];
+  syllables.forEach((syl, sylIdx) => {
+    const scrambled = scrambleChars(syl);
+    scrambled.forEach(ch => {
+      allTiles.push({ word: ch, syllableGroup: sylIdx, id: allTiles.length, used: false });
+    });
+  });
+
+  // Shuffle all char tiles together
+  const shuffled = [...allTiles].sort(() => Math.random() - 0.5);
+  shuffled.forEach((t, i) => t.id = i);
+
+  answerTiles = [];
+  sourceTiles = shuffled;
+
+  renderTilePool();
+  renderAnswerZone();
+}
+
+function renderTilePool() {
+  const pool = document.getElementById('tilePool');
+  pool.innerHTML = '';
+  sourceTiles.forEach((t, i) => {
+    const tile = document.createElement('div');
+    tile.className = 'tile' + (t.used ? ' used' : '');
+    tile.textContent = t.word;
+    tile.dataset.idx = i;
+    pool.appendChild(tile);
+  });
+}
+
+function renderAnswerZone() {
+  const zone = document.getElementById('answerZone');
+  zone.innerHTML = '';
+  if (answerTiles.length === 0) {
+    zone.innerHTML = '<span style="color:var(--muted);font-size:0.85rem;align-self:center;">Nhấn các ký tự bên dưới...</span>';
+    return;
+  }
+
+  const syllables = unsCurrentWord.vi.split(/\s+/);
+  const totalSyllables = syllables.length;
+
+  // Group consecutive tiles by syllable and show a subtle divider label
+  let currentGroup = null;
+  answerTiles.forEach((t, i) => {
+    // Insert a small syllable-break label when group changes (only for multi-syllable words)
+    if (totalSyllables > 1 && t.syllableGroup !== currentGroup && currentGroup !== null) {
+      const spacer = document.createElement('div');
+      spacer.style.cssText = 'width:6px;height:100%;display:flex;align-items:center;color:var(--muted);font-size:0.7rem;opacity:0.5;';
+      spacer.textContent = '·';
+      zone.appendChild(spacer);
+    }
+    currentGroup = t.syllableGroup;
+
+    const tile = document.createElement('div');
+    tile.className = 'tile';
+    tile.textContent = t.word;
+    tile.style.background = 'linear-gradient(135deg, var(--accent5), #a855f7)';
+    tile.dataset.ansIdx = i;
+    zone.appendChild(tile);
+  });
+}
+
+function addTileToAnswer(event) {
+  const tile = event.target.closest('.tile');
+  if (!tile || tile.classList.contains('used')) return;
+  const idx = parseInt(tile.dataset.idx);
+  sourceTiles[idx].used = true;
+  answerTiles.push(sourceTiles[idx]);
+  renderTilePool();
+  renderAnswerZone();
+}
+
+function removeTileFromAnswer(event) {
+  const tile = event.target.closest('.tile');
+  if (!tile || tile.dataset.ansIdx === undefined) return;
+  const ansIdx = parseInt(tile.dataset.ansIdx);
+  const removed = answerTiles.splice(ansIdx, 1)[0];
+  const srcIdx = sourceTiles.findIndex(t => t.id === removed.id);
+  if (srcIdx !== -1) sourceTiles[srcIdx].used = false;
+  renderTilePool();
+  renderAnswerZone();
+}
+
+function clearAnswer() {
+  answerTiles = [];
+  sourceTiles.forEach(t => t.used = false);
+  renderTilePool();
+  renderAnswerZone();
+  document.getElementById('unsResult').className = 'unscramble-result';
+}
+
+function checkUnscramble() {
+  const word = unsCurrentWord;
+  const syllables = word.vi.split(/\s+/);
+  const totalSyllables = syllables.length;
+
+  // Reconstruct: group tiles by syllableGroup in answer order, join chars within group, join groups with space
+  if (totalSyllables === 1) {
+    // Single syllable: just join all chars
+    const answer = answerTiles.map(t => t.word).join('');
+    const correct = word.vi.trim();
+    submitUnscrambleResult(answer, correct, word);
+  } else {
+    // Multi-syllable: each char belongs to a syllable group.
+    // We reconstruct by grouping consecutive same-group tiles.
+    // Build syllable strings from answer order
+    const groups = {};
+    answerTiles.forEach(t => {
+      if (!groups[t.syllableGroup]) groups[t.syllableGroup] = [];
+      groups[t.syllableGroup].push(t.word);
+    });
+    // Join in the order they appear in answerTiles (preserve user's grouping order)
+    const seenGroups = [];
+    answerTiles.forEach(t => {
+      if (!seenGroups.includes(t.syllableGroup)) seenGroups.push(t.syllableGroup);
+    });
+    const answer = seenGroups.map(g => groups[g].join('')).join(' ');
+    const correct = word.vi.trim();
+    submitUnscrambleResult(answer, correct, word);
+  }
+}
+
+function submitUnscrambleResult(answer, correct, word) {
+  const resultEl = document.getElementById('unsResult');
+  unsTotal++;
+  if (answer.trim() === correct) {
+    unsCorrect++;
+    resultEl.textContent = `✅ Đúng! "${word.vi}" = "${word.en}"`;
+    resultEl.className = 'unscramble-result correct';
+  } else {
+    resultEl.textContent = `❌ Sai. Đáp án đúng: "${word.vi}" (${word.en})`;
+    resultEl.className = 'unscramble-result wrong';
+  }
+  document.getElementById('unsScore').textContent = `⭐ ${unsCorrect} / ${unsTotal}`;
+  updateProgress();
+}
+
+function nextUnscramble() {
+  unsIndex++;
+  loadUnscramble();
+}
+
+// ===== DICTATION LOGIC =====
+let dictIndex = 0;
+let dictOrder = [...vocab].sort(() => Math.random() - 0.5);
+let dictCorrect = 0;
+let dictTotal = 0;
+let dictPlayed = false;
+
+function playDictation() {
+  const word = dictOrder[dictIndex % dictOrder.length];
+  const btn = document.getElementById('audioBtn');
+
+  if (!('speechSynthesis' in window)) {
+    document.getElementById('dictHint').textContent = '⚠️ Trình duyệt không hỗ trợ đọc âm thanh. Hãy thử Chrome.';
+    return;
+  }
+
+  window.speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(word.vi);
+  utter.lang = 'vi-VN';
+  utter.rate = 0.8;
+  utter.pitch = 1;
+
+  // Fallback: if vi-VN voice not available, try any vi voice
+  const voices = window.speechSynthesis.getVoices();
+  const viVoice = voices.find(v => v.lang.startsWith('vi'));
+  if (viVoice) utter.voice = viVoice;
+
+  btn.textContent = '🔉';
+  btn.disabled = true;
+  utter.onend = () => { btn.textContent = '🔊'; btn.disabled = false; };
+  utter.onerror = () => { btn.textContent = '🔊'; btn.disabled = false; };
+  window.speechSynthesis.speak(utter);
+
+  dictPlayed = true;
+  document.getElementById('dictResult').className = 'result-banner';
+  document.getElementById('dictInput').focus();
+  updateDictProgress();
+}
+
+function checkDictation() {
+  if (!dictPlayed) {
+    document.getElementById('dictHint').textContent = '👆 Nhấn loa để nghe trước nhé!';
+    return;
+  }
+  const word = dictOrder[dictIndex % dictOrder.length];
+  const input = document.getElementById('dictInput').value.trim();
+  const correct = word.vi.trim();
+  const resultEl = document.getElementById('dictResult');
+  dictTotal++;
+
+  const normalize = s => s.replace(/\s+/g, ' ').trim().toLowerCase();
+
+  if (normalize(input) === normalize(correct)) {
+    dictCorrect++;
+    resultEl.textContent = `✅ Đúng rồi! "${word.vi}" = "${word.en}"`;
+    resultEl.className = 'result-banner correct show';
+  } else {
+    resultEl.textContent = `❌ Sai. Từ đúng: "${word.vi}" (${word.en})`;
+    resultEl.className = 'result-banner wrong show';
+  }
+  document.getElementById('dictScore').textContent = `⭐ ${dictCorrect} / ${dictTotal}`;
+  updateProgress();
+}
+
+function nextDictation() {
+  dictIndex++;
+  dictPlayed = false;
+  document.getElementById('dictInput').value = '';
+  document.getElementById('dictResult').className = 'result-banner';
+  document.getElementById('dictHint').textContent = 'Nhấn loa để nghe tiếng Việt, sau đó gõ lại từ bạn vừa nghe';
+  document.getElementById('audioBtn').textContent = '🔊';
+  updateDictProgress();
+}
+
+function updateDictProgress() {
+  document.getElementById('dictProgress').textContent = `Từ ${(dictIndex % dictOrder.length) + 1} / ${dictOrder.length}`;
+}
+
+// Pre-load voices on page load (some browsers load lazily)
+if ('speechSynthesis' in window) {
+  window.speechSynthesis.getVoices();
+  window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+}
+
+// ===== FILL IN THE BLANK LOGIC =====
+let fitbIndex = 0;
+let fitbOrder = [...sentences].sort(() => Math.random() - 0.5);
+let fitbCorrect = 0;
+let fitbTotal = 0;
+let fitbAnswered = false;
+
+function loadFitb() {
+  const q = fitbOrder[fitbIndex % fitbOrder.length];
+  fitbAnswered = false;
+  document.getElementById('fitbResult').className = 'result-banner';
+
+  // Render sentence with blank
+  const sentence = q.template;
+  const parts = sentence.split('___');
+  const sentEl = document.getElementById('fitbSentence');
+  sentEl.innerHTML = '';
+
+  if (parts.length === 2) {
+    sentEl.innerHTML = `${parts[0]}<span class="blank" id="blankSpan">___</span>${parts[1]}
+    <br><small style="color:var(--muted);font-size:0.8rem;font-style:italic;margin-top:8px;display:block;">${q.translation}</small>`;
+  }
+
+  // Render choices
+  const choicesEl = document.getElementById('fitbChoices');
+  choicesEl.innerHTML = '';
+  const shuffled = [...q.choices].sort(() => Math.random() - 0.5);
+  shuffled.forEach(choice => {
+    const btn = document.createElement('button');
+    btn.className = 'choice-btn';
+    btn.textContent = choice;
+    btn.onclick = () => answerFitb(btn, choice, q.answer, q.choices);
+    choicesEl.appendChild(btn);
+  });
+
+  updateFitbProgress();
+}
+
+function answerFitb(btn, choice, answer, allChoices) {
+  if (fitbAnswered) return;
+  fitbAnswered = true;
+  fitbTotal++;
+
+  const blankSpan = document.getElementById('blankSpan');
+  blankSpan.textContent = choice;
+
+  const resultEl = document.getElementById('fitbResult');
+  const allBtns = document.querySelectorAll('.choice-btn');
+
+  if (choice === answer) {
+    fitbCorrect++;
+    btn.classList.add('correct');
+    blankSpan.style.color = 'var(--accent3)';
+    blankSpan.style.borderBottomColor = 'var(--accent3)';
+    resultEl.textContent = '✅ Chính xác!';
+    resultEl.className = 'result-banner correct show';
+  } else {
+    btn.classList.add('wrong');
+    blankSpan.style.color = 'var(--accent1)';
+    blankSpan.style.borderBottomColor = 'var(--accent1)';
+    resultEl.textContent = `❌ Sai. Đáp án đúng: "${answer}"`;
+    resultEl.className = 'result-banner wrong show';
+    // Show correct
+    allBtns.forEach(b => { if (b.textContent === answer) b.classList.add('correct'); });
+  }
+
+  allBtns.forEach(b => b.disabled = true);
+  document.getElementById('fitbScore').textContent = `⭐ ${fitbCorrect} / ${fitbTotal}`;
+  updateProgress();
+}
+
+function nextFitb() {
+  fitbIndex++;
+  loadFitb();
+}
+
+function updateFitbProgress() {
+  const total = fitbOrder.length;
+  document.getElementById('fitbProgress').textContent = `Câu ${(fitbIndex % total) + 1} / ${total}`;
+}
+
+// ===== NAVIGATION =====
+function showSection(name) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sec-' + name).classList.add('active');
+  const idx = ['flashcard','matching','unscramble','dictation','fillblank'].indexOf(name);
+  document.querySelectorAll('.tab-btn')[idx].classList.add('active');
+}
+
+// ===== MODAL =====
+function showModal(correct, total, section) {
+  const pct = total > 0 ? Math.round(correct/total*100) : 0;
+  let emoji = '😊';
+  let title = 'Tốt lắm!';
+  if (pct >= 90) { emoji = '🏆'; title = 'Xuất sắc!'; }
+  else if (pct >= 70) { emoji = '🌟'; title = 'Rất tốt!'; }
+  else if (pct >= 50) { emoji = '👍'; title = 'Khá tốt!'; }
+  else { emoji = '📖'; title = 'Cố gắng thêm!'; }
+
+  document.getElementById('modalEmoji').textContent = emoji;
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalScore').innerHTML = `Bạn đạt <span>${correct}/${total}</span> (${pct}%)`;
+  document.getElementById('modal').classList.add('show');
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('show');
+  newMatchRound();
+}
+
+// ===== GLOBAL PROGRESS =====
+let totalAnswered = 0;
+const totalTarget = 30;
+
+function updateProgress() {
+  totalAnswered++;
+  const pct = Math.min(100, Math.round(totalAnswered / totalTarget * 100));
+  document.getElementById('globalProgress').style.width = pct + '%';
+}
+
+// ===== INIT =====
+updateFC();
+newMatchRound();
+loadUnscramble();
+updateDictProgress();
+loadFitb();
+</script>
+</body>
+</html>

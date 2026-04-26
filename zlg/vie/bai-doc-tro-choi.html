@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trò Chơi Xưa và Nay – Hoạt động học tập</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,700;1,400&family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green: #2D6A4F;
+  --green-light: #52B788;
+  --green-pale: #D8F3DC;
+  --amber: #E09F3E;
+  --amber-pale: #FFF3CD;
+  --red: #C1440E;
+  --red-pale: #FDEBD0;
+  --ink: #1A1A2E;
+  --muted: #6B7280;
+  --bg: #F9F6F0;
+  --white: #FFFFFF;
+  --border: #E2D9C8;
+  --radius: 12px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Nunito', sans-serif;
+  font-weight: 400;
+  line-height: 1.7;
+}
+
+/* NAV TABS */
+.nav {
+  background: var(--green);
+  display: flex;
+  gap: 4px;
+  padding: 12px 16px 0;
+  overflow-x: auto;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+}
+
+.nav-tab {
+  background: rgba(255,255,255,0.15);
+  color: rgba(255,255,255,0.8);
+  border: none;
+  border-radius: 8px 8px 0 0;
+  padding: 10px 18px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+  letter-spacing: 0.3px;
+}
+
+.nav-tab:hover { background: rgba(255,255,255,0.25); color: white; }
+.nav-tab.active { background: var(--bg); color: var(--green); }
+
+/* SECTIONS */
+.section { display: none; max-width: 780px; margin: 0 auto; padding: 36px 20px 60px; }
+.section.active { display: block; }
+
+/* HEADER */
+.page-header {
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+.page-header .tag {
+  display: inline-block;
+  background: var(--green-pale);
+  color: var(--green);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 4px 14px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+}
+
+.page-header h1 {
+  font-family: 'Lora', serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+
+.page-header p { color: var(--muted); font-size: 14px; }
+
+/* CARDS */
+.card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 20px;
+}
+
+.card-title {
+  font-family: 'Lora', serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--green);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* READING TEXT */
+.reading-text {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--green);
+  border-radius: var(--radius);
+  padding: 28px 32px;
+  font-size: 15px;
+  line-height: 1.9;
+  margin-bottom: 20px;
+}
+
+.reading-text p { margin-bottom: 16px; }
+.reading-text p:last-child { margin-bottom: 0; }
+
+.hl { 
+  background: var(--green-pale); 
+  padding: 1px 4px; 
+  border-radius: 3px;
+  cursor: help;
+  font-weight: 600;
+  color: var(--green);
+  transition: background 0.2s;
+}
+.hl:hover { background: #B7E4C7; }
+
+/* VOCAB GRID */
+.vocab-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.vocab-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.vocab-card:hover { border-color: var(--green-light); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+
+.vocab-word {
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--green);
+  margin-bottom: 4px;
+}
+
+.vocab-def {
+  font-size: 13px;
+  color: var(--muted);
+  display: none;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--border);
+  line-height: 1.5;
+}
+
+.vocab-card.revealed .vocab-def { display: block; }
+.vocab-card.revealed { border-color: var(--green-light); background: var(--green-pale); }
+
+.vocab-hint { font-size: 11px; color: #aaa; margin-top: 4px; }
+
+/* MATCHING */
+.match-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.match-col { display: flex; flex-direction: column; gap: 8px; }
+.match-col-title { font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+
+.match-item {
+  background: var(--bg);
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  user-select: none;
+}
+
+.match-item:hover { border-color: var(--green-light); }
+.match-item.selected { border-color: var(--amber); background: var(--amber-pale); }
+.match-item.correct { border-color: var(--green); background: var(--green-pale); color: var(--green); font-weight: 600; pointer-events: none; }
+.match-item.wrong { border-color: var(--red); background: var(--red-pale); animation: shake 0.3s; }
+
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+
+/* COMPREHENSION */
+.question-block {
+  background: var(--bg);
+  border-radius: 10px;
+  padding: 18px 20px;
+  margin-bottom: 14px;
+}
+
+.q-text {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 14px;
+  color: var(--ink);
+}
+
+.q-num {
+  display: inline-block;
+  background: var(--green);
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 22px;
+  margin-right: 8px;
+}
+
+.options { display: flex; flex-direction: column; gap: 8px; }
+
+.option {
+  background: var(--white);
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.option:hover { border-color: var(--green-light); }
+.option.correct { border-color: var(--green); background: var(--green-pale); color: var(--green); font-weight: 600; }
+.option.wrong { border-color: var(--red); background: var(--red-pale); }
+.option.disabled { pointer-events: none; opacity: 0.6; }
+.option.correct.disabled { opacity: 1; }
+
+.option-dot {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+
+.option.correct .option-dot { background: var(--green); border-color: var(--green); }
+.option.wrong .option-dot { background: var(--red); border-color: var(--red); }
+
+.feedback {
+  margin-top: 10px;
+  font-size: 13px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  display: none;
+}
+.feedback.show { display: block; }
+.feedback.correct-fb { background: var(--green-pale); color: var(--green); }
+.feedback.wrong-fb { background: var(--red-pale); color: var(--red); }
+
+/* FILL BLANK */
+.fill-sentence {
+  font-size: 15px;
+  line-height: 2.2;
+  margin-bottom: 10px;
+}
+
+.blank {
+  display: inline-block;
+  border-bottom: 2px solid var(--green);
+  min-width: 120px;
+  padding: 0 4px;
+  margin: 0 4px;
+  text-align: center;
+}
+
+.fill-input {
+  border: 2px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  width: 150px;
+  transition: border 0.2s;
+  outline: none;
+}
+.fill-input:focus { border-color: var(--green-light); }
+.fill-input.correct { border-color: var(--green); background: var(--green-pale); color: var(--green); font-weight: 600; }
+.fill-input.wrong { border-color: var(--red); background: var(--red-pale); }
+
+/* COMPARE TABLE */
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.compare-table th {
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.compare-table th:first-child { background: #F0F0F0; color: var(--muted); }
+.compare-table th:nth-child(2) { background: var(--green); color: white; }
+.compare-table th:nth-child(3) { background: var(--ink); color: white; }
+
+.compare-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+.compare-table tr:last-child td { border-bottom: none; }
+.compare-table tr:nth-child(even) td { background: #FAFAFA; }
+.compare-table td:first-child { font-weight: 600; color: var(--muted); font-size: 13px; }
+
+/* DISCUSSION */
+.discuss-card {
+  background: linear-gradient(135deg, var(--green-pale), #EDF7ED);
+  border: 1px solid #B7E4C7;
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  margin-bottom: 14px;
+}
+
+.discuss-q {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--green);
+  margin-bottom: 8px;
+}
+
+.discuss-prompt {
+  font-size: 13px;
+  color: var(--muted);
+  font-style: italic;
+}
+
+/* SCORE DISPLAY */
+.score-bar {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 50px;
+  padding: 10px 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.score-dot { width: 10px; height: 10px; background: var(--green); border-radius: 50%; }
+
+/* BUTTONS */
+.btn {
+  background: var(--green);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 22px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 8px;
+}
+
+.btn:hover { background: var(--green-light); transform: translateY(-1px); }
+.btn.secondary { background: var(--bg); color: var(--green); border: 2px solid var(--green); }
+.btn.secondary:hover { background: var(--green-pale); }
+
+/* WORD BANK */
+.word-bank {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  background: var(--amber-pale);
+  border: 1px dashed var(--amber);
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin-bottom: 20px;
+}
+
+.word-chip {
+  background: white;
+  border: 1px solid var(--amber);
+  border-radius: 20px;
+  padding: 4px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+  transition: all 0.2s;
+  user-select: none;
+}
+
+.word-chip:hover { background: var(--amber-pale); }
+.word-chip.used { opacity: 0.35; pointer-events: none; text-decoration: line-through; }
+
+/* PROGRESS */
+.progress-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+  font-size: 13px;
+  color: var(--muted);
+}
+.progress-bar-wrap { background: var(--border); border-radius: 20px; height: 6px; margin-bottom: 20px; }
+.progress-bar-fill { height: 6px; border-radius: 20px; background: var(--green); transition: width 0.4s; }
+
+/* DRAG DROP */
+.drag-container { display: flex; flex-direction: column; gap: 8px; }
+.drag-item {
+  background: white;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 14px;
+  cursor: grab;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.15s;
+}
+.drag-item:hover { border-color: var(--green-light); transform: translateX(3px); }
+.drag-item.dragging { opacity: 0.5; border-color: var(--green); }
+.drag-handle { color: var(--border); font-size: 16px; }
+
+/* TOOLTIP */
+.tooltip-wrap { position: relative; display: inline; }
+.tooltip-box {
+  display: none;
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--ink);
+  color: white;
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+  z-index: 10;
+  font-weight: 400;
+}
+.tooltip-wrap:hover .tooltip-box { display: block; }
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+  .nav-tab { padding: 8px 12px; font-size: 12px; }
+  .reading-text { padding: 20px; }
+  .match-grid { grid-template-columns: 1fr; }
+  .vocab-grid { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <button class="nav-tab active" onclick="showSection('vocab-pre')">1. Từ vựng</button>
+  <button class="nav-tab" onclick="showSection('reading')">2. Bài đọc</button>
+  <button class="nav-tab" onclick="showSection('comprehension')">3. Đọc hiểu</button>
+  <button class="nav-tab" onclick="showSection('vocab-practice')">4. Luyện từ vựng</button>
+  <button class="nav-tab" onclick="showSection('extension')">5. Mở rộng</button>
+</nav>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 1: PRE-READING VOCAB
+════════════════════════════════════════════ -->
+<div id="vocab-pre" class="section active">
+  <div class="page-header">
+    <div class="tag">Trước khi đọc</div>
+    <h1>Làm quen với từ vựng</h1>
+    <p>Nhấn vào mỗi thẻ để xem nghĩa · Click each card to reveal the definition</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🃏 Từ vựng chính trong bài</div>
+    <div class="vocab-grid">
+      <div class="vocab-card" onclick="this.classList.toggle('revealed')">
+        <div class="vocab-word">hiện diện</div>
+        <div class="vocab-hint">👆 nhấn để xem</div>
+        <div class="vocab-def">presence, being present<br><em>"Trò chơi dân gian đòi hỏi sự hiện diện của nhau — người chơi phải nhìn mặt, nói chuyện, và phản ứng trực tiếp."</em></div>
+      </div>
+      <div class="vocab-card" onclick="this.classList.toggle('revealed')">
+        <div class="vocab-word">sáng tạo</div>
+        <div class="vocab-hint">👆 nhấn để xem</div>
+        <div class="vocab-def">creative, creativity<br><em>"Nhiều trò chơi điện tử rất sáng tạo vì chúng cho phép người chơi tự xây dựng thế giới của riêng mình."</em></div>
+      </div>
+      <div class="vocab-card" onclick="this.classList.toggle('revealed')">
+        <div class="vocab-word">phản xạ</div>
+        <div class="vocab-hint">👆 nhấn để xem</div>
+        <div class="vocab-def">reflex, reaction<br><em>"Trò chơi này đòi hỏi người chơi phải có phản xạ nhanh để xử lý tình huống kịp thời."</em></div>
+      </div>
+      <div class="vocab-card" onclick="this.classList.toggle('revealed')">
+        <div class="vocab-word">mâu thuẫn</div>
+        <div class="vocab-hint">👆 nhấn để xem</div>
+        <div class="vocab-def">conflict, disagreement<br><em>"Khi chơi nhóm, đôi khi xảy ra mâu thuẫn, nhưng đó cũng là cơ hội để học cách giải quyết vấn đề cùng nhau."</em></div>
+      </div>
+      <div class="vocab-card" onclick="this.classList.toggle('revealed')">
+        <div class="vocab-word">rèn giũa</div>
+        <div class="vocab-hint">👆 nhấn để xem</div>
+        <div class="vocab-def">to develop, to train (a skill)<br><em>"Chơi trò chơi dân gian theo nhóm giúp trẻ rèn giũa kỹ năng giao tiếp và biết cách làm việc với người khác."</em></div>
+      </div>
+      <div class="vocab-card" onclick="this.classList.toggle('revealed')">
+        <div class="vocab-word">thương lượng</div>
+        <div class="vocab-hint">👆 nhấn để xem</div>
+        <div class="vocab-def">to negotiate<br><em>"Thay vì tranh cãi, hãy ngồi lại thương lượng để tìm ra giải pháp chung mà cả hai bên đều chấp nhận được."</em></div>
+      </div>
+      <div class="vocab-card" onclick="this.classList.toggle('revealed')">
+        <div class="vocab-word">giới hạn</div>
+        <div class="vocab-hint">👆 nhấn để xem</div>
+        <div class="vocab-def">limit, boundary<br><em>"Trò chơi dân gian thường có giới hạn tự nhiên — khi trời tối hoặc khi mọi người mệt thì tự nhiên dừng lại."</em></div>
+      </div>
+      <div class="vocab-card" onclick="this.classList.toggle('revealed')">
+        <div class="vocab-word">kích thích</div>
+        <div class="vocab-hint">👆 nhấn để xem</div>
+        <div class="vocab-def">to stimulate, to encourage<br><em>"Những trò chơi đòi hỏi chiến thuật thường kích thích tư duy và giúp người chơi rèn luyện khả năng phán đoán."</em></div>
+      </div>
+      <div class="vocab-card" onclick="this.classList.toggle('revealed')">
+        <div class="vocab-word">xích mích</div>
+        <div class="vocab-hint">👆 nhấn để xem</div>
+        <div class="vocab-def">quarrel, minor conflict<br><em>"Dù chỉ là trò chơi, đôi khi cũng dễ xảy ra xích mích khi ai đó cảm thấy cuộc chơi không công bằng."</em></div>
+      </div>
+      <div class="vocab-card" onclick="this.classList.toggle('revealed')">
+        <div class="vocab-word">xa lánh</div>
+        <div class="vocab-hint">👆 nhấn để xem</div>
+        <div class="vocab-def">to avoid, to distance oneself from<br><em>"Trong thế giới hiện đại, trẻ em không cần phải xa lánh công nghệ, nhưng cũng cần biết cách dùng nó hợp lý."</em></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VIET-ENG MATCHING -->
+  <div class="card">
+    <div class="card-title">🔤 Ghép từ tiếng Việt với nghĩa tiếng Anh</div>
+    <p style="font-size:14px; color:var(--muted); margin-bottom:16px;">Nhấn một từ bên trái, rồi nhấn nghĩa tương ứng bên phải.</p>
+    <div class="match-grid">
+      <div class="match-col">
+        <div class="match-col-title">Tiếng Việt</div>
+        <div class="match-item" data-pair="v1" data-game="vien" onclick="selectMatchGame(this, 'left', 'vien')">hiện diện</div>
+        <div class="match-item" data-pair="v2" data-game="vien" onclick="selectMatchGame(this, 'left', 'vien')">mâu thuẫn</div>
+        <div class="match-item" data-pair="v3" data-game="vien" onclick="selectMatchGame(this, 'left', 'vien')">rèn giũa</div>
+        <div class="match-item" data-pair="v4" data-game="vien" onclick="selectMatchGame(this, 'left', 'vien')">kích thích</div>
+        <div class="match-item" data-pair="v5" data-game="vien" onclick="selectMatchGame(this, 'left', 'vien')">xích mích</div>
+        <div class="match-item" data-pair="v6" data-game="vien" onclick="selectMatchGame(this, 'left', 'vien')">thương lượng</div>
+        <div class="match-item" data-pair="v7" data-game="vien" onclick="selectMatchGame(this, 'left', 'vien')">giới hạn</div>
+        <div class="match-item" data-pair="v8" data-game="vien" onclick="selectMatchGame(this, 'left', 'vien')">xa lánh</div>
+        <div class="match-item" data-pair="v9" data-game="vien" onclick="selectMatchGame(this, 'left', 'vien')">sáng tạo</div>
+        <div class="match-item" data-pair="v10" data-game="vien" onclick="selectMatchGame(this, 'left', 'vien')">phản xạ</div>
+      </div>
+      <div class="match-col">
+        <div class="match-col-title">English</div>
+        <div class="match-item" data-pair="v3" data-game="vien" onclick="selectMatchGame(this, 'right', 'vien')">to develop or train a skill over time</div>
+        <div class="match-item" data-pair="v7" data-game="vien" onclick="selectMatchGame(this, 'right', 'vien')">a boundary or restriction</div>
+        <div class="match-item" data-pair="v1" data-game="vien" onclick="selectMatchGame(this, 'right', 'vien')">being physically present with others</div>
+        <div class="match-item" data-pair="v9" data-game="vien" onclick="selectMatchGame(this, 'right', 'vien')">imaginative, able to think of new ideas</div>
+        <div class="match-item" data-pair="v5" data-game="vien" onclick="selectMatchGame(this, 'right', 'vien')">a minor quarrel or disagreement</div>
+        <div class="match-item" data-pair="v10" data-game="vien" onclick="selectMatchGame(this, 'right', 'vien')">a quick, automatic reaction</div>
+        <div class="match-item" data-pair="v2" data-game="vien" onclick="selectMatchGame(this, 'right', 'vien')">a conflict or tension between people</div>
+        <div class="match-item" data-pair="v6" data-game="vien" onclick="selectMatchGame(this, 'right', 'vien')">to discuss and reach an agreement</div>
+        <div class="match-item" data-pair="v8" data-game="vien" onclick="selectMatchGame(this, 'right', 'vien')">to avoid or stay away from something</div>
+        <div class="match-item" data-pair="v4" data-game="vien" onclick="selectMatchGame(this, 'right', 'vien')">to spark interest or activate thinking</div>
+      </div>
+    </div>
+    <div style="margin-top:12px; display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+      <div id="vien-result" style="font-size:14px; font-weight:600;"></div>
+      <button class="btn secondary" onclick="resetMatchGame('vien')" style="margin-top:0; padding:6px 16px; font-size:13px;">Làm lại</button>
+    </div>
+  </div>
+
+  <!-- EXAMPLE MATCHING (10 pairs) -->
+  <div class="card">
+    <div class="card-title">🤔 Ghép từ với ví dụ</div>
+    <p style="font-size:14px; color:var(--muted); margin-bottom:16px;">Nhấn một từ bên trái, rồi nhấn ví dụ tương ứng bên phải.</p>
+    <div class="match-grid">
+      <div class="match-col">
+        <div class="match-col-title">Từ vựng</div>
+        <div class="match-item" data-pair="e1" data-game="ex" onclick="selectMatchGame(this, 'left', 'ex')">hiện diện</div>
+        <div class="match-item" data-pair="e2" data-game="ex" onclick="selectMatchGame(this, 'left', 'ex')">sáng tạo</div>
+        <div class="match-item" data-pair="e3" data-game="ex" onclick="selectMatchGame(this, 'left', 'ex')">phản xạ</div>
+        <div class="match-item" data-pair="e4" data-game="ex" onclick="selectMatchGame(this, 'left', 'ex')">mâu thuẫn</div>
+        <div class="match-item" data-pair="e5" data-game="ex" onclick="selectMatchGame(this, 'left', 'ex')">rèn giũa</div>
+        <div class="match-item" data-pair="e6" data-game="ex" onclick="selectMatchGame(this, 'left', 'ex')">thương lượng</div>
+        <div class="match-item" data-pair="e7" data-game="ex" onclick="selectMatchGame(this, 'left', 'ex')">giới hạn</div>
+        <div class="match-item" data-pair="e8" data-game="ex" onclick="selectMatchGame(this, 'left', 'ex')">kích thích</div>
+        <div class="match-item" data-pair="e9" data-game="ex" onclick="selectMatchGame(this, 'left', 'ex')">xích mích</div>
+        <div class="match-item" data-pair="e10" data-game="ex" onclick="selectMatchGame(this, 'left', 'ex')">xa lánh</div>
+      </div>
+      <div class="match-col">
+        <div class="match-col-title">Ví dụ</div>
+        <div class="match-item" data-pair="e7" data-game="ex" onclick="selectMatchGame(this, 'right', 'ex')">Trò chơi điện tử không có điểm kết thúc rõ ràng nên người chơi khó biết khi nào nên dừng lại.</div>
+        <div class="match-item" data-pair="e2" data-game="ex" onclick="selectMatchGame(this, 'right', 'ex')">Nhiều trò chơi cho phép người chơi tự thiết kế nhân vật và xây dựng thế giới theo ý mình.</div>
+        <div class="match-item" data-pair="e9" data-game="ex" onclick="selectMatchGame(this, 'right', 'ex')">Hai bạn cãi nhau vì cho rằng cách tính điểm không công bằng.</div>
+        <div class="match-item" data-pair="e5" data-game="ex" onclick="selectMatchGame(this, 'right', 'ex')">Chơi nhóm mỗi ngày giúp trẻ dần học được cách lắng nghe và tôn trọng người khác.</div>
+        <div class="match-item" data-pair="e1" data-game="ex" onclick="selectMatchGame(this, 'right', 'ex')">Khác với chơi online, trò chơi dân gian yêu cầu tất cả người chơi phải có mặt ở cùng một chỗ.</div>
+        <div class="match-item" data-pair="e10" data-game="ex" onclick="selectMatchGame(this, 'right', 'ex')">Dù công nghệ có nhiều mặt tiêu cực, chúng ta không nên hoàn toàn tránh xa nó trong cuộc sống hiện đại.</div>
+        <div class="match-item" data-pair="e3" data-game="ex" onclick="selectMatchGame(this, 'right', 'ex')">Người chơi giỏi thường phản ứng rất nhanh khi tình huống bất ngờ xảy ra trong trò chơi.</div>
+        <div class="match-item" data-pair="e6" data-game="ex" onclick="selectMatchGame(this, 'right', 'ex')">Thay vì giận dỗi, hai bạn đã ngồi lại nói chuyện để tìm cách chơi mà cả hai đều thấy hài lòng.</div>
+        <div class="match-item" data-pair="e8" data-game="ex" onclick="selectMatchGame(this, 'right', 'ex')">Những câu đố và thử thách trong trò chơi giúp người chơi suy nghĩ nhiều hơn và không cảm thấy nhàm chán.</div>
+        <div class="match-item" data-pair="e4" data-game="ex" onclick="selectMatchGame(this, 'right', 'ex')">Khi hai người có ý kiến trái ngược nhau về luật chơi, cả nhóm cần tìm cách giải quyết để tiếp tục.</div>
+      </div>
+    </div>
+    <div style="margin-top:12px; display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+      <div id="ex-result" style="font-size:14px; font-weight:600;"></div>
+      <button class="btn secondary" onclick="resetMatchGame('ex')" style="margin-top:0; padding:6px 16px; font-size:13px;">Làm lại</button>
+    </div>
+  </div>
+
+  <div style="text-align:right">
+    <button class="btn" onclick="showSection('reading')">Đọc bài →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 2: READING
+════════════════════════════════════════════ -->
+<div id="reading" class="section">
+  <div class="page-header">
+    <div class="tag">Bài đọc</div>
+    <h1>Trò Chơi Xưa và Nay</h1>
+    <p>Từ được gạch chân = từ vựng quan trọng · Di chuột để xem nghĩa</p>
+  </div>
+
+  <div class="reading-text">
+    <p>Vài chục năm trước, buổi chiều của trẻ em Việt Nam thường gắn với tiếng cười ngoài sân, ngoài vườn. Những trò chơi như nhảy dây, ô ăn quan, trốn tìm đều rất
+      <span class="tooltip-wrap"><span class="hl">phổ biến</span><span class="tooltip-box">common, popular</span></span>.
+      Chẳng cần dụng cụ gì nhiều, chỉ vài đứa bạn và một không gian chơi là đủ vui. Thế nhưng ngày nay, hình ảnh đó ngày càng hiếm gặp hơn. Thay vào đó, nhiều trẻ em dành phần lớn thời gian rảnh trước màn hình điện thoại hay máy tính, đắm mình trong thế giới của các trò chơi điện tử.</p>
+
+    <p>Vậy hai thế giới đó khác nhau như thế nào?</p>
+
+    <p>Về thể chất, trò chơi dân gian
+      <span class="tooltip-wrap"><span class="hl">đòi hỏi</span><span class="tooltip-box">requires, demands</span></span>
+      người chơi chạy nhảy, di chuyển, và ở ngoài trời nên cơ thể được vận động rất nhiều. Trò chơi điện tử thì ngược lại, người chơi có thể ngồi yên hàng tiếng đồng hồ, nhưng bù lại đòi hỏi
+      <span class="tooltip-wrap"><span class="hl">phản xạ</span><span class="tooltip-box">reflex, reaction</span></span>
+      nhanh và sự tập trung cao.</p>
+
+    <p>Về tính xã hội, cả hai đều có thể giúp người chơi kết bạn và làm việc nhóm nhưng theo những cách rất khác nhau. Trò chơi dân gian đòi hỏi sự hiện diện của nhau: nhìn mặt, nói chuyện, chờ đến lượt, xử lý
+      <span class="tooltip-wrap"><span class="hl">mâu thuẫn</span><span class="tooltip-box">conflict, disagreement</span></span>
+      ngay tại chỗ. Những kỹ năng như sự kiên nhẫn,
+      <span class="tooltip-wrap"><span class="hl">thương lượng</span><span class="tooltip-box">to negotiate</span></span>,
+      biết nhường nhịn, được
+      <span class="tooltip-wrap"><span class="hl">rèn giũa</span><span class="tooltip-box">developed, trained</span></span>
+      một cách tự nhiên qua từng ván chơi. Trò chơi điện tử cũng có tinh thần đồng đội, nhưng giao tiếp thường diễn ra qua tai nghe hoặc tin nhắn, ít đòi hỏi kỹ năng ứng xử trực tiếp hơn.</p>
+
+    <p>Một điểm khác biệt ít được nhắc đến là
+      <span class="tooltip-wrap"><span class="hl">giới hạn</span><span class="tooltip-box">limit, boundary</span></span>
+      của trò chơi. Trò chơi dân gian thường kết thúc tự nhiên khi trời tối, khi mỏi chân, hoặc khi cả nhóm đói bụng muốn về nhà. Trò chơi điện tử thì được thiết kế để giữ người chơi càng lâu càng tốt khiến việc dừng lại trở nên khó hơn nhiều.</p>
+
+    <p>Tất nhiên, không phải mọi thứ đều nghiêng về một phía. Trò chơi điện tử có thể rất sáng tạo,
+      <span class="tooltip-wrap"><span class="hl">kích thích</span><span class="tooltip-box">stimulate, encourage</span></span>
+      tư duy giải quyết vấn đề, và mở ra cơ hội kết nối với bạn bè ở xa. Còn trò chơi dân gian đôi khi cũng có thể gây
+      <span class="tooltip-wrap"><span class="hl">xích mích</span><span class="tooltip-box">quarrel, minor conflict</span></span>,
+      tranh cãi, hay tai nạn nhỏ. Không có trò chơi nào hoàn hảo cả.</p>
+
+    <p>Điều quan trọng hơn có lẽ không phải là chọn cái này hay cái kia, mà là biết
+      <span class="tooltip-wrap"><span class="hl">cân bằng</span><span class="tooltip-box">balance</span></span>.
+      Nhiều chuyên gia giáo dục cho rằng trẻ em cần cả hai: cần vận động ngoài trời, cần giao tiếp mặt đối mặt, nhưng cũng không cần phải xa lánh công nghệ trong thế giới hiện đại.</p>
+  </div>
+
+  <div style="text-align:right">
+    <button class="btn" onclick="showSection('comprehension')">Làm bài đọc hiểu →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 3: COMPREHENSION
+════════════════════════════════════════════ -->
+<div id="comprehension" class="section">
+  <div class="page-header">
+    <div class="tag">Đọc hiểu</div>
+    <h1>Câu hỏi đọc hiểu</h1>
+    <p>Chọn câu trả lời đúng nhất</p>
+  </div>
+
+  <div class="score-bar">
+    <div class="score-dot"></div>
+    <span id="comp-score">0 / 5 câu đúng</span>
+  </div>
+
+  <!-- Q1 -->
+  <div class="question-block">
+    <div class="q-text"><span class="q-num">1</span>Theo bài, điểm khác biệt về <strong>thể chất</strong> giữa hai loại trò chơi là gì?</div>
+    <div class="options">
+      <div class="option" onclick="checkAnswer(this, false, 1, 'Bài viết không nói điều này.')">
+        <div class="option-dot"></div>Trò chơi dân gian nguy hiểm hơn trò chơi điện tử.
+      </div>
+      <div class="option" onclick="checkAnswer(this, true, 1, '✓ Đúng! Trò chơi dân gian đòi hỏi chạy nhảy, di chuyển; còn trò chơi điện tử có thể ngồi yên nhưng đòi hỏi phản xạ nhanh.')">
+        <div class="option-dot"></div>Trò chơi dân gian đòi hỏi vận động cơ thể nhiều hơn.
+      </div>
+      <div class="option" onclick="checkAnswer(this, false, 1, 'Bài không nói trò chơi điện tử tốt cho sức khỏe hơn.')">
+        <div class="option-dot"></div>Trò chơi điện tử tốt cho sức khỏe hơn vì không bị thương.
+      </div>
+    </div>
+    <div id="fb-1" class="feedback"></div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="question-block">
+    <div class="q-text"><span class="q-num">2</span>Kỹ năng nào <strong>không</strong> được nhắc đến khi nói về trò chơi dân gian?</div>
+    <div class="options">
+      <div class="option" onclick="checkAnswer(this, false, 2, 'Kiên nhẫn được nhắc trong bài.')">
+        <div class="option-dot"></div>Kiên nhẫn
+      </div>
+      <div class="option" onclick="checkAnswer(this, false, 2, 'Thương lượng được nhắc trong bài.')">
+        <div class="option-dot"></div>Thương lượng
+      </div>
+      <div class="option" onclick="checkAnswer(this, true, 2, '✓ Đúng! Bài không nhắc đến lập trình — đó là kỹ năng liên quan đến công nghệ.')">
+        <div class="option-dot"></div>Lập trình
+      </div>
+    </div>
+    <div id="fb-2" class="feedback"></div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="question-block">
+    <div class="q-text"><span class="q-num">3</span>Tại sao trò chơi điện tử khó dừng lại hơn trò chơi dân gian?</div>
+    <div class="options">
+      <div class="option" onclick="checkAnswer(this, false, 3, 'Bài không nói về giá cả.')">
+        <div class="option-dot"></div>Vì trò chơi điện tử đắt tiền hơn nên người ta muốn chơi cho đáng.
+      </div>
+      <div class="option" onclick="checkAnswer(this, true, 3, '✓ Đúng! Bài viết nói trò chơi điện tử "được thiết kế để giữ người chơi càng lâu càng tốt".')">
+        <div class="option-dot"></div>Vì trò chơi điện tử được thiết kế để giữ người chơi càng lâu càng tốt.
+      </div>
+      <div class="option" onclick="checkAnswer(this, false, 3, 'Bài không đề cập đến điều này.')">
+        <div class="option-dot"></div>Vì không có bạn bè nhắc nhở khi chơi một mình.
+      </div>
+    </div>
+    <div id="fb-3" class="feedback"></div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="question-block">
+    <div class="q-text"><span class="q-num">4</span>Bài viết có ủng hộ <strong>hoàn toàn</strong> trò chơi dân gian không?</div>
+    <div class="options">
+      <div class="option" onclick="checkAnswer(this, false, 4, 'Bài không chỉ ca ngợi trò chơi dân gian.')">
+        <div class="option-dot"></div>Có, bài viết cho rằng trò chơi dân gian tốt hơn hoàn toàn.
+      </div>
+      <div class="option" onclick="checkAnswer(this, true, 4, '✓ Đúng! Bài thừa nhận trò chơi dân gian cũng có thể gây xích mích, tranh cãi, và kết luận bằng việc "biết cân bằng".')">
+        <div class="option-dot"></div>Không, bài thừa nhận cả hai đều có ưu và nhược điểm.
+      </div>
+      <div class="option" onclick="checkAnswer(this, false, 4, 'Bài không ủng hộ trò chơi điện tử hơn.')">
+        <div class="option-dot"></div>Không, bài ủng hộ trò chơi điện tử hơn vì phù hợp thời đại.
+      </div>
+    </div>
+    <div id="fb-4" class="feedback"></div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="question-block">
+    <div class="q-text"><span class="q-num">5</span>Câu nào tóm tắt đúng nhất <strong>kết luận</strong> của bài viết?</div>
+    <div class="options">
+      <div class="option" onclick="checkAnswer(this, false, 5, 'Bài không khuyên bỏ trò chơi điện tử.')">
+        <div class="option-dot"></div>Trẻ em nên bỏ trò chơi điện tử và quay về trò chơi dân gian.
+      </div>
+      <div class="option" onclick="checkAnswer(this, false, 5, 'Đây không phải kết luận của bài.')">
+        <div class="option-dot"></div>Trò chơi dân gian sắp biến mất hoàn toàn trong thời hiện đại.
+      </div>
+      <div class="option" onclick="checkAnswer(this, true, 5, '✓ Đúng! Bài kết luận rằng điều quan trọng là "biết cân bằng" giữa cả hai.')">
+        <div class="option-dot"></div>Điều quan trọng là biết cân bằng giữa hai loại trò chơi.
+      </div>
+    </div>
+    <div id="fb-5" class="feedback"></div>
+  </div>
+
+  <div style="text-align:right; margin-top:8px">
+    <button class="btn" onclick="showSection('vocab-practice')">Luyện từ vựng →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 4: VOCAB PRACTICE
+════════════════════════════════════════════ -->
+<div id="vocab-practice" class="section">
+  <div class="page-header">
+    <div class="tag">Luyện tập</div>
+    <h1>Luyện từ vựng</h1>
+    <p>Điền từ đúng vào chỗ trống</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📦 Ngân hàng từ</div>
+    <div class="word-bank" id="word-bank">
+      <div class="word-chip" data-word="hiện diện">hiện diện</div>
+      <div class="word-chip" data-word="sáng tạo">sáng tạo</div>
+      <div class="word-chip" data-word="rèn giũa">rèn giũa</div>
+      <div class="word-chip" data-word="giới hạn">giới hạn</div>
+      <div class="word-chip" data-word="xa lánh">xa lánh</div>
+      <div class="word-chip" data-word="xích mích">xích mích</div>
+    </div>
+
+    <div style="display:flex; flex-direction:column; gap:20px;">
+
+      <div>
+        <div class="fill-sentence">1. Trò chơi dân gian đòi hỏi <input class="fill-input" id="fill-1" placeholder="___" data-answer="hiện diện"> của nhau — nhìn mặt, nói chuyện trực tiếp.</div>
+      </div>
+
+      <div>
+        <div class="fill-sentence">2. Chơi nhóm giúp trẻ <input class="fill-input" id="fill-2" placeholder="___" data-answer="rèn giũa"> kỹ năng giao tiếp.</div>
+      </div>
+
+      <div>
+        <div class="fill-sentence">3. Trò chơi điện tử có thể rất <input class="fill-input" id="fill-3" placeholder="___" data-answer="sáng tạo"> và kích thích tư duy.</div>
+      </div>
+
+      <div>
+        <div class="fill-sentence">4. Trò chơi điện tử không có <input class="fill-input" id="fill-4" placeholder="___" data-answer="giới hạn"> thời gian rõ ràng.</div>
+      </div>
+
+      <div>
+        <div class="fill-sentence">5. Cuộc tranh cãi nhỏ dễ gây ra <input class="fill-input" id="fill-5" placeholder="___" data-answer="xích mích"> trong nhóm bạn.</div>
+      </div>
+
+      <div>
+        <div class="fill-sentence">6. Trẻ em không cần phải <input class="fill-input" id="fill-6" placeholder="___" data-answer="xa lánh"> công nghệ trong thế giới hiện đại.</div>
+      </div>
+    </div>
+
+    <div style="margin-top:20px; display:flex; gap:10px; flex-wrap:wrap;">
+      <button class="btn" onclick="checkFillBlanks()">Kiểm tra</button>
+      <button class="btn secondary" onclick="resetFill()">Làm lại</button>
+    </div>
+    <div id="fill-result" style="margin-top:12px; font-size:14px; font-weight:600;"></div>
+  </div>
+
+  <div style="text-align:right">
+    <button class="btn" onclick="showSection('extension')">Hoạt động mở rộng →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 5: EXTENSION
+════════════════════════════════════════════ -->
+<div id="extension" class="section">
+  <div class="page-header">
+    <div class="tag">Mở rộng</div>
+    <h1>Hoạt động mở rộng</h1>
+    <p>So sánh · Thảo luận · Kết nối bản thân</p>
+  </div>
+
+  <!-- COMPARE TABLE -->
+  <div class="card">
+    <div class="card-title">📊 Hoàn thành bảng so sánh</div>
+    <p style="font-size:14px; color:var(--muted); margin-bottom:16px;">Dựa vào bài đọc, điền thông tin vào bảng. Thảo luận với bạn bên cạnh.</p>
+    <table class="compare-table">
+      <thead>
+        <tr>
+          <th>Tiêu chí</th>
+          <th>🌿 Trò chơi dân gian</th>
+          <th>🎮 Trò chơi điện tử</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Thể chất</td>
+          <td>Chạy nhảy, vận động nhiều</td>
+          <td>Ngồi yên, ít vận động</td>
+        </tr>
+        <tr>
+          <td>Phản xạ / Tập trung</td>
+          <td style="color:#aaa; font-style:italic;">← bạn điền</td>
+          <td>Đòi hỏi phản xạ nhanh, tập trung cao</td>
+        </tr>
+        <tr>
+          <td>Giao tiếp xã hội</td>
+          <td>Trực tiếp, mặt đối mặt</td>
+          <td style="color:#aaa; font-style:italic;">← bạn điền</td>
+        </tr>
+        <tr>
+          <td>Kỹ năng được rèn</td>
+          <td>Kiên nhẫn, thương lượng, nhường nhịn</td>
+          <td style="color:#aaa; font-style:italic;">← bạn điền</td>
+        </tr>
+        <tr>
+          <td>Giới hạn thời gian</td>
+          <td style="color:#aaa; font-style:italic;">← bạn điền</td>
+          <td>Không rõ ràng, khó dừng</td>
+        </tr>
+        <tr>
+          <td>Nhược điểm</td>
+          <td style="color:#aaa; font-style:italic;">← bạn điền</td>
+          <td style="color:#aaa; font-style:italic;">← bạn điền</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- DISCUSSION -->
+  <div class="card">
+    <div class="card-title">💬 Thảo luận nhóm</div>
+    <p style="font-size:14px; color:var(--muted); margin-bottom:16px;">Thảo luận theo cặp hoặc nhóm 3 người · 5–7 phút</p>
+
+    <div class="discuss-card">
+      <div class="discuss-q">1. Hồi nhỏ, bạn hay chơi trò gì? Ở nhà có ai từng kể cho bạn nghe về trò chơi dân gian không?</div>
+      <div class="discuss-prompt">Gợi ý: "Hồi nhỏ tôi hay chơi... / Bà/mẹ tôi từng kể về..."</div>
+    </div>
+
+    <div class="discuss-card">
+      <div class="discuss-q">2. Bạn đồng ý hay không đồng ý với câu này: <em>"Trò chơi dân gian giúp trẻ em trưởng thành hơn trò chơi điện tử."</em></div>
+      <div class="discuss-prompt">Hãy đưa ra ít nhất 1 lý do từ bài đọc và 1 lý do từ kinh nghiệm cá nhân.</div>
+    </div>
+
+    <div class="discuss-card">
+      <div class="discuss-q">3. Theo bạn, "cân bằng" trong bài có nghĩa cụ thể là gì? Ví dụ như chơi bao nhiêu tiếng mỗi ngày?</div>
+      <div class="discuss-prompt">Không có đáp án đúng sai — hãy chia sẻ quan điểm của bạn.</div>
+    </div>
+  </div>
+
+  <!-- WRITING PROMPT -->
+  <div class="card">
+    <div class="card-title">✍️ Viết ngắn — 5 phút</div>
+    <p style="font-size:14px; color:var(--muted); margin-bottom:14px;">Chọn <strong>một</strong> trong hai đề sau và viết 3–5 câu:</p>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+      <div style="background:var(--green-pale); border-radius:10px; padding:16px; border:1px solid #B7E4C7;">
+        <div style="font-weight:700; color:var(--green); margin-bottom:8px;">Đề A 🌿</div>
+        <div style="font-size:14px;">Mô tả một trò chơi mà người thân đã kể cho bạn nghe. Trò chơi đó có gì thú vị?</div>
+      </div>
+      <div style="background:var(--amber-pale); border-radius:10px; padding:16px; border:1px solid #F5CBA7;">
+        <div style="font-weight:700; color:#B7770D; margin-bottom:8px;">Đề B 🎮</div>
+        <div style="font-size:14px;">Bạn nghĩ trẻ em ngày nay nên dành bao nhiêu thời gian cho trò chơi điện tử? Vì sao?</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOMEWORK -->
+  <div class="card" style="background: linear-gradient(135deg, #1A1A2E, #2D3561); color:white; border:none;">
+    <div class="card-title" style="color:#52B788;">📚 Bài tập về nhà</div>
+    <p style="font-size:14px; opacity:0.85; line-height:1.9;">
+      Phỏng vấn một người thân — ông bà, bố mẹ, cô chú — về một trò chơi dân gian họ từng chơi hồi nhỏ.<br><br>
+      Sau đó, viết một bài hướng dẫn cách chơi trò đó (600–900 chữ) với đủ 4 phần: <strong style="color:var(--green-light);">giới thiệu · chuẩn bị · luật chơi · cảm nghĩ</strong>.
+    </p>
+  </div>
+
+</div>
+
+<script>
+// ── TAB NAVIGATION ──
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const tabs = document.querySelectorAll('.nav-tab');
+  const map = {'vocab-pre':0,'reading':1,'comprehension':2,'vocab-practice':3,'extension':4};
+  tabs[map[id]].classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// ── MATCHING (multi-game) ──
+const matchState = {};
+
+function selectMatchGame(el, side, game) {
+  if (el.classList.contains('correct')) return;
+  if (!matchState[game]) matchState[game] = { left: null, right: null, score: 0 };
+  const state = matchState[game];
+
+  const allLeft = document.querySelectorAll(`[data-game="${game}"][onclick*="'left'"]`);
+  const allRight = document.querySelectorAll(`[data-game="${game}"][onclick*="'right'"]`);
+
+  if (side === 'left') {
+    allLeft.forEach(i => { if (!i.classList.contains('correct')) i.classList.remove('selected'); });
+    state.left = el;
+    el.classList.add('selected');
+  } else {
+    allRight.forEach(i => { if (!i.classList.contains('correct')) i.classList.remove('selected'); });
+    state.right = el;
+    el.classList.add('selected');
+  }
+
+  if (state.left && state.right) {
+    const total = allLeft.length;
+    if (state.left.dataset.pair === state.right.dataset.pair) {
+      state.left.classList.remove('selected'); state.left.classList.add('correct');
+      state.right.classList.remove('selected'); state.right.classList.add('correct');
+      state.score++;
+      const resultEl = document.getElementById(game + '-result');
+      resultEl.style.color = 'var(--green)';
+      resultEl.textContent = state.score === total ? '🎉 Hoàn thành! Bạn ghép đúng tất cả.' : `✓ Đúng! (${state.score}/${total})`;
+    } else {
+      state.left.classList.add('wrong'); state.right.classList.add('wrong');
+      setTimeout(() => {
+        state.left.classList.remove('wrong', 'selected');
+        state.right.classList.remove('wrong', 'selected');
+      }, 600);
+      const resultEl = document.getElementById(game + '-result');
+      resultEl.style.color = 'var(--red)';
+      resultEl.textContent = '✗ Chưa đúng, thử lại nhé!';
+    }
+    state.left = null; state.right = null;
+  }
+}
+
+function resetMatchGame(game) {
+  if (matchState[game]) { matchState[game] = { left: null, right: null, score: 0 }; }
+  document.querySelectorAll(`[data-game="${game}"]`).forEach(el => {
+    el.classList.remove('correct', 'wrong', 'selected');
+  });
+  const resultEl = document.getElementById(game + '-result');
+  if (resultEl) resultEl.textContent = '';
+}
+
+// Keep old selectMatch for backward compat (unused but safe)
+let matchLeft = null, matchRight = null, matchScore = 0;
+function selectMatch(el, side) { selectMatchGame(el, side, 'legacy'); }
+
+// ── COMPREHENSION ──
+let compScore = 0;
+const answered = {};
+
+function checkAnswer(el, isCorrect, qNum, feedback) {
+  if (answered[qNum]) return;
+  answered[qNum] = true;
+
+  const allOptions = el.parentElement.querySelectorAll('.option');
+  allOptions.forEach(o => o.classList.add('disabled'));
+
+  const fb = document.getElementById('fb-' + qNum);
+
+  if (isCorrect) {
+    el.classList.add('correct');
+    compScore++;
+    fb.textContent = feedback;
+    fb.className = 'feedback show correct-fb';
+  } else {
+    el.classList.add('wrong');
+    fb.textContent = feedback;
+    fb.className = 'feedback show wrong-fb';
+    allOptions.forEach(o => {
+      const onclick = o.getAttribute('onclick');
+      if (onclick && onclick.includes('true')) o.classList.add('correct');
+    });
+  }
+
+  document.getElementById('comp-score').textContent = `${compScore} / 5 câu đúng`;
+}
+
+// ── FILL BLANKS ──
+function checkFillBlanks() {
+  let correct = 0;
+  for (let i = 1; i <= 6; i++) {
+    const input = document.getElementById('fill-' + i);
+    const val = input.value.trim().toLowerCase();
+    const ans = input.dataset.answer.toLowerCase();
+    input.classList.remove('correct', 'wrong');
+    if (val === ans) {
+      input.classList.add('correct');
+      correct++;
+    } else {
+      input.classList.add('wrong');
+    }
+  }
+  const result = document.getElementById('fill-result');
+  result.textContent = correct === 6 ? '🎉 Xuất sắc! Bạn điền đúng tất cả!' : `${correct}/6 câu đúng. Kiểm tra lại những ô đỏ nhé.`;
+  result.style.color = correct === 6 ? 'var(--green)' : 'var(--red)';
+}
+
+function resetFill() {
+  for (let i = 1; i <= 6; i++) {
+    const input = document.getElementById('fill-' + i);
+    input.value = '';
+    input.classList.remove('correct', 'wrong');
+  }
+  document.getElementById('fill-result').textContent = '';
+}
+</script>
+</body>
+</html>

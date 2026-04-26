@@ -682,7 +682,7 @@
   /* ── EMBEDDED AUDIO ── */
   .audio-embed-wrap { display:none; padding:8px 16px; background:rgba(0,0,0,0.08); border-top:1px solid rgba(0,0,0,0.12); }
   .audio-embed-wrap.open { display:block; }
-  .audio-embed-wrap audio { width:100%; border-radius:4px; }
+  .audio-embed-wrap iframe { width:100%; height:80px; border:none; border-radius:4px; display:block; }
 
   /* ── GRASP CARD ── */
   .grasp-table { width: 100%; border-collapse: collapse; }
@@ -1180,8 +1180,8 @@
                 <button onclick="toggleAudio('aud-a-na')" class="reading-audio-btn">🔊 NA</button>
               </div>
             </div>
-            <div id="aud-a-sa" class="audio-embed-wrap"><audio controls><source src="https://drive.google.com/uc?export=open&id=1zBFK-9fIipYA0Kk7Qr396th2QrMPRVKD" type="audio/mpeg"></audio></div>
-            <div id="aud-a-na" class="audio-embed-wrap"><audio controls><source src="https://drive.google.com/uc?export=open&id=1Es--tfF3A9FCY9EyaBvvxDHU4fE4tUac" type="audio/mpeg"></audio></div>
+            <div id="aud-a-sa" class="audio-embed-wrap"><iframe src="https://drive.google.com/file/d/1zBFK-9fIipYA0Kk7Qr396th2QrMPRVKD/preview" allow="autoplay"></iframe></div>
+            <div id="aud-a-na" class="audio-embed-wrap"><iframe src="https://drive.google.com/file/d/1Es--tfF3A9FCY9EyaBvvxDHU4fE4tUac/preview" allow="autoplay"></iframe></div>
             <div class="reading-text">
               Căn phòng cho thuê này nằm trên tầng 5 của một toà nhà ở phố Đặng Trần Côn, Đống Đa, Hà Nội. Toà nhà nằm trong một con ngõ nhỏ chỉ vừa đủ chỗ cho một người đi vào, vậy nên những người thuê nhà có phương tiện như xe máy sẽ cảm thấy khá bất tiện vì không gian ngõ hẹp, thêm vào đó, nhà lại không có chỗ để xe. Dù diện tích của cả toà nhà khá hạn chế, cầu thang dốc do chiều rộng hẹp nhưng hệ thống đèn điện ở hành lang là loại đèn thông minh, đi đến đâu sẽ tự bật sáng đến đấy.
               <br><br>
@@ -1198,7 +1198,7 @@
                 <button onclick="toggleAudio('aud-b-sa')" class="reading-audio-btn">🔊 SA</button>
               </div>
             </div>
-            <div id="aud-b-sa" class="audio-embed-wrap"><audio controls><source src="https://drive.google.com/uc?export=open&id=1D7SvIMvZ-y191a0SxgDnSOl6o4EuwJRR" type="audio/mpeg"></audio></div>
+            <div id="aud-b-sa" class="audio-embed-wrap"><iframe src="https://drive.google.com/file/d/1D7SvIMvZ-y191a0SxgDnSOl6o4EuwJRR/preview" allow="autoplay"></iframe></div>
             <div class="reading-text">
               Trong khi giá của các nhà trọ cao ngất ngưởng mà chất lượng phòng lại không được tốt thì homestay 52 Lĩnh Nam sẽ là một lựa chọn đúng đắn cho các bạn sinh viên. Homestay có vị trí rất thuận tiện: xung quanh khu nhà là chợ, siêu thị, phòng tập thể dục và bến xe buýt. Ngoài ra homestay còn gần rất nhiều các trường đại học lớn như Kinh tế quốc dân, Đại học Bách khoa, Đại học Xây dựng hay Kinh doanh công nghệ.
               <br><br>
@@ -1216,8 +1216,8 @@
                 <button onclick="toggleAudio('aud-c-na')" class="reading-audio-btn">🔊 NA</button>
               </div>
             </div>
-            <div id="aud-c-sa" class="audio-embed-wrap"><audio controls><source src="https://drive.google.com/uc?export=open&id=1krpwJ5XZWGBrUmQwPPijbJpF3WDrh1tB" type="audio/mpeg"></audio></div>
-            <div id="aud-c-na" class="audio-embed-wrap"><audio controls><source src="https://drive.google.com/uc?export=open&id=1DtXTLLW1bNZZvPz-nDlEtonetf8B2vFI" type="audio/mpeg"></audio></div>
+            <div id="aud-c-sa" class="audio-embed-wrap"><iframe src="https://drive.google.com/file/d/1krpwJ5XZWGBrUmQwPPijbJpF3WDrh1tB/preview" allow="autoplay"></iframe></div>
+            <div id="aud-c-na" class="audio-embed-wrap"><iframe src="https://drive.google.com/file/d/1DtXTLLW1bNZZvPz-nDlEtonetf8B2vFI/preview" allow="autoplay"></iframe></div>
             <div class="reading-text">
               Căn hộ nằm tại tầng 3 của một tòa chung cư ở khu Đống Đa, Hà Nội. Chung cư nằm trong một khu dân cư yên tĩnh, có khuôn viên cây xanh và sân chơi cho trẻ em. Điều này rất thuận lợi cho gia đình có con nhỏ. Có lối đi riêng dành cho cư dân, và bảo vệ 24/7 giúp bảo đảm an ninh tốt.
               <br><br>
@@ -1643,7 +1643,7 @@
             <div class="en-text">Listen to the room for rent advertisement and identify the room's pros and cons.</div>
           </div>
           <div style="margin-bottom:16px;">
-            <audio controls style="width:100%;border-radius:6px;accent-color:var(--teal);"><source src="https://drive.google.com/uc?export=open&id=10Mh_c0ovhG6f3O7PMALgoZEhnYbdAhrx" type="audio/mpeg"></audio>
+            <iframe src="https://drive.google.com/file/d/10Mh_c0ovhG6f3O7PMALgoZEhnYbdAhrx/preview" allow="autoplay" style="width:100%;height:80px;border:none;border-radius:6px;display:block;"></iframe>
           </div>
           <p style="font-size:14px;margin-bottom:16px;font-family:'Noto Serif',serif;line-height:1.9;">
             Căn phòng này phù hợp cho (1) <input class="blank-input" data-answer="người độc thân" style="width:140px;" placeholder="___________"> vì nó có diện tích 15m². Căn phòng cũng rất tốt cho (2) <input class="blank-input" data-answer="người bận rộn" style="width:140px;" placeholder="___________"> vì gần đường lớn. Người thuê không cần lo về (3) <input class="blank-input" data-answer="giờ giấc" style="width:100px;" placeholder="_______"> vì (4) <input class="blank-input" data-answer="chủ nhà" style="width:100px;" placeholder="_______"> không lưu trú ở đây. Tuy nhiên (5) <input class="blank-input" data-answer="không có chỗ để xe" style="width:160px;" placeholder="_______________"> nên có thể khó khăn cho những ai có xe máy. Không gian (6) <input class="blank-input" data-answer="ngõ hẹp" style="width:100px;" placeholder="_______"> là một điều bất tiện khi thuê phòng ở tại toà nhà này.
@@ -1685,7 +1685,7 @@
             <div class="en-text">Listen to the conversation below and decide whether the 3 following statements are true or false.</div>
           </div>
           <div style="margin-bottom:16px;">
-            <audio controls style="width:100%;border-radius:6px;accent-color:var(--teal);"><source src="https://drive.google.com/uc?export=open&id=163Awde-T8jvCYWBmxh_oiTxVY0Ib88sk" type="audio/mpeg"></audio>
+            <iframe src="https://drive.google.com/file/d/163Awde-T8jvCYWBmxh_oiTxVY0Ib88sk/preview" allow="autoplay" style="width:100%;height:80px;border:none;border-radius:6px;display:block;"></iframe>
           </div>
           <ul class="tf-list" id="tf-list">
             <li class="tf-item">

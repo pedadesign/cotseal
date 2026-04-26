@@ -808,23 +808,48 @@
   /* ── CITATION FOOTER ── */
   .citation-footer {
     margin-top: 48px;
-    padding: 24px;
-    background: var(--cream);
     border-radius: 10px;
-    border: 1px solid rgba(26,20,16,0.1);
-    font-size: 12px;
+    border: 1px solid rgba(42,122,111,0.22);
+    border-left: 4px solid var(--teal);
+    background: linear-gradient(to right, rgba(42,122,111,0.04) 0%, var(--cream) 60%);
+    overflow: hidden;
+    font-size: 13px;
     line-height: 1.7;
-    opacity: 0.75;
   }
-  .citation-footer a { color: var(--teal); }
+  .cf-head {
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 10px;
+    padding: 13px 20px;
+    background: rgba(42,122,111,0.08);
+    border-bottom: 1px solid rgba(42,122,111,0.15);
+  }
+  .cf-head-label {
+    font-size: 11px; font-weight: 700; letter-spacing: .9px;
+    text-transform: uppercase; color: var(--teal);
+  }
+  .cf-body {
+    padding: 16px 20px;
+    color: rgba(26,20,16,0.8);
+  }
+  .cf-body a { color: var(--teal); }
+  .cf-license {
+    display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
+    padding: 11px 20px;
+    background: rgba(26,20,16,0.03);
+    border-top: 1px solid rgba(26,20,16,0.08);
+    font-size: 12px; color: rgba(26,20,16,0.55);
+  }
+  .cf-license a { color: var(--teal); text-decoration: none; }
+  .cf-license a:hover { text-decoration: underline; }
   .pdf-download-btn {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 6px 14px; background: var(--teal); color: #fff;
-    border-radius: 6px; font-size: 12px; font-weight: 600;
-    text-decoration: none; letter-spacing: .3px;
-    transition: opacity .15s;
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 8px 18px;
+    background: var(--teal); color: #fff;
+    border-radius: 6px; font-size: 12px; font-weight: 700;
+    text-decoration: none; letter-spacing: .4px; white-space: nowrap;
+    transition: background .15s;
   }
-  .pdf-download-btn:hover { opacity: .85; }
+  .pdf-download-btn:hover { background: #1f5e55; color: #fff; }
 
   /* ── PROGRESS BAR ── */
   .progress-bar-wrap {
@@ -1919,26 +1944,28 @@
   </main>
 </div>
 
-<footer style="padding: 0 24px 24px;">
-  <div class="citation-footer" style="border-radius:8px;margin-top:0;">
+<footer style="padding: 0 24px 36px;">
+  <div class="citation-footer" style="margin-top:0;">
 
-    <!-- PDF download row -->
-    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px;">
-      <span style="font-size:12px;font-weight:600;opacity:0.9;">📄 Original Task Sheet</span>
-      <a href="https://osf.io/jhq6n/files/b5f8w" target="_blank" rel="noopener" class="pdf-download-btn">⬇ Download PDF</a>
+    <!-- Header row: label + download button -->
+    <div class="cf-head">
+      <span class="cf-head-label">📄 Source &amp; Attribution</span>
+      <a href="https://osf.io/jhq6n/files/b5f8w" target="_blank" rel="noopener" class="pdf-download-btn">⬇ Download Original PDF</a>
     </div>
 
-    <!-- Citation -->
-    <p style="margin-bottom:12px;">
-      <strong>Citation:</strong> This page is adapted from Phung, H. (2024). Read to recommend a house/room to a person. In H. Phung, A. Sakach, &amp; C. Nguyen (Eds.) <em>Intermediate Vietnamese: A Task-based Journey</em>. Open Educational Resources. <a href="https://doi.org/10.17605/OSF.IO/JHQ6N" target="_blank">https://doi.org/10.17605/OSF.IO/JHQ6N</a>
-    </p>
+    <!-- Citation body -->
+    <div class="cf-body">
+      <strong>Citation:</strong> This page is adapted from Phung, H. (2024). Read to recommend a house/room to a person. In H. Phung, A. Sakach, &amp; C. Nguyen (Eds.) <em>Intermediate Vietnamese: A Task-based Journey</em>. Open Educational Resources. <a href="https://doi.org/10.17605/OSF.IO/JHQ6N" target="_blank" rel="noopener">https://doi.org/10.17605/OSF.IO/JHQ6N</a>
+    </div>
 
-    <!-- CC BY 4.0 license -->
-    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding-top:10px;border-top:1px solid rgba(26,20,16,0.1);">
-      <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener" style="flex-shrink:0;">
-        <img src="https://licensebuttons.net/l/by/4.0/88x31.png" alt="Creative Commons Attribution 4.0 International" style="height:20px;vertical-align:middle;opacity:0.85;">
+    <!-- License bar -->
+    <div class="cf-license">
+      <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener" style="flex-shrink:0;line-height:0;">
+        <img src="https://licensebuttons.net/l/by/4.0/88x31.png" alt="Creative Commons Attribution 4.0 International" style="height:18px;vertical-align:middle;">
       </a>
-      <span>This adaptation is licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a> — the same license as the original work by Huy Phung.</span>
+      This adaptation is licensed under
+      <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>
+      — the same license as the original work by Huy Phung.
     </div>
 
   </div>

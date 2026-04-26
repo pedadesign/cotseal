@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>404 — Lost in Translation · COTSEAL</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "background": "#faf9f5",
+          "surface-container-low": "#f4f4f0",
+          "surface-container": "#efeeea",
+          "surface-container-highest": "#e3e2df",
+          "outline-variant": "#bec8ca",
+          "on-surface": "#1b1c1a",
+          "on-surface-variant": "#3e494a",
+          "primary": "#00535b",
+          "on-primary": "#ffffff",
+          "secondary": "#a03f30",
+          "tertiary": "#735c00",
+          "tertiary-container": "#cba72f",
+          "on-tertiary-container": "#4e3d00",
+        },
+        fontFamily: {
+          "headline": ["Manrope", "sans-serif"],
+          "body": ["Newsreader", "serif"],
+          "label": ["Manrope", "sans-serif"]
+        },
+        borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+      },
+    },
+  }
+</script>
+<style>
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(-2deg); }
+    50%       { transform: translateY(-12px) rotate(2deg); }
+  }
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .float    { animation: float 4s ease-in-out infinite; }
+  .fade-up  { animation: fade-up 0.7s ease forwards; }
+  .d1 { animation-delay: 0.1s; opacity: 0; }
+  .d2 { animation-delay: 0.25s; opacity: 0; }
+  .d3 { animation-delay: 0.4s; opacity: 0; }
+  .d4 { animation-delay: 0.6s; opacity: 0; }
+  .d5 { animation-delay: 0.8s; opacity: 0; }
+</style>
+</head>
+<body class="bg-background text-on-surface font-body min-h-screen flex flex-col items-center justify-center px-6 py-16 text-center overflow-x-hidden">
+
+  <!-- Floating 404 -->
+  <div class="float mb-6 select-none" aria-hidden="true">
+    <div class="text-[7rem] md:text-[10rem] font-extrabold font-headline leading-none tracking-tighter"
+         style="background: linear-gradient(135deg, #00535b 30%, #a03f30 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+      404
+    </div>
+  </div>
+
+  <!-- Badge -->
+  <span class="fade-up d1 inline-block px-4 py-1 mb-5 bg-tertiary-container text-on-tertiary-container rounded-full font-label text-xs uppercase tracking-widest font-bold">
+    Trang không tồn tại
+  </span>
+
+  <!-- Headline -->
+  <h1 class="fade-up d2 text-3xl md:text-5xl font-extrabold font-headline text-primary mb-5 leading-tight max-w-xl">
+    Lost in<br/><span class="italic font-body font-semibold text-secondary">Translation.</span>
+  </h1>
+
+  <!-- Body copy -->
+  <p class="fade-up d3 text-base md:text-lg font-body text-on-surface-variant leading-relaxed max-w-lg mb-4">
+    You've wandered somewhere between <strong>Hanoi</strong> and <strong>Manila</strong> and ended up here — a page that doesn't exist in any of the eight Southeast Asian languages we teach.
+  </p>
+  <p class="fade-up d3 text-base font-body text-on-surface-variant leading-relaxed max-w-md mb-10">
+    Our linguists checked. It's not in Vietnamese (<em>không có</em>), not in Thai (<em>ไม่มี</em>), not even in Khmer. It's simply... gone. 🪁
+  </p>
+
+  <!-- Language chips — "Not found" in SEA languages -->
+  <div class="fade-up d4 flex flex-wrap justify-center gap-2 mb-10 max-w-md">
+    <span class="px-3 py-1.5 rounded-full bg-surface-container font-label text-xs text-on-surface-variant" title="Vietnamese">🇻🇳 không tìm thấy</span>
+    <span class="px-3 py-1.5 rounded-full bg-surface-container font-label text-xs text-on-surface-variant" title="Thai">🇹🇭 ไม่พบ</span>
+    <span class="px-3 py-1.5 rounded-full bg-surface-container font-label text-xs text-on-surface-variant" title="Khmer">🇰🇭 រកមិនឃើញ</span>
+    <span class="px-3 py-1.5 rounded-full bg-surface-container font-label text-xs text-on-surface-variant" title="Burmese">🇲🇲 မတွေ့ပါ</span>
+    <span class="px-3 py-1.5 rounded-full bg-surface-container font-label text-xs text-on-surface-variant" title="Indonesian">🇮🇩 tidak ditemukan</span>
+    <span class="px-3 py-1.5 rounded-full bg-surface-container font-label text-xs text-on-surface-variant" title="Tagalog">🇵🇭 hindi mahanap</span>
+    <span class="px-3 py-1.5 rounded-full bg-surface-container font-label text-xs text-on-surface-variant" title="Lao">🇱🇦 ບໍ່ພົບ</span>
+  </div>
+
+  <!-- CTA -->
+  <div class="fade-up d5 flex flex-col sm:flex-row gap-4 items-center">
+    <a href="index.html"
+       class="px-8 py-3.5 bg-primary text-on-primary rounded-lg font-label text-xs uppercase tracking-widest font-bold shadow-md hover:opacity-90 active:scale-95 transition-all">
+      Take me home
+    </a>
+    <a href="resources.html"
+       class="px-8 py-3.5 border border-outline-variant text-on-surface-variant rounded-lg font-label text-xs uppercase tracking-widest font-bold hover:bg-surface-container transition-all">
+      Browse resources instead
+    </a>
+  </div>
+
+  <!-- Footer note -->
+  <p class="fade-up d5 mt-16 text-xs font-label text-on-surface-variant/50 tracking-wide">
+    © 2025 COTSEAL · Council of Teachers of Southeast Asian Languages
+  </p>
+
+</body>
+</html>

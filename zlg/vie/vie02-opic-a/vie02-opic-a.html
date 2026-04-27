@@ -515,6 +515,12 @@ Transcript: ${S.responses[i]||'[no response]'}
     a.href=URL.createObjectURL(content);
     a.download=`VIET102_${safeName}_Spring2026.zip`;
     document.body.appendChild(a);a.click();document.body.removeChild(a);
+    localStorage.setItem(EXAM_KEY, JSON.stringify({
+      name: S.name||'Unknown',
+      section: S.section||'',
+      completedAt: new Date().toISOString(),
+      dateStr: new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'})
+    }));
     if(status)status.textContent='✓ ZIP downloaded — submit to your instructor.';
   }catch(e){
     console.error(e);
@@ -828,7 +834,32 @@ async function grantMic(){
 }
 
 // ─── INIT ─────────────────────────────────────────────────────
-render();
+const EXAM_KEY = 'vie02-opic-a-completed';
+function rLocked(rec){
+  return `<div style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:#f8f9fa;font-family:system-ui,sans-serif;">
+    <div style="max-width:480px;text-align:center;padding:48px 32px;background:#fff;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,0.10);">
+      <div style="font-size:3rem;margin-bottom:16px;">🔒</div>
+      <h2 style="margin:0 0 12px;font-size:1.4rem;color:#1a1a2e;">Exam Already Submitted</h2>
+      <p style="color:#555;margin:0 0 20px;line-height:1.6;">
+        This exam was completed and the recordings were downloaded.<br>
+        Each student may only take this exam once per device.
+      </p>
+      <div style="background:#f0f4ff;border-radius:8px;padding:16px;font-size:0.9rem;color:#333;">
+        <strong>Student:</strong> ${rec.name}<br>
+        ${rec.section?`<strong>Section:</strong> ${rec.section}<br>`:''}
+        <strong>Submitted:</strong> ${rec.dateStr}
+      </div>
+      <p style="margin-top:20px;font-size:0.8rem;color:#999;">If you believe this is an error, please contact your instructor.</p>
+    </div>
+  </div>`;
+}
+(function init(){
+  const raw = localStorage.getItem(EXAM_KEY);
+  if(raw){
+    try{ document.getElementById('app').innerHTML = rLocked(JSON.parse(raw)); }
+    catch(e){ document.getElementById('app').innerHTML = rLocked({name:'Unknown',section:'',dateStr:'Previously'}); }
+  } else { render(); }
+})();
 </script>
 </body>
 </html>

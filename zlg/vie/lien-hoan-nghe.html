@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bài 3: Liên hoan — Interactive Listening | UCSD</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #182B49;
+    --gold: #C69214;
+    --gold-light: #F0C84A;
+    --sky: #00629B;
+    --sky-light: #76b7d7;
+    --white: #FDFCF8;
+    --off: #F4F1EA;
+    --ink: #1a1a2e;
+    --muted: #6b7280;
+    --success: #15803d;
+    --success-bg: #dcfce7;
+    --error: #b91c1c;
+    --error-bg: #fee2e2;
+    --radius: 14px;
+    --shadow: 0 4px 24px rgba(24,43,73,0.12);
+    --shadow-lg: 0 12px 48px rgba(24,43,73,0.18);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--navy);
+    color: var(--white);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── BACKGROUND TEXTURE ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 20% 10%, rgba(0,98,155,0.35) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 80%, rgba(198,146,20,0.18) 0%, transparent 55%),
+      repeating-linear-gradient(45deg, transparent, transparent 40px, rgba(255,255,255,0.015) 40px, rgba(255,255,255,0.015) 41px);
+    pointer-events: none;
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: relative; z-index: 10;
+    padding: 18px 32px;
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 2px solid rgba(198,146,20,0.4);
+    background: rgba(24,43,73,0.85);
+    backdrop-filter: blur(12px);
+  }
+  .ucsd-logo {
+    display: flex; align-items: center; gap: 14px;
+  }
+  .ucsd-seal {
+    width: 52px; height: 52px;
+    background: var(--gold);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 18px; font-weight: 900;
+    color: var(--navy);
+    flex-shrink: 0;
+    box-shadow: 0 0 0 3px rgba(198,146,20,0.3);
+  }
+  .ucsd-text { line-height: 1.15; }
+  .ucsd-text strong { font-size: 15px; letter-spacing: 0.08em; font-weight: 600; color: var(--gold-light); }
+  .ucsd-text span { font-size: 12px; color: rgba(255,255,255,0.6); display: block; letter-spacing: 0.04em; }
+  .lesson-tag {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+    background: rgba(198,146,20,0.2); border: 1px solid var(--gold);
+    color: var(--gold-light); padding: 6px 14px; border-radius: 99px;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative; z-index: 5;
+    text-align: center;
+    padding: 48px 24px 32px;
+  }
+  .hero-eyebrow {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 12px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 900; line-height: 1.05;
+    background: linear-gradient(135deg, var(--white) 30%, var(--gold-light) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    margin-bottom: 12px;
+  }
+  .hero p {
+    font-size: 16px; color: rgba(255,255,255,0.7); max-width: 560px; margin: 0 auto 28px;
+    line-height: 1.6;
+  }
+
+  /* ── SCORE BAR ── */
+  .score-bar {
+    position: relative; z-index: 5;
+    display: flex; align-items: center; justify-content: center; gap: 20px;
+    padding: 14px 28px; margin: 0 auto 32px;
+    max-width: 620px;
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 99px;
+    backdrop-filter: blur(8px);
+  }
+  .score-item { text-align: center; }
+  .score-item .val {
+    font-family: 'DM Mono', monospace;
+    font-size: 22px; font-weight: 500;
+    color: var(--gold-light);
+  }
+  .score-item .lbl { font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.5); }
+  .score-divider { width: 1px; height: 36px; background: rgba(255,255,255,0.2); }
+
+  /* ── AUDIO PLAYER ── */
+  .audio-section {
+    position: relative; z-index: 5;
+    max-width: 700px; margin: 0 auto 40px;
+    padding: 0 20px;
+  }
+  .audio-card {
+    background: linear-gradient(135deg, rgba(0,98,155,0.6), rgba(24,43,73,0.9));
+    border: 1px solid rgba(118,183,215,0.4);
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    display: flex; flex-direction: column; gap: 16px;
+  }
+  .audio-title { font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--sky-light); font-weight: 600; }
+  .audio-embed { border-radius: 8px; overflow: hidden; width: 100%; }
+  .audio-embed iframe { width: 100%; border: none; display: block; }
+  .audio-hint {
+    font-size: 12px; color: rgba(255,255,255,0.5); display: flex; align-items: center; gap: 6px;
+  }
+  .audio-hint span { color: var(--gold); }
+
+  /* ── ACTIVITY NAV ── */
+  .activity-nav {
+    position: relative; z-index: 5;
+    display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;
+    padding: 0 20px; margin-bottom: 32px;
+  }
+  .act-btn {
+    padding: 10px 20px; border-radius: 99px; border: 2px solid rgba(255,255,255,0.2);
+    background: transparent; color: rgba(255,255,255,0.6); cursor: pointer;
+    font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+    transition: all 0.25s ease; white-space: nowrap;
+    display: flex; align-items: center; gap: 7px;
+  }
+  .act-btn:hover { border-color: var(--gold); color: var(--gold-light); background: rgba(198,146,20,0.1); }
+  .act-btn.active { background: var(--gold); border-color: var(--gold); color: var(--navy); font-weight: 700; }
+  .act-btn .badge {
+    background: rgba(0,0,0,0.2); border-radius: 99px;
+    font-size: 10px; padding: 1px 6px; font-family: 'DM Mono', monospace;
+  }
+  .act-btn.active .badge { background: rgba(0,0,0,0.25); }
+
+  /* ── MAIN CONTENT ── */
+  .content-area {
+    position: relative; z-index: 5;
+    max-width: 820px; margin: 0 auto;
+    padding: 0 20px 80px;
+  }
+
+  .activity-panel { display: none; }
+  .activity-panel.visible { display: block; animation: slideUp 0.35s ease; }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── CARD ── */
+  .card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: var(--radius);
+    padding: 28px;
+    margin-bottom: 20px;
+    backdrop-filter: blur(6px);
+  }
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem; font-weight: 700;
+    color: var(--gold-light); margin-bottom: 6px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .card-subtitle { font-size: 13px; color: rgba(255,255,255,0.55); margin-bottom: 20px; line-height: 1.5; }
+
+  /* ── ACTIVITY 1: INGREDIENT TAP GAME ── */
+  .pair-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(198,146,20,0.2); border: 1px solid var(--gold);
+    color: var(--gold-light); font-size: 11px; font-weight: 600;
+    padding: 3px 10px; border-radius: 99px; letter-spacing: 0.06em; margin-bottom: 16px;
+  }
+  .ingredient-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px;
+    margin-top: 16px;
+  }
+  .ingredient-chip {
+    padding: 12px 10px; border-radius: 10px; border: 2px solid rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.06); color: var(--white);
+    cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
+    text-align: center; transition: all 0.2s ease; user-select: none;
+    position: relative; overflow: hidden;
+  }
+  .ingredient-chip:hover { border-color: var(--sky-light); background: rgba(0,98,155,0.25); transform: translateY(-2px); }
+  .ingredient-chip.selected {
+    border-color: var(--gold); background: rgba(198,146,20,0.25); color: var(--gold-light);
+    transform: scale(1.04);
+  }
+  .ingredient-chip.correct {
+    border-color: #22c55e; background: rgba(34,197,94,0.2); color: #86efac;
+    animation: popIn 0.3s ease;
+  }
+  .ingredient-chip.wrong {
+    border-color: #ef4444; background: rgba(239,68,68,0.2); color: #fca5a5;
+    animation: shake 0.35s ease;
+  }
+  @keyframes popIn {
+    0% { transform: scale(1); } 50% { transform: scale(1.15); } 100% { transform: scale(1); }
+  }
+  @keyframes shake {
+    0%,100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); }
+  }
+
+  .check-btn {
+    margin-top: 20px; padding: 13px 32px;
+    background: var(--gold); color: var(--navy);
+    border: none; border-radius: 99px; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 700;
+    transition: all 0.2s ease; letter-spacing: 0.04em;
+  }
+  .check-btn:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(198,146,20,0.4); }
+  .check-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+  .feedback-box {
+    margin-top: 16px; padding: 14px 18px; border-radius: 10px;
+    font-size: 14px; font-weight: 500; display: none;
+  }
+  .feedback-box.show { display: block; animation: slideUp 0.2s ease; }
+  .feedback-box.ok { background: rgba(34,197,94,0.15); border: 1px solid rgba(34,197,94,0.4); color: #86efac; }
+  .feedback-box.err { background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.35); color: #fca5a5; }
+
+  /* ── ACTIVITY 2: TRUE/FALSE ── */
+  .tf-item {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 12px; padding: 18px 20px; margin-bottom: 14px;
+  }
+  .tf-statement { font-size: 15px; line-height: 1.6; margin-bottom: 14px; color: rgba(255,255,255,0.9); }
+  .tf-statement .vi { font-size: 13px; color: var(--sky-light); display: block; margin-top: 4px; }
+  .tf-buttons { display: flex; gap: 10px; }
+  .tf-btn {
+    flex: 1; padding: 10px; border-radius: 8px; border: 2px solid rgba(255,255,255,0.2);
+    background: transparent; color: rgba(255,255,255,0.7); cursor: pointer;
+    font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600;
+    transition: all 0.2s ease; display: flex; align-items: center; justify-content: center; gap: 6px;
+  }
+  .tf-btn:hover { border-color: var(--sky-light); color: var(--white); background: rgba(0,98,155,0.2); }
+  .tf-btn.chosen {
+    border-color: rgba(255,255,255,0.4);
+    background: rgba(255,255,255,0.12);
+    color: var(--white);
+  }
+  .tf-btn.correct-reveal { border-color: #22c55e !important; background: rgba(34,197,94,0.25) !important; color: #86efac !important; }
+  .tf-btn.wrong-reveal { border-color: #ef4444 !important; background: rgba(239,68,68,0.2) !important; color: #fca5a5 !important; }
+  .tf-result { margin-top: 10px; font-size: 13px; padding: 8px 12px; border-radius: 8px; display: none; }
+  .tf-result.show { display: block; }
+  .tf-result.ok { background: rgba(34,197,94,0.1); color: #86efac; }
+  .tf-result.err { background: rgba(239,68,68,0.1); color: #fca5a5; }
+
+  /* ── ACTIVITY 3: DIALOGUE SORT ── */
+  .sort-instructions {
+    background: rgba(0,98,155,0.2); border: 1px solid rgba(118,183,215,0.3);
+    border-radius: 10px; padding: 14px 18px; margin-bottom: 20px; font-size: 13px; color: var(--sky-light);
+    display: flex; gap: 10px; align-items: flex-start;
+  }
+  .sort-instructions span { font-size: 18px; flex-shrink: 0; }
+  .sort-container { display: flex; flex-direction: column; gap: 8px; }
+  .sort-item {
+    background: rgba(255,255,255,0.06); border: 2px solid rgba(255,255,255,0.15);
+    border-radius: 10px; padding: 14px 18px;
+    cursor: grab; user-select: none;
+    transition: all 0.2s ease;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .sort-item:hover { border-color: var(--sky-light); background: rgba(0,98,155,0.2); }
+  .sort-item.dragging { opacity: 0.5; cursor: grabbing; border-color: var(--gold); transform: scale(0.98); }
+  .sort-item.drag-over { border-color: var(--gold-light); background: rgba(198,146,20,0.15); transform: translateY(-2px); }
+  .sort-item.correct-pos { border-color: #22c55e; background: rgba(34,197,94,0.1); }
+  .sort-item.wrong-pos { border-color: #ef4444; background: rgba(239,68,68,0.1); animation: shake 0.35s ease; }
+  .sort-handle { color: rgba(255,255,255,0.3); font-size: 18px; }
+  .sort-num {
+    min-width: 28px; height: 28px; border-radius: 50%;
+    background: rgba(0,98,155,0.4); border: 1px solid var(--sky-light);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'DM Mono', monospace; font-size: 12px; color: var(--sky-light);
+    flex-shrink: 0;
+  }
+  .sort-speaker { font-weight: 700; color: var(--gold-light); font-size: 13px; min-width: 50px; }
+  .sort-text { font-size: 14px; color: rgba(255,255,255,0.85); line-height: 1.5; }
+
+  /* ── ACTIVITY 4: FILL IN THE BLANK ── */
+  .fill-sentence {
+    font-size: 15px; line-height: 2.0; color: rgba(255,255,255,0.85);
+    margin-bottom: 20px;
+  }
+  .fill-input {
+    background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.25);
+    border-radius: 8px; color: var(--white); padding: 4px 10px;
+    font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
+    width: 130px; text-align: center; outline: none;
+    transition: all 0.2s ease; vertical-align: middle;
+  }
+  .fill-input:focus { border-color: var(--gold); background: rgba(198,146,20,0.1); }
+  .fill-input.correct { border-color: #22c55e; background: rgba(34,197,94,0.15); color: #86efac; }
+  .fill-input.wrong { border-color: #ef4444; background: rgba(239,68,68,0.15); color: #fca5a5; }
+
+  /* ── WORD BANK ── */
+  .word-bank {
+    display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px;
+    padding: 16px; background: rgba(255,255,255,0.04); border-radius: 10px;
+    border: 1px dashed rgba(255,255,255,0.2);
+  }
+  .word-token {
+    background: rgba(0,98,155,0.3); border: 1px solid var(--sky-light);
+    color: var(--sky-light); border-radius: 99px; padding: 5px 14px;
+    font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s;
+  }
+  .word-token:hover { background: rgba(0,98,155,0.5); transform: translateY(-1px); }
+  .word-token.used { opacity: 0.35; pointer-events: none; text-decoration: line-through; }
+
+  /* ── VOCAB SECTION ── */
+  .vocab-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; }
+  .vocab-card {
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 10px; padding: 16px; text-align: center; transition: all 0.2s;
+    cursor: default;
+  }
+  .vocab-card:hover { border-color: var(--gold); background: rgba(198,146,20,0.1); transform: translateY(-2px); }
+  .vocab-vi { font-size: 16px; font-weight: 700; color: var(--white); margin-bottom: 4px; }
+  .vocab-en { font-size: 12px; color: var(--sky-light); font-style: italic; }
+
+  /* ── TRANSCRIPT ── */
+  .transcript-toggle {
+    width: 100%; padding: 14px 20px; background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.15); border-radius: 10px; color: rgba(255,255,255,0.7);
+    cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600;
+    text-align: left; display: flex; justify-content: space-between; align-items: center;
+    transition: all 0.2s; margin-bottom: 4px;
+  }
+  .transcript-toggle:hover { border-color: var(--sky-light); color: var(--white); background: rgba(0,98,155,0.2); }
+  .transcript-body {
+    display: none; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px; padding: 20px; margin-bottom: 20px;
+  }
+  .transcript-body.open { display: block; animation: slideUp 0.25s ease; }
+  .transcript-line { display: flex; gap: 12px; margin-bottom: 12px; font-size: 14px; line-height: 1.6; }
+  .transcript-line:last-child { margin-bottom: 0; }
+  .t-speaker { font-weight: 700; color: var(--gold-light); min-width: 50px; flex-shrink: 0; font-size: 13px; }
+  .t-line { color: rgba(255,255,255,0.8); }
+
+  /* ── RESET / DONE ── */
+  .action-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 20px; }
+  .reset-btn {
+    padding: 11px 24px; border-radius: 99px;
+    border: 2px solid rgba(255,255,255,0.25); background: transparent;
+    color: rgba(255,255,255,0.6); cursor: pointer;
+    font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600;
+    transition: all 0.2s;
+  }
+  .reset-btn:hover { border-color: var(--sky-light); color: var(--white); }
+
+  /* ── POINTS POPUP ── */
+  #points-popup {
+    position: fixed; top: 80px; right: 24px; z-index: 100;
+    background: var(--gold); color: var(--navy);
+    font-family: 'DM Mono', monospace; font-size: 18px; font-weight: 700;
+    padding: 10px 22px; border-radius: 99px;
+    box-shadow: 0 4px 20px rgba(198,146,20,0.5);
+    display: none; animation: popUp 0.8s ease forwards;
+  }
+  @keyframes popUp {
+    0% { opacity: 0; transform: translateY(10px) scale(0.8); }
+    30% { opacity: 1; transform: translateY(0) scale(1.1); }
+    70% { opacity: 1; transform: translateY(0) scale(1); }
+    100% { opacity: 0; transform: translateY(-20px); }
+  }
+
+  /* ── COMPLETION BANNER ── */
+  .done-banner {
+    background: linear-gradient(135deg, rgba(34,197,94,0.2), rgba(198,146,20,0.2));
+    border: 2px solid #22c55e; border-radius: var(--radius);
+    padding: 24px; text-align: center; margin-top: 20px;
+    display: none;
+  }
+  .done-banner.show { display: block; animation: slideUp 0.3s ease; }
+  .done-banner h3 { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: #86efac; margin-bottom: 6px; }
+  .done-banner p { font-size: 14px; color: rgba(255,255,255,0.7); }
+
+  /* RESPONSIVE */
+  @media (max-width: 600px) {
+    header { padding: 14px 16px; }
+    .hero { padding: 32px 16px 24px; }
+    .ingredient-grid { grid-template-columns: repeat(3, 1fr); }
+    .score-bar { gap: 12px; padding: 12px 18px; }
+    .action-row { flex-direction: column; }
+    .sort-text { font-size: 13px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- POINTS POPUP -->
+<div id="points-popup">+10 điểm! 🎉</div>
+
+<!-- HEADER -->
+<header>
+  <div class="ucsd-logo">
+    <div class="ucsd-seal">UC</div>
+    <div class="ucsd-text">
+      <strong>UC SAN DIEGO</strong>
+      <span>Vietnamese Language Program</span>
+    </div>
+  </div>
+  <div class="lesson-tag">Bài 3</div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">🎧 Interactive Listening Activity</div>
+  <h1>Liên hoan 🍜</h1>
+  <p>Listen to the dialogue and complete all four challenges with your partner. Earn points and unlock the full transcript!</p>
+</div>
+
+<!-- SCORE BAR -->
+<div class="score-bar">
+  <div class="score-item">
+    <div class="val" id="score-display">0</div>
+    <div class="lbl">Điểm / Points</div>
+  </div>
+  <div class="score-divider"></div>
+  <div class="score-item">
+    <div class="val" id="acts-done">0/4</div>
+    <div class="lbl">Activities</div>
+  </div>
+  <div class="score-divider"></div>
+  <div class="score-item">
+    <div class="val" id="streak-display">🔥 0</div>
+    <div class="lbl">Streak</div>
+  </div>
+</div>
+
+<!-- AUDIO -->
+<div class="audio-section">
+  <div class="audio-card">
+    <div class="audio-title">🎵 Audio — Bài 3: Liên hoan</div>
+    <div class="audio-embed">
+      <audio controls style="width:100%;">
+        <source src="THB-Bai3.m4a" type="audio/mp4">
+        Your browser does not support the audio element.
+      </audio>
+    </div>
+    <div class="audio-hint">
+      <span>💡</span> Listen 2–3 times before starting. <span>With your partner:</span> one listens, one records answers!
+    </div>
+  </div>
+</div>
+
+<!-- ACTIVITY NAV -->
+<div class="activity-nav">
+  <button class="act-btn active" onclick="showActivity(1, this)">
+    🛒 Activity 1 <span class="badge" id="a1-badge">0/10</span>
+  </button>
+  <button class="act-btn" onclick="showActivity(2, this)">
+    ✅ Activity 2 <span class="badge" id="a2-badge">0/5</span>
+  </button>
+  <button class="act-btn" onclick="showActivity(3, this)">
+    🔀 Activity 3 <span class="badge" id="a3-badge">0/1</span>
+  </button>
+  <button class="act-btn" onclick="showActivity(4, this)">
+    ✍️ Activity 4 <span class="badge" id="a4-badge">0/8</span>
+  </button>
+  <button class="act-btn" onclick="showActivity(5, this)">
+    📖 Từ vựng
+  </button>
+</div>
+
+<!-- CONTENT AREA -->
+<div class="content-area">
+
+  <!-- ─────── ACTIVITY 1 ─────── -->
+  <div class="activity-panel visible" id="panel-1">
+    <div class="card">
+      <div class="pair-badge">👥 Pair Activity</div>
+      <div class="card-title">🛒 Shopping List Challenge</div>
+      <div class="card-subtitle">
+        Listen to the dialogue and tap <strong>every ingredient or food item mentioned</strong> by the characters. 
+        Partner A taps, Partner B keeps score!
+        <br>Find all 10 items to earn full marks.
+      </div>
+
+      <div class="ingredient-grid" id="ingredient-grid">
+        <!-- rendered by JS -->
+      </div>
+
+      <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-top:20px;">
+        <button class="check-btn" onclick="checkIngredients()">Check Answers ✓</button>
+        <button class="reset-btn" onclick="resetIngredients()">Reset</button>
+        <span style="font-size:13px; color:rgba(255,255,255,0.4);">Selected: <span id="sel-count">0</span></span>
+      </div>
+      <div class="feedback-box" id="ing-feedback"></div>
+      <div class="done-banner" id="ing-done">
+        <h3>🎉 Tuyệt vời! All items found!</h3>
+        <p>You identified all 10 ingredients. Move on to Activity 2!</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────── ACTIVITY 2 ─────── -->
+  <div class="activity-panel" id="panel-2">
+    <div class="card">
+      <div class="pair-badge">👥 Pair Discussion</div>
+      <div class="card-title">✅ Đúng hay Sai? (True or False)</div>
+      <div class="card-subtitle">
+        Listen again and decide: is each statement <strong>ĐÚNG (True)</strong> or <strong>SAI (False)</strong>?
+        Discuss with your partner before answering. Each correct answer = 2 points.
+      </div>
+
+      <div id="tf-container">
+        <!-- rendered by JS -->
+      </div>
+
+      <div class="action-row">
+        <button class="check-btn" onclick="checkTF()">Check All ✓</button>
+        <button class="reset-btn" onclick="resetTF()">Reset</button>
+      </div>
+      <div class="feedback-box" id="tf-feedback"></div>
+    </div>
+  </div>
+
+  <!-- ─────── ACTIVITY 3 ─────── -->
+  <div class="activity-panel" id="panel-3">
+    <div class="card">
+      <div class="pair-badge">👥 Group Challenge</div>
+      <div class="card-title">🔀 Sắp xếp hội thoại (Dialogue Scramble)</div>
+      <div class="card-subtitle">
+        These lines are <strong>out of order</strong>. Drag and drop them to rebuild the dialogue in the correct sequence.
+        Work together — earn 10 bonus points for getting it perfect!
+      </div>
+
+      <div class="sort-instructions">
+        <span>✋</span>
+        <div>Drag each line to its correct position. When you're happy with the order, click <strong>Check Order</strong>.</div>
+      </div>
+
+      <div class="sort-container" id="sort-container">
+        <!-- rendered by JS -->
+      </div>
+
+      <div class="action-row">
+        <button class="check-btn" onclick="checkSort()">Check Order ✓</button>
+        <button class="reset-btn" onclick="resetSort()">Shuffle Again</button>
+      </div>
+      <div class="feedback-box" id="sort-feedback"></div>
+    </div>
+  </div>
+
+  <!-- ─────── ACTIVITY 4 ─────── -->
+  <div class="activity-panel" id="panel-4">
+    <div class="card">
+      <div class="pair-badge">✍️ Individual → Compare</div>
+      <div class="card-title">✍️ Điền vào chỗ trống (Fill in the Blank)</div>
+      <div class="card-subtitle">
+        Complete the sentences from the dialogue. Use the word bank below, or recall from memory.
+        After finishing, compare answers with your partner!
+      </div>
+
+      <div class="word-bank" id="word-bank">
+        <!-- rendered by JS -->
+      </div>
+
+      <div id="fill-container">
+        <!-- rendered by JS -->
+      </div>
+
+      <div class="action-row">
+        <button class="check-btn" onclick="checkFill()">Check Answers ✓</button>
+        <button class="reset-btn" onclick="resetFill()">Clear All</button>
+      </div>
+      <div class="feedback-box" id="fill-feedback"></div>
+    </div>
+
+    <!-- TRANSCRIPT unlock -->
+    <div class="card" style="margin-top:20px;">
+      <div class="card-title">📜 Full Transcript</div>
+      <div class="card-subtitle">Complete Activity 4 to unlock the full dialogue.</div>
+      <button class="transcript-toggle" id="transcript-btn" onclick="toggleTranscript()">
+        <span>🔒 Locked — finish Activity 4 first</span>
+        <span id="t-chevron">▼</span>
+      </button>
+      <div class="transcript-body" id="transcript-body">
+        <!-- rendered by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────── ACTIVITY 5: VOCAB ─────── -->
+  <div class="activity-panel" id="panel-5">
+    <div class="card">
+      <div class="card-title">📖 Từ vựng — Vocabulary</div>
+      <div class="card-subtitle">Key words from Bài 3. Hover over each card to highlight it.</div>
+      <div class="vocab-grid" id="vocab-grid">
+        <!-- rendered by JS -->
+      </div>
+    </div>
+  </div>
+
+</div><!-- end content-area -->
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  DATA
+// ═══════════════════════════════════════════════════════
+
+const INGREDIENTS_ALL = [
+  { vi: 'thịt lợn', en: 'pork', inDialogue: true },
+  { vi: 'thịt bò', en: 'beef', inDialogue: true },
+  { vi: 'miến', en: 'glass noodles', inDialogue: true },
+  { vi: 'bánh đa nem', en: 'rice paper', inDialogue: true },
+  { vi: 'giá', en: 'bean sprouts', inDialogue: true },
+  { vi: 'măng', en: 'bamboo shoots', inDialogue: true },
+  { vi: 'mộc nhĩ', en: 'wood ear mushrooms', inDialogue: true },
+  { vi: 'rau sống', en: 'fresh herbs', inDialogue: true },
+  { vi: 'bún', en: 'rice vermicelli', inDialogue: true },
+  { vi: 'lạc', en: 'peanuts', inDialogue: true },
+  { vi: 'chanh', en: 'lime', inDialogue: true },
+  { vi: 'tỏi', en: 'garlic', inDialogue: true },
+  { vi: 'ớt', en: 'chilli', inDialogue: true },
+  { vi: 'hành', en: 'spring onion', inDialogue: true },
+  // distractors
+  { vi: 'cà chua', en: 'tomato', inDialogue: false },
+  { vi: 'nước mắm', en: 'fish sauce', inDialogue: false },
+  { vi: 'gạo', en: 'rice', inDialogue: false },
+  { vi: 'trứng', en: 'egg', inDialogue: false },
+];
+
+// 10 items explicitly named in list reading: thịt lợn, thịt bò, miến, bánh đa nem, giá, măng, mộc nhĩ, rau sống, bún, lạc
+// chanh/tỏi/ớt/hành named but as condiments (also correct to include — we'll count all 14 as correct and 10 as target, giving leniency)
+// Actually let's count all 14 as correct answers
+const CORRECT_INGREDIENTS = new Set([
+  'thịt lợn','thịt bò','miến','bánh đa nem','giá','măng','mộc nhĩ','rau sống','bún','lạc','chanh','tỏi','ớt','hành'
+]);
+
+const TF_QUESTIONS = [
+  {
+    en: "The party is about to start — it is almost 8:30 AM.",
+    vi: "Bữa liên hoan sắp bắt đầu — gần tám rưỡi rồi.",
+    answer: true,
+    explanation: "Nga says: 'Nhanh lên! Gần tám rưỡi rồi!' — it is almost 8:30."
+  },
+  {
+    en: "Hai volunteers to go to the market alone.",
+    vi: "Hải tình nguyện đi chợ một mình.",
+    answer: false,
+    explanation: "Vân is the one going to the market. She asks Hải to come with her because she can't carry everything alone."
+  },
+  {
+    en: "The group decides to buy 2 kg of bún (rice noodles).",
+    vi: "Nhóm quyết định mua 2 cân bún.",
+    answer: false,
+    explanation: "Vân points out 2 kg is too much for 4 people — they decide on just 1 kg."
+  },
+  {
+    en: "They already have peanuts at home, so they don't need to buy more.",
+    vi: "Nhà Vân vẫn còn lạc, nên không cần mua thêm.",
+    answer: true,
+    explanation: "Vân says: 'lạc nhà tớ vẫn còn bao nhiêu. Đừng mua nữa!'"
+  },
+  {
+    en: "They have beer and Coca-Cola ready for the party.",
+    vi: "Họ đã có bia và Coca-Cola cho bữa liên hoan.",
+    answer: true,
+    explanation: "Tuấn confirms: 'Đã có mấy chai bia và coca-cola rồi.'"
+  },
+];
+
+const DIALOGUE = [
+  { speaker: 'NGA', text: 'Nhanh lên các bạn ơi! Gần tám rưỡi rồi!' },
+  { speaker: 'VÂN', text: 'Tám rưỡi rồi kia à! Nhanh thế! Tớ đi chợ nhé. Danh sách các thứ cần mua đâu?' },
+  { speaker: 'NGA', text: 'Đây, đây. Cậu nhớ tìm mua cho đủ nhé!' },
+  { speaker: 'VÂN', text: 'Để tớ xem nào... Thịt lợn để làm nem này, thịt bò để xào này, miến, bánh đa nem, giá, măng, mộc nhĩ, rau sống... chanh, tỏi, ớt, hành... Ôi trời ơi, bao nhiêu thứ. Một mình tớ làm sao mà cầm hết được! Hải đi cùng tớ nhé!' },
+  { speaker: 'HẢI', text: 'Ừ, xong ngay! Thế có mua bún không, sao không thấy trong danh sách? Bọn mình định làm bún nem phải không?' },
+  { speaker: 'NGA', text: 'À, có, có! Các cậu mua độ hai cân bún nhé. Vân ơi, nhớ chọn kĩ nhé. Trời nắng bún dễ bị hỏng lắm.' },
+  { speaker: 'VÂN', text: 'Được rồi, cậu yên tâm. Nhưng mà này, hai cân bún cơ à? Bọn mình có bốn người, làm sao mà ăn hết được hai cân! Một cân thôi nhé.' },
+  { speaker: 'NGA', text: 'Ừ, một cân. À quên, có cần mua lạc không nhỉ?' },
+  { speaker: 'VÂN', text: 'Không, lạc nhà tớ vẫn còn bao nhiêu. Đừng mua nữa!' },
+  { speaker: 'NGA', text: 'Thế đã có gì uống chưa?' },
+  { speaker: 'TUẤN', text: 'Rồi, đã có mấy chai bia và coca-cola rồi.' },
+  { speaker: 'HẢI', text: 'Ôi, liên hoan vui nhỉ! Tớ ước gì ngày nào cũng có liên hoan.' },
+];
+
+const FILL_ITEMS = [
+  {
+    before: 'Món canh này đã rất vừa miệng rồi, cậu',
+    blank: 'đừng',
+    after: 'nêm thêm gia vị gì nữa nhé.'
+  },
+
+  {
+    before: 'Đi siêu thị nhớ viết',
+    blank: 'danh sách',
+    after: 'để khỏi quên mua đồ.'
+  },
+
+  {
+    before: 'Bạn nhớ',
+    blank: 'cầm',
+    after: 'theo chìa khóa nhà trước khi ra ngoài đi chợ nhé.'
+  },
+
+  {
+    before: 'Cậu cứ',
+    blank: 'yên tâm',
+    after: ', tớ sẽ đến đúng giờ.'
+  },
+
+  {
+    before: 'Ra cửa hàng nhớ',
+    blank: 'chọn',
+    after: 'trái cây tươi nhé.'
+  },
+
+  {
+    before: 'Nhà mình hết nước rồi, mua thêm vài',
+    blank: 'chai',
+    after: 'nước suối đi.'
+  },
+
+  {
+    before: 'Trời nóng quá, đồ ăn dễ bị',
+    blank: 'hỏng',
+    after: 'lắm.'
+  },
+
+  {
+    before: 'Chiều nay mình đi',
+    blank: 'mua',
+    after: 'đồ để nấu ăn nhé.'
+  }
+];
+
+const WORD_BANK = [
+  'danh sách',
+  'mua',
+  'chai',
+  'yên tâm',
+  'chọn',
+  'cầm',
+  'hỏng',
+  'đừng'
+];
+
+const VOCAB = [
+  { vi: 'liên hoan', en: 'party / celebration' },
+  { vi: 'xào', en: 'stir-fry' },
+  { vi: 'nem', en: 'spring roll' },
+  { vi: 'miến', en: 'glass noodles' },
+  { vi: 'bánh đa nem', en: 'rice paper' },
+  { vi: 'giá', en: 'bean sprouts' },
+  { vi: 'măng', en: 'bamboo shoots' },
+  { vi: 'mộc nhĩ', en: 'wood ear mushroom' },
+  { vi: 'rau sống', en: 'fresh herbs/greens' },
+  { vi: 'bún', en: 'rice vermicelli' },
+  { vi: 'lạc', en: 'peanuts' },
+  { vi: 'chanh', en: 'lime' },
+  { vi: 'tỏi', en: 'garlic' },
+  { vi: 'ớt', en: 'chilli pepper' },
+  { vi: 'hành', en: 'spring onion' },
+  { vi: 'hỏng', en: 'spoiled / broken' },
+];
+
+// ═══════════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════════
+
+let score = 0;
+let streak = 0;
+let actsDone = 0;
+let transcriptUnlocked = false;
+
+const selectedIngredients = new Set();
+let ingChecked = false;
+let tfAnswers = {};
+let tfChecked = false;
+let sortOrder = [];
+let sortChecked = false;
+let fillChecked = false;
+const usedWordTokens = new Set();
+
+// ═══════════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════════
+
+function init() {
+  renderIngredients();
+  renderTF();
+  renderSort();
+  renderFill();
+  renderVocab();
+  renderTranscript();
+}
+
+// ═══════════════════════════════════════════════════════
+//  NAVIGATION
+// ═══════════════════════════════════════════════════════
+
+function showActivity(n, btn) {
+  document.querySelectorAll('.activity-panel').forEach(p => p.classList.remove('visible'));
+  document.querySelectorAll('.act-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(`panel-${n}`).classList.add('visible');
+  btn.classList.add('active');
+}
+
+// ═══════════════════════════════════════════════════════
+//  SCORE / STREAK
+// ═══════════════════════════════════════════════════════
+
+function addPoints(pts, label) {
+  score += pts;
+  document.getElementById('score-display').textContent = score;
+  const popup = document.getElementById('points-popup');
+  popup.textContent = `+${pts} điểm! 🎉`;
+  popup.style.display = 'block';
+  popup.style.animation = 'none';
+  popup.offsetHeight;
+  popup.style.animation = 'popUp 1.2s ease forwards';
+  setTimeout(() => { popup.style.display = 'none'; }, 1200);
+}
+
+function updateStreak(correct) {
+  if (correct) streak++;
+  else streak = 0;
+  document.getElementById('streak-display').textContent = `🔥 ${streak}`;
+}
+
+function updateActsDone() {
+  actsDone++;
+  document.getElementById('acts-done').textContent = `${actsDone}/4`;
+}
+
+// ═══════════════════════════════════════════════════════
+//  ACTIVITY 1 — INGREDIENT TAP
+// ═══════════════════════════════════════════════════════
+
+function renderIngredients() {
+  const shuffled = [...INGREDIENTS_ALL].sort(() => Math.random() - 0.5);
+  const grid = document.getElementById('ingredient-grid');
+  grid.innerHTML = '';
+  shuffled.forEach(item => {
+    const chip = document.createElement('div');
+    chip.className = 'ingredient-chip';
+    chip.innerHTML = `<div>${item.vi}</div><div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:2px;">${item.en}</div>`;
+    chip.dataset.vi = item.vi;
+    chip.addEventListener('click', () => toggleIngredient(chip, item.vi));
+    grid.appendChild(chip);
+  });
+  updateSelCount();
+}
+
+function toggleIngredient(chip, vi) {
+  if (ingChecked) return;
+  if (selectedIngredients.has(vi)) {
+    selectedIngredients.delete(vi);
+    chip.classList.remove('selected');
+  } else {
+    selectedIngredients.add(vi);
+    chip.classList.add('selected');
+  }
+  updateSelCount();
+}
+
+function updateSelCount() {
+  document.getElementById('sel-count').textContent = selectedIngredients.size;
+}
+
+function checkIngredients() {
+  if (ingChecked) return;
+  ingChecked = true;
+  let correct = 0, wrong = 0;
+  document.querySelectorAll('#ingredient-grid .ingredient-chip').forEach(chip => {
+    const vi = chip.dataset.vi;
+    const inD = CORRECT_INGREDIENTS.has(vi);
+    const sel = selectedIngredients.has(vi);
+    if (sel && inD) { chip.classList.remove('selected'); chip.classList.add('correct'); correct++; }
+    else if (sel && !inD) { chip.classList.remove('selected'); chip.classList.add('wrong'); wrong++; }
+    else if (!sel && inD) { /* missed — don't mark */ }
+  });
+  const fb = document.getElementById('ing-feedback');
+  fb.classList.add('show');
+  if (correct >= 10 && wrong === 0) {
+    fb.className = 'feedback-box show ok';
+    fb.textContent = `🌟 Perfect! You found all ${correct} items with no mistakes!`;
+    document.getElementById('ing-done').classList.add('show');
+    addPoints(15);
+    updateActsDone();
+    document.getElementById('a1-badge').textContent = `${correct}/10+`;
+  } else {
+    const pts = Math.max(0, correct * 1 - wrong * 1);
+    fb.className = 'feedback-box show err';
+    fb.innerHTML = `You found <strong>${correct}</strong> correct items. ${wrong > 0 ? `<strong>${wrong}</strong> incorrect selection(s).` : ''} Try again or review the transcript!`;
+    addPoints(pts);
+    document.getElementById('a1-badge').textContent = `${correct}/10+`;
+  }
+  updateStreak(correct >= 10 && wrong === 0);
+}
+
+function resetIngredients() {
+  ingChecked = false;
+  selectedIngredients.clear();
+  renderIngredients();
+  const fb = document.getElementById('ing-feedback');
+  fb.classList.remove('show'); fb.textContent = '';
+  document.getElementById('ing-done').classList.remove('show');
+}
+
+// ═══════════════════════════════════════════════════════
+//  ACTIVITY 2 — TRUE / FALSE
+// ═══════════════════════════════════════════════════════
+
+function renderTF() {
+  const container = document.getElementById('tf-container');
+  container.innerHTML = '';
+  TF_QUESTIONS.forEach((q, i) => {
+    container.innerHTML += `
+      <div class="tf-item" id="tf-item-${i}">
+        <div class="tf-statement">
+          ${q.en}
+          <span class="vi">${q.vi}</span>
+        </div>
+        <div class="tf-buttons">
+          <button class="tf-btn" id="tf-true-${i}" onclick="selectTF(${i}, true)">👍 ĐÚNG (True)</button>
+          <button class="tf-btn" id="tf-false-${i}" onclick="selectTF(${i}, false)">👎 SAI (False)</button>
+        </div>
+        <div class="tf-result" id="tf-result-${i}"></div>
+      </div>`;
+  });
+}
+
+function selectTF(i, val) {
+  if (tfChecked) return;
+
+  tfAnswers[i] = val;
+
+  document.getElementById(`tf-true-${i}`).className =
+    `tf-btn ${val === true ? 'chosen' : ''}`;
+
+  document.getElementById(`tf-false-${i}`).className =
+    `tf-btn ${val === false ? 'chosen' : ''}`;
+}
+
+function checkTF() {
+  if (tfChecked) return;
+  if (Object.keys(tfAnswers).length < TF_QUESTIONS.length) {
+    const fb = document.getElementById('tf-feedback');
+    fb.className = 'feedback-box show err';
+    fb.textContent = 'Please answer all questions before checking!';
+    return;
+  }
+  tfChecked = true;
+  let correct = 0;
+  TF_QUESTIONS.forEach((q, i) => {
+    const chosen = tfAnswers[i];
+    const isRight = chosen === q.answer;
+    if (isRight) correct++;
+    const trueBtn = document.getElementById(`tf-true-${i}`);
+    const falseBtn = document.getElementById(`tf-false-${i}`);
+    trueBtn.disabled = true; falseBtn.disabled = true;
+    if (q.answer === true) trueBtn.classList.add('correct-reveal');
+    else falseBtn.classList.add('correct-reveal');
+    if (!isRight) {
+      if (chosen === true) trueBtn.classList.add('wrong-reveal');
+      else falseBtn.classList.add('wrong-reveal');
+    }
+    const res = document.getElementById(`tf-result-${i}`);
+    res.classList.add('show');
+    res.className = `tf-result show ${isRight ? 'ok' : 'err'}`;
+    res.innerHTML = `${isRight ? '✅' : '❌'} ${q.explanation}`;
+  });
+  const pts = correct * 2;
+  addPoints(pts);
+  updateStreak(correct === TF_QUESTIONS.length);
+  updateActsDone();
+  document.getElementById('a2-badge').textContent = `${correct}/5`;
+  const fb = document.getElementById('tf-feedback');
+  fb.className = `feedback-box show ${correct === 8 ? 'ok' : 'err'}`;
+  fb.textContent = `Score: ${correct}/5 — +${pts} points!`;
+}
+
+function resetTF() {
+  tfAnswers = {};
+  tfChecked = false;
+  renderTF();
+  const fb = document.getElementById('tf-feedback');
+  fb.classList.remove('show'); fb.textContent = '';
+}
+
+// ═══════════════════════════════════════════════════════
+//  ACTIVITY 3 — DIALOGUE SORT
+// ═══════════════════════════════════════════════════════
+
+function renderSort() {
+
+  const lines = [
+    {
+      id: 0,
+      speaker: 'NGA',
+      text: 'Nhanh lên các bạn ơi! Gần tám rưỡi rồi!'
+    },
+    {
+      id: 1,
+      speaker: 'VÂN',
+      text: 'Tám rưỡi rồi kia à! Nhanh thế! Tớ đi chợ nhé. Danh sách các thứ cần mua đâu?'
+    },
+    {
+      id: 2,
+      speaker: 'NGA',
+      text: 'Đây, đây. Cậu nhớ tìm mua cho đủ nhé!'
+    },
+    {
+      id: 3,
+      speaker: 'VÂN',
+      text: 'Để tớ xem nào....... Thịt lợn để làm nem này, thịt bò để xào này, miến, bánh đa nem, giá, măng, mộc nhĩ, rau sống.........chanh, tỏi, ớt, hành..........Ôi trời ơi, bao nhiêu thứ. Một mình tớ làm sao mà cầm hết được! Hải đi cùng tớ nhé!'
+    },
+    {
+      id: 4,
+      speaker: 'HẢI',
+      text: 'Ừ, xong ngay! Thế có mua bún không, sao không thấy trong danh sách? Bọn mình định làm bún nem phải không?'
+    },
+    {
+      id: 5,
+      speaker: 'NGA',
+      text: 'À, có, có! Các cậu mua độ hai cân bún nhé. Vân ơi, nhớ chọn kĩ nhé. Trời nắng bún dễ bị hỏng lắm.'
+    },
+    {
+      id: 6,
+      speaker: 'VÂN',
+      text: 'Được rồi, cậu yên tâm. Nhưng mà này, hai cân bún cơ à? Bọn mình có bốn người, làm sao mà ăn hết được hai cân! Một cân thôi nhé.'
+    },
+    {
+      id: 7,
+      speaker: 'NGA',
+      text: 'Ừ, một cân. À quên, có cần mua lạc không nhỉ?'
+    },
+    {
+      id: 8,
+      speaker: 'VÂN',
+      text: 'Không, lạc nhà tớ vẫn còn bao nhiêu. Đừng mua nữa!'
+    },
+    {
+      id: 9,
+      speaker: 'NGA',
+      text: 'Thế đã có gì uống chưa?'
+    },
+    {
+      id: 10,
+      speaker: 'TUẤN',
+      text: 'Rồi, đã có mấy chai bia và coca-cola rồi.'
+    },
+    {
+      id: 11,
+      speaker: 'HẢI',
+      text: 'Ôi, liên hoan vui nhỉ! Tớ ước gì ngày nào cũng có liên hoan.'
+    }
+  ];
+
+  sortOrder = [...lines].sort(() => Math.random() - 0.5);
+
+  _renderSortDOM();
+}
+
+function _renderSortDOM() {
+  const container = document.getElementById('sort-container');
+  container.innerHTML = '';
+  sortOrder.forEach((line, idx) => {
+    const item = document.createElement('div');
+    item.className = 'sort-item';
+    item.draggable = true;
+    item.dataset.id = line.id;
+    item.dataset.pos = idx;
+    item.innerHTML = `
+      <div class="sort-handle">⠿</div>
+      <div class="sort-num">${idx + 1}</div>
+      <div class="sort-speaker">${line.speaker}</div>
+      <div class="sort-text">${line.text}</div>`;
+    // Drag events
+    item.addEventListener('dragstart', onDragStart);
+    item.addEventListener('dragover', onDragOver);
+    item.addEventListener('drop', onDrop);
+    item.addEventListener('dragend', onDragEnd);
+    container.appendChild(item);
+  });
+  sortChecked = false;
+}
+
+let dragSrcEl = null;
+function onDragStart(e) {
+  dragSrcEl = this;
+  this.classList.add('dragging');
+  e.dataTransfer.effectAllowed = 'move';
+  e.dataTransfer.setData('text/plain', this.dataset.pos);
+}
+function onDragOver(e) {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+  document.querySelectorAll('.sort-item').forEach(el => el.classList.remove('drag-over'));
+  this.classList.add('drag-over');
+}
+function onDrop(e) {
+  e.preventDefault();
+  if (dragSrcEl === this) return;
+  const fromPos = parseInt(e.dataTransfer.getData('text/plain'));
+  const toPos = parseInt(this.dataset.pos);
+  // Swap in sortOrder
+  [sortOrder[fromPos], sortOrder[toPos]] = [sortOrder[toPos], sortOrder[fromPos]];
+  _renderSortDOM();
+}
+function onDragEnd() {
+  document.querySelectorAll('.sort-item').forEach(el => {
+    el.classList.remove('dragging');
+    el.classList.remove('drag-over');
+  });
+}
+
+function checkSort() {
+  if (sortChecked) return;
+  sortChecked = true;
+  let allCorrect = true;
+  document.querySelectorAll('.sort-item').forEach((el, idx) => {
+    const lineId = parseInt(el.dataset.id);
+    if (lineId === idx) {
+      el.classList.add('correct-pos');
+    } else {
+      el.classList.add('wrong-pos');
+      allCorrect = false;
+    }
+  });
+  const fb = document.getElementById('sort-feedback');
+  fb.classList.add('show');
+  if (allCorrect) {
+    fb.className = 'feedback-box show ok';
+    fb.textContent = '🎉 Perfect order! You reconstructed the dialogue correctly! +10 bonus points!';
+    addPoints(10);
+    updateActsDone();
+    document.getElementById('a3-badge').textContent = '1/1 ✓';
+  } else {
+    fb.className = 'feedback-box show err';
+    fb.textContent = 'Not quite — some lines are out of order. Highlighted in red. Try reshuffling!';
+    document.getElementById('a3-badge').textContent = '0/1';
+  }
+  updateStreak(allCorrect);
+}
+
+function resetSort() {
+  const fb = document.getElementById('sort-feedback');
+  fb.classList.remove('show'); fb.textContent = '';
+  renderSort();
+}
+
+// ═══════════════════════════════════════════════════════
+//  ACTIVITY 4 — FILL IN THE BLANK
+// ═══════════════════════════════════════════════════════
+
+function renderFill() {
+  const bank = document.getElementById('word-bank');
+  bank.innerHTML = '';
+  WORD_BANK.forEach(w => {
+    const tok = document.createElement('span');
+    tok.className = 'word-token';
+    tok.textContent = w;
+    tok.dataset.word = w;
+    tok.addEventListener('click', () => insertWord(w, tok));
+    bank.appendChild(tok);
+  });
+
+  const container = document.getElementById('fill-container');
+  container.innerHTML = '';
+  FILL_ITEMS.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'fill-sentence';
+    div.innerHTML = `<strong style="color:var(--sky-light)">${i + 1}.</strong> ${item.before} <input class="fill-input" id="fill-${i}" type="text" placeholder="___" data-answer="${item.blank}"> ${item.after}`;
+    container.appendChild(div);
+  });
+  fillChecked = false;
+  usedWordTokens.clear();
+}
+
+let activeInput = null;
+document.addEventListener('click', e => {
+  if (e.target.classList.contains('fill-input')) {
+    activeInput = e.target;
+  }
+});
+
+function insertWord(word, tok) {
+  if (!activeInput || fillChecked) return;
+  if (usedWordTokens.has(word)) return;
+  activeInput.value = word;
+  tok.classList.add('used');
+  usedWordTokens.add(word);
+  activeInput = null;
+}
+
+function checkFill() {
+  if (fillChecked) return;
+  fillChecked = true;
+  let correct = 0;
+  FILL_ITEMS.forEach((item, i) => {
+    const input = document.getElementById(`fill-${i}`);
+    const val = input.value.trim().toLowerCase();
+    const ans = item.blank.toLowerCase();
+    if (val === ans) {
+      input.classList.add('correct');
+      correct++;
+    } else {
+      input.classList.add('wrong');
+      input.value = item.blank;
+    }
+  });
+  const pts = correct * 2;
+  addPoints(pts);
+  updateStreak(correct === FILL_ITEMS.length);
+  updateActsDone();
+  document.getElementById('a4-badge').textContent = `${correct}/8`;
+  const fb = document.getElementById('fill-feedback');
+  fb.className = `feedback-box show ${correct === 5 ? 'ok' : 'err'}`;
+  fb.textContent = `${correct}/8 correct — +${pts} points!`;
+  if (correct >= 3) {
+    unlockTranscript();
+  }
+}
+
+function resetFill() {
+  fillChecked = false;
+  usedWordTokens.clear();
+  FILL_ITEMS.forEach((_, i) => {
+    const input = document.getElementById(`fill-${i}`);
+    input.value = '';
+    input.className = 'fill-input';
+  });
+  document.querySelectorAll('.word-token').forEach(tok => tok.classList.remove('used'));
+  const fb = document.getElementById('fill-feedback');
+  fb.classList.remove('show'); fb.textContent = '';
+}
+
+// ═══════════════════════════════════════════════════════
+//  TRANSCRIPT
+// ═══════════════════════════════════════════════════════
+
+function renderTranscript() {
+  const body = document.getElementById('transcript-body');
+  body.innerHTML = DIALOGUE.map(line =>
+    `<div class="transcript-line">
+      <div class="t-speaker">${line.speaker}:</div>
+      <div class="t-line">${line.text}</div>
+    </div>`
+  ).join('');
+}
+
+function unlockTranscript() {
+  if (transcriptUnlocked) return;
+  transcriptUnlocked = true;
+  const btn = document.getElementById('transcript-btn');
+  btn.querySelector('span').textContent = '📜 Hội thoại đầy đủ — tap to expand';
+}
+
+function toggleTranscript() {
+  if (!transcriptUnlocked) {
+    alert('Complete Activity 4 first to unlock the transcript!');
+    return;
+  }
+  const body = document.getElementById('transcript-body');
+  const chevron = document.getElementById('t-chevron');
+  if (body.classList.contains('open')) {
+    body.classList.remove('open');
+    chevron.textContent = '▼';
+  } else {
+    body.classList.add('open');
+    chevron.textContent = '▲';
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+//  VOCAB
+// ═══════════════════════════════════════════════════════
+
+function renderVocab() {
+  const grid = document.getElementById('vocab-grid');
+  grid.innerHTML = VOCAB.map(v =>
+    `<div class="vocab-card">
+      <div class="vocab-vi">${v.vi}</div>
+      <div class="vocab-en">${v.en}</div>
+    </div>`
+  ).join('');
+}
+
+// ── BOOT ──
+init();
+</script>
+</body>
+</html>

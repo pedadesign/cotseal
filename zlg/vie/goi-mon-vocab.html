@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Từ Vựng Nhà Hàng – Luyện Tập</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f1923;
+  --surface: #1a2636;
+  --surface2: #223045;
+  --border: #2e4060;
+  --orange: #ff7b35;
+  --orange-light: #ff9a5c;
+  --orange-glow: rgba(255,123,53,0.18);
+  --yellow: #ffd040;
+  --yellow-light: #fff3c0;
+  --green: #3ecf7e;
+  --green-light: rgba(62,207,126,0.15);
+  --red: #ff4d6d;
+  --red-light: rgba(255,77,109,0.15);
+  --blue: #4d9eff;
+  --blue-light: rgba(77,158,255,0.15);
+  --text: #e8f0ff;
+  --text-muted: #7a90b0;
+  --radius: 14px;
+  --radius-sm: 9px;
+  --shadow: 0 4px 24px rgba(0,0,0,0.35);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,0.5);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ── HEADER ── */
+header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 20px;
+  height: 64px;
+  display: flex; align-items: center; gap: 16px;
+  position: sticky; top: 0; z-index: 100;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.4);
+}
+.logo {
+  font-family: 'Baloo 2', cursive;
+  font-size: 20px; font-weight: 800;
+  color: var(--orange);
+  white-space: nowrap;
+}
+.logo span { color: var(--yellow); }
+
+/* XP BAR */
+.xp-area {
+  display: flex; align-items: center; gap: 10px;
+  flex: 1; max-width: 340px;
+}
+.xp-label {
+  font-size: 13px; font-weight: 800;
+  color: var(--yellow);
+  white-space: nowrap;
+}
+.xp-bar-wrap {
+  flex: 1; height: 12px;
+  background: var(--border);
+  border-radius: 99px; overflow: hidden;
+  position: relative;
+}
+.xp-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--orange), var(--yellow));
+  border-radius: 99px;
+  width: 0%;
+  transition: width 0.6s cubic-bezier(0.4,0,0.2,1);
+}
+.xp-level {
+  font-size: 13px; font-weight: 800;
+  background: var(--orange-glow);
+  border: 1px solid var(--orange);
+  color: var(--orange);
+  padding: 3px 10px; border-radius: 99px;
+  white-space: nowrap;
+}
+
+/* STREAK */
+.streak-badge {
+  display: flex; align-items: center; gap: 5px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  padding: 4px 12px;
+  font-size: 13px; font-weight: 800;
+  color: var(--yellow);
+  margin-left: auto;
+}
+
+/* NAV TABS */
+.nav-tabs {
+  display: flex; gap: 4px;
+  padding: 0 20px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  overflow-x: auto;
+}
+.nav-tab {
+  font-family: 'Nunito', sans-serif;
+  font-size: 13px; font-weight: 800;
+  padding: 12px 18px;
+  border: none; background: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -1px;
+  white-space: nowrap;
+  transition: all 0.15s;
+  display: flex; align-items: center; gap: 6px;
+}
+.nav-tab:hover { color: var(--text); }
+.nav-tab.active { color: var(--orange); border-bottom-color: var(--orange); }
+.tab-xp-pill {
+  font-size: 11px; font-weight: 800;
+  background: var(--orange-glow);
+  border: 1px solid var(--orange);
+  color: var(--orange);
+  padding: 1px 7px; border-radius: 99px;
+}
+
+/* MAIN */
+main { max-width: 760px; margin: 0 auto; padding: 28px 20px 80px; }
+.mode { display: none; }
+.mode.active { display: block; }
+
+/* SECTION HEADER */
+.section-header { margin-bottom: 24px; }
+.section-title {
+  font-family: 'Baloo 2', cursive;
+  font-size: 22px; font-weight: 800;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.section-sub { font-size: 14px; color: var(--text-muted); }
+
+/* XP TOAST */
+.xp-toast {
+  position: fixed;
+  top: 80px; right: 24px;
+  background: linear-gradient(135deg, var(--orange), var(--yellow));
+  color: #1a0a00;
+  font-weight: 900; font-size: 15px;
+  padding: 10px 20px; border-radius: 99px;
+  box-shadow: var(--shadow-lg);
+  pointer-events: none;
+  opacity: 0; transform: translateY(10px);
+  transition: opacity 0.3s, transform 0.3s;
+  z-index: 999;
+}
+.xp-toast.show { opacity: 1; transform: translateY(0); }
+
+/* ── FLASHCARD ── */
+.fc-wrapper { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+.fc-progress-row { display: flex; align-items: center; gap: 10px; width: 100%; max-width: 460px; }
+.fc-prog-dots { display: flex; gap: 5px; flex: 1; }
+.fc-prog-dot {
+  height: 6px; border-radius: 99px;
+  background: var(--border); flex: 1;
+  transition: background 0.3s;
+}
+.fc-prog-dot.seen { background: var(--orange); }
+.fc-prog-dot.done { background: var(--green); }
+.fc-count { font-size: 13px; font-weight: 800; color: var(--text-muted); white-space: nowrap; }
+
+.fc-scene { width: 100%; max-width: 460px; height: 240px; perspective: 1000px; cursor: pointer; }
+.fc-card {
+  width: 100%; height: 100%;
+  position: relative; transform-style: preserve-3d;
+  transition: transform 0.55s cubic-bezier(0.4,0.2,0.2,1);
+  border-radius: var(--radius);
+}
+.fc-card.flipped { transform: rotateY(180deg); }
+.fc-front, .fc-back {
+  position: absolute; inset: 0;
+  backface-visibility: hidden;
+  border-radius: var(--radius);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 28px; box-shadow: var(--shadow-lg);
+}
+.fc-front {
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+.fc-back {
+  background: linear-gradient(135deg, #1e3a28, #0f2019);
+  border: 1px solid var(--green);
+  transform: rotateY(180deg);
+}
+.fc-vi { font-family: 'Baloo 2', cursive; font-size: 32px; font-weight: 800; color: var(--text); }
+.fc-pos { font-size: 12px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 6px; }
+.fc-emoji { font-size: 44px; margin-bottom: 10px; }
+.fc-en { font-family: 'Baloo 2', cursive; font-size: 24px; font-weight: 800; color: var(--green); }
+.fc-example { font-size: 13px; color: rgba(62,207,126,0.7); margin-top: 8px; font-style: italic; }
+.fc-tap-hint { font-size: 12px; color: var(--text-muted); margin-top: 16px; }
+
+.fc-nav { display: flex; gap: 10px; }
+.btn {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800; font-size: 14px;
+  padding: 10px 22px; border-radius: 99px;
+  border: none; cursor: pointer; transition: all 0.15s;
+}
+.btn-ghost { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+.btn-ghost:hover { border-color: var(--orange); color: var(--orange); }
+.btn-primary { background: linear-gradient(135deg, var(--orange), var(--orange-light)); color: #fff; }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(255,123,53,0.4); }
+.btn-green { background: linear-gradient(135deg, var(--green), #2eb86a); color: #0f2019; }
+.btn-green:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(62,207,126,0.4); }
+
+/* ── MATCHING ── */
+.match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.match-col-title { font-size: 12px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 10px; }
+.match-item {
+  background: var(--surface);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  font-size: 14px; font-weight: 700;
+  cursor: pointer; margin-bottom: 8px;
+  transition: all 0.15s;
+  display: flex; align-items: center; gap: 8px;
+  min-height: 50px; color: var(--text);
+  user-select: none;
+}
+.match-item:hover:not(.matched):not(.disabled) { border-color: var(--orange); background: var(--orange-glow); }
+.match-item.selected { border-color: var(--orange); background: var(--orange-glow); color: var(--orange); }
+.match-item.matched { border-color: var(--green); background: var(--green-light); color: var(--green); cursor: default; }
+.match-item.wrong-flash { border-color: var(--red); background: var(--red-light); animation: shake 0.3s; }
+@keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-5px)} 75%{transform:translateX(5px)} }
+.match-done-msg {
+  margin-top: 18px; padding: 14px 18px;
+  border-radius: var(--radius-sm);
+  font-weight: 800; font-size: 15px;
+  background: var(--green-light); color: var(--green);
+  border: 1px solid var(--green); display: none;
+}
+.match-done-msg.show { display: block; }
+
+/* ── QUIZ ── */
+.quiz-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px; margin-bottom: 16px;
+}
+.quiz-q-label { font-size: 11px; font-weight: 800; color: var(--orange); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+.quiz-question { font-family: 'Baloo 2', cursive; font-size: 20px; font-weight: 800; color: var(--text); margin-bottom: 18px; }
+.quiz-opts { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.quiz-opt {
+  background: var(--surface2);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  font-size: 14px; font-weight: 700;
+  cursor: pointer; color: var(--text);
+  transition: all 0.15s; text-align: left;
+  display: flex; align-items: center; gap: 8px;
+}
+.quiz-opt:hover:not(.disabled) { border-color: var(--blue); background: var(--blue-light); }
+.quiz-opt.correct { background: var(--green-light); border-color: var(--green); color: var(--green); }
+.quiz-opt.wrong { background: var(--red-light); border-color: var(--red); color: var(--red); }
+.quiz-opt .opt-key {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--border); color: var(--text-muted);
+  font-size: 11px; font-weight: 900;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.quiz-feedback {
+  margin-top: 12px; font-size: 13px; font-weight: 700;
+  padding: 8px 12px; border-radius: var(--radius-sm); display: none;
+}
+.quiz-feedback.ok { background: var(--green-light); color: var(--green); display: block; }
+.quiz-feedback.fail { background: var(--red-light); color: var(--red); display: block; }
+
+/* ── FILL IN BLANK ── */
+.fib-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 24px; margin-bottom: 12px;
+}
+.fib-num { font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+.fib-sentence { font-size: 16px; font-weight: 600; line-height: 2.2; color: var(--text); }
+.fib-input {
+  display: inline-block;
+  border: none; border-bottom: 2.5px solid var(--orange);
+  background: none;
+  font-size: 16px; font-weight: 800;
+  font-family: 'Nunito', sans-serif;
+  color: var(--text);
+  width: 150px; padding: 2px 6px; outline: none;
+  transition: border-color 0.15s;
+}
+.fib-input:focus { border-bottom-color: var(--blue); }
+.fib-input.correct { border-bottom-color: var(--green); color: var(--green); }
+.fib-input.wrong { border-bottom-color: var(--red); color: var(--red); }
+.fib-hint { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+.fib-actions { display: flex; gap: 10px; align-items: center; margin-top: 20px; }
+.fib-result { font-size: 14px; font-weight: 800; color: var(--text-muted); margin-left: auto; }
+
+/* FINAL SCREEN */
+.final-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 40px 28px;
+  text-align: center; display: none; margin-top: 20px;
+}
+.final-card.show { display: block; }
+.final-emoji { font-size: 56px; margin-bottom: 12px; }
+.final-title { font-family: 'Baloo 2', cursive; font-size: 26px; font-weight: 800; margin-bottom: 6px; color: var(--yellow); }
+.final-sub { font-size: 15px; color: var(--text-muted); }
+.final-xp { font-size: 18px; font-weight: 900; color: var(--orange); margin-top: 10px; }
+
+/* ANSWER KEY */
+details.ans-key { margin-top: 16px; }
+details.ans-key summary { font-size: 13px; color: var(--text-muted); cursor: pointer; padding: 4px 0; }
+.ans-key-body { font-size: 13px; color: var(--text-muted); line-height: 2.2; margin-top: 8px;
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 12px 16px; }
+
+@media(max-width:520px) {
+  .match-grid { grid-template-columns: 1fr; }
+  .quiz-opts { grid-template-columns: 1fr; }
+  .xp-area { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- XP Toast -->
+<div class="xp-toast" id="xp-toast">+0 XP ⚡</div>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">🍽️ <span>Nhà Hàng</span></div>
+  <div class="xp-area">
+    <span class="xp-label" id="xp-label">0 XP</span>
+    <div class="xp-bar-wrap"><div class="xp-bar-fill" id="xp-bar"></div></div>
+    <div class="xp-level" id="xp-level">Cấp 1</div>
+  </div>
+  <div class="streak-badge">🔥 <span id="streak-count">0</span></div>
+</header>
+
+<!-- NAV TABS -->
+<nav class="nav-tabs">
+  <button class="nav-tab active" onclick="switchMode('fc')">📇 Thẻ từ <span class="tab-xp-pill">+5 XP</span></button>
+  <button class="nav-tab" onclick="switchMode('match')">🔗 Nối từ <span class="tab-xp-pill">+10 XP</span></button>
+  <button class="nav-tab" onclick="switchMode('quiz')">🧠 Trắc nghiệm <span class="tab-xp-pill">+15 XP</span></button>
+  <button class="nav-tab" onclick="switchMode('fib')">✏️ Điền từ <span class="tab-xp-pill">+20 XP</span></button>
+</nav>
+
+<main>
+
+<!-- ══ FLASHCARD ══ -->
+<div id="mode-fc" class="mode active">
+  <div class="section-header">
+    <div class="section-title">📇 Thẻ từ</div>
+    <div class="section-sub">Bấm vào thẻ để xem nghĩa • +5 XP mỗi lần xem xong thẻ</div>
+  </div>
+  <div class="fc-wrapper">
+    <div class="fc-progress-row">
+      <div class="fc-prog-dots" id="fc-dots"></div>
+      <div class="fc-count" id="fc-count">1 / 8</div>
+    </div>
+    <div class="fc-scene" onclick="flipFC()">
+      <div class="fc-card" id="fc-card">
+        <div class="fc-front">
+          <div class="fc-vi" id="fc-vi"></div>
+          <div class="fc-pos" id="fc-pos"></div>
+          <div class="fc-tap-hint">👆 Bấm để xem nghĩa</div>
+        </div>
+        <div class="fc-back">
+          <div class="fc-emoji" id="fc-emoji"></div>
+          <div class="fc-en" id="fc-en"></div>
+          <div class="fc-example" id="fc-ex"></div>
+        </div>
+      </div>
+    </div>
+    <div class="fc-nav">
+      <button class="btn btn-ghost" onclick="fcMove(-1)">← Trước</button>
+      <button class="btn btn-primary" onclick="fcMove(1)">Tiếp →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MATCHING ══ -->
+<div id="mode-match" class="mode">
+  <div class="section-header">
+    <div class="section-title">🔗 Nối từ</div>
+    <div class="section-sub">Bấm một từ tiếng Việt, rồi bấm nghĩa tiếng Anh tương ứng • +10 XP mỗi cặp đúng</div>
+  </div>
+  <div class="match-grid">
+    <div>
+      <div class="match-col-title">🇻🇳 Tiếng Việt</div>
+      <div id="match-vi"></div>
+    </div>
+    <div>
+      <div class="match-col-title">🇺🇸 Tiếng Anh</div>
+      <div id="match-en"></div>
+    </div>
+  </div>
+  <div class="match-done-msg" id="match-done">🎊 Xuất sắc! Bạn đã nối đúng tất cả! +80 XP</div>
+  <div style="margin-top:16px">
+    <button class="btn btn-ghost" onclick="buildMatch()">Làm lại</button>
+  </div>
+</div>
+
+<!-- ══ QUIZ ══ -->
+<div id="mode-quiz" class="mode">
+  <div class="section-header">
+    <div class="section-title">🧠 Trắc nghiệm</div>
+    <div class="section-sub">Chọn nghĩa đúng • +15 XP mỗi câu đúng, mất điểm nếu sai</div>
+  </div>
+  <div id="quiz-container"></div>
+  <div class="final-card" id="quiz-final">
+    <div class="final-emoji" id="quiz-emoji">🎉</div>
+    <div class="final-title" id="quiz-title"></div>
+    <div class="final-sub" id="quiz-sub"></div>
+    <div class="final-xp" id="quiz-xp"></div>
+    <div style="margin-top:20px"><button class="btn btn-primary" onclick="buildQuiz()">Làm lại</button></div>
+  </div>
+</div>
+
+<!-- ══ FILL IN BLANK ══ -->
+<div id="mode-fib" class="mode">
+  <div class="section-header">
+    <div class="section-title">✏️ Điền vào chỗ trống</div>
+    <div class="section-sub">Điền từ tiếng Việt thích hợp • +20 XP mỗi câu đúng</div>
+  </div>
+  <div id="fib-container"></div>
+  <div class="fib-actions">
+    <button class="btn btn-primary" onclick="checkFIB()">Kiểm tra</button>
+    <button class="btn btn-ghost" onclick="resetFIB()">Làm lại</button>
+    <span class="fib-result" id="fib-result"></span>
+  </div>
+  <details class="ans-key">
+    <summary>Xem đáp án</summary>
+    <div class="ans-key-body" id="fib-ans-key"></div>
+  </details>
+</div>
+
+</main>
+
+<script>
+// ─── DATA ───
+const VOCAB = [
+  { vi:"Người phục vụ", pos:"(n)", en:"Waiter / Waitress",      emoji:"🧑‍🍼", ex:"Người phục vụ rất thân thiện." },
+  { vi:"Khách",         pos:"(n)", en:"Customer",               emoji:"🙋",   ex:"Quán này lúc nào cũng đông khách." },
+  { vi:"Dùng",          pos:"(v)", en:"To eat / drink",         emoji:"🍽️",  ex:"Mời ông bà dùng bữa ạ." },
+  { vi:"Quán / Tiệm",   pos:"(n)", en:"Restaurant / Shop",      emoji:"🏪",  ex:"Tiệm cơm này mở cửa từ 6h sáng." },
+  { vi:"Cơm tấm",       pos:"(n)", en:"Broken rice",            emoji:"🍚",  ex:"Tôi muốn một đĩa cơm tấm sườn." },
+  { vi:"Sườn nướng",    pos:"(n)", en:"Grilled pork chop",      emoji:"🥩",  ex:"Sườn nướng có mùi rất thơm." },
+  { vi:"Đầu bếp",       pos:"(n)", en:"Chef",                   emoji:"👨‍🍳", ex:"Đầu bếp đang chuẩn bị thức ăn." },
+  { vi:"Mang",          pos:"(v)", en:"To bring",              emoji:"🚶",  ex:"Người phục vụ mang đồ ăn đến bàn." },
+];
+
+const QUIZ_DATA = [
+  { q:"Ai là người trực tiếp nấu ăn trong tiệm?",                           opts:["Khách","Người phục vụ","Đầu bếp","Khách hàng"], correct:2 },
+  { q:"Từ nào lịch sự hơn từ 'ăn'?",                                        opts:["Dùng","Mang","Đến","Gọi"], correct:0 },
+  { q:"Khi phục vụ bưng đĩa cơm từ bếp đến bàn, hành động đó gọi là gì?",  opts:["Mua đồ","Mang","Đi chợ","Nấu ăn"], correct:1 },
+  { q:"Cơm tấm thường ăn kèm với món gì phổ biến nhất?",                    opts:["Sườn nướng","Pizza","Bánh mì","Phở"], correct:0 },
+  { q:"Người trả tiền để ăn tại quán gọi là gì?",                           opts:["Đầu bếp","Người phục vụ","Khách","Chủ quán"], correct:2 },
+  { q:"Nơi bán đồ ăn thức uống gọi là gì?",                                 opts:["Phòng ngủ","Quán / Tiệm","Công viên","Bệnh viện"], correct:1 },
+  { q:"Nghĩa của 'Sườn nướng' trong tiếng Anh là gì?",                      opts:["Grilled pork chop","Boiled egg","Fried fish","Broken rice"], correct:0 },
+];
+
+const FIB_DATA = [
+  { before:"Buổi sáng, tôi thường ghé ",    after:" cơm tấm gần nhà.", ans:["tiệm","quán"],    hint:"Nơi bán đồ ăn" },
+  { before:"",                               after:" đang ghi món cho khách.", ans:["người phục vụ"], hint:"Ai ghi order?" },
+  { before:"Bạn muốn ",                      after:" thêm trà đá không?",      ans:["dùng"],           hint:"Động từ lịch sự = to eat/drink" },
+  { before:"Món ",                           after:" ở đây rất đậm đà.",       ans:["sườn nướng"],     hint:"Grilled pork chop" },
+  { before:"Người phục vụ đang ",            after:" đồ ăn đến bàn.",          ans:["mang"],           hint:"To bring" },
+];
+
+// ─── XP SYSTEM ───
+let xp = 0, streak = 0;
+const XP_MAX = 100;
+const LEVELS = ["Người mới","Học viên","Khá giỏi","Giỏi","Xuất sắc","Bậc thầy"];
+
+function addXP(amount, label) {
+  xp = Math.min(xp + amount, 9999);
+  streak++;
+  updateXPUI();
+  showToast(`+${amount} XP ⚡`);
+}
+
+function updateXPUI() {
+  document.getElementById('xp-label').textContent = xp + ' XP';
+  document.getElementById('streak-count').textContent = streak;
+  const lvl = Math.min(Math.floor(xp / XP_MAX), LEVELS.length - 1);
+  const pct = ((xp % XP_MAX) / XP_MAX) * 100;
+  document.getElementById('xp-bar').style.width = pct + '%';
+  document.getElementById('xp-level').textContent = LEVELS[lvl];
+}
+
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('xp-toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 1600);
+}
+
+// ─── TAB ───
+function switchMode(id) {
+  document.querySelectorAll('.mode').forEach(m => m.classList.remove('active'));
+  document.getElementById('mode-' + id).classList.add('active');
+  document.querySelectorAll('.nav-tab').forEach((t, i) =>
+    t.classList.toggle('active', ['fc','match','quiz','fib'][i] === id)
+  );
+}
+
+// ─── FLASHCARD ───
+let fcIdx = 0, fcFlipped = false, fcSeen = new Set();
+
+function renderFC() {
+  const w = VOCAB[fcIdx];
+  document.getElementById('fc-vi').textContent = w.vi;
+  document.getElementById('fc-pos').textContent = w.pos;
+  document.getElementById('fc-en').textContent = w.en;
+  document.getElementById('fc-emoji').textContent = w.emoji;
+  document.getElementById('fc-ex').textContent = 'Ví dụ: ' + w.ex;
+  document.getElementById('fc-count').textContent = (fcIdx + 1) + ' / ' + VOCAB.length;
+  // dots
+  const dots = document.getElementById('fc-dots');
+  dots.innerHTML = '';
+  VOCAB.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'fc-prog-dot' + (fcSeen.has(i) ? ' done' : i === fcIdx ? ' seen' : '');
+    dots.appendChild(d);
+  });
+}
+
+function flipFC() {
+  fcFlipped = !fcFlipped;
+  document.getElementById('fc-card').classList.toggle('flipped', fcFlipped);
+  if (fcFlipped && !fcSeen.has(fcIdx)) {
+    fcSeen.add(fcIdx);
+    addXP(5);
+    renderFC();
+  }
+}
+
+function fcMove(dir) {
+  fcFlipped = false;
+  document.getElementById('fc-card').classList.remove('flipped');
+  fcIdx = (fcIdx + dir + VOCAB.length) % VOCAB.length;
+  renderFC();
+}
+
+renderFC();
+
+// ─── MATCHING ───
+let mSel = null, mSide = null, mMatched = 0;
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function buildMatch() {
+  mSel = null; mSide = null; mMatched = 0;
+  document.getElementById('match-done').classList.remove('show');
+  const viList = shuffle(VOCAB.map(w => w.vi));
+  const enList = shuffle(VOCAB.map(w => ({ vi: w.vi, en: w.en, emoji: w.emoji })));
+  const viCol = document.getElementById('match-vi');
+  const enCol = document.getElementById('match-en');
+  viCol.innerHTML = ''; enCol.innerHTML = '';
+
+  viList.forEach(vi => {
+    const w = VOCAB.find(x => x.vi === vi);
+    const el = document.createElement('div');
+    el.className = 'match-item';
+    el.dataset.key = vi;
+    el.innerHTML = w.emoji + ' ' + vi;
+    el.onclick = () => pickMatch(el, 'vi', vi);
+    viCol.appendChild(el);
+  });
+  enList.forEach(w => {
+    const el = document.createElement('div');
+    el.className = 'match-item';
+    el.dataset.key = w.vi;
+    el.innerHTML = w.en;
+    el.onclick = () => pickMatch(el, 'en', w.vi);
+    enCol.appendChild(el);
+  });
+}
+
+function pickMatch(el, side, key) {
+  if (el.classList.contains('matched')) return;
+  if (mSel === null) {
+    mSel = key; mSide = side;
+    el.classList.add('selected');
+  } else {
+    if (mSide === side) {
+      document.querySelectorAll('.match-item.selected').forEach(e => e.classList.remove('selected'));
+      mSel = key; mSide = side;
+      el.classList.add('selected');
+      return;
+    }
+    if (mSel === key) {
+      document.querySelectorAll('.match-item.selected').forEach(e => {
+        e.classList.remove('selected'); e.classList.add('matched');
+      });
+      el.classList.add('matched');
+      mMatched++;
+      addXP(10);
+      if (mMatched === VOCAB.length) {
+        document.getElementById('match-done').classList.add('show');
+        addXP(20); // bonus
+      }
+    } else {
+      streak = Math.max(0, streak - 1);
+      updateXPUI();
+      document.querySelectorAll('.match-item.selected').forEach(e => {
+        e.classList.remove('selected'); e.classList.add('wrong-flash');
+        setTimeout(() => e.classList.remove('wrong-flash'), 350);
+      });
+      el.classList.add('wrong-flash');
+      setTimeout(() => el.classList.remove('wrong-flash'), 350);
+    }
+    mSel = null; mSide = null;
+  }
+}
+
+buildMatch();
+
+// ─── QUIZ ───
+let quizAnswered = 0, quizScore = 0;
+const KEYS = ['A','B','C','D'];
+
+function buildQuiz() {
+  quizAnswered = 0; quizScore = 0;
+  document.getElementById('quiz-final').classList.remove('show');
+  const container = document.getElementById('quiz-container');
+  container.innerHTML = '';
+  QUIZ_DATA.forEach((data, qi) => {
+    const card = document.createElement('div');
+    card.className = 'quiz-card';
+    card.id = 'qc-' + qi;
+    card.innerHTML = `
+      <div class="quiz-q-label">Câu ${qi + 1} / ${QUIZ_DATA.length}</div>
+      <div class="quiz-question">${data.q}</div>
+      <div class="quiz-opts" id="qopts-${qi}">
+        ${data.opts.map((opt, oi) => `
+          <button class="quiz-opt" data-q="${qi}" data-o="${oi}" onclick="pickQuiz(${qi},${oi},this)">
+            <span class="opt-key">${KEYS[oi]}</span>${opt}
+          </button>`).join('')}
+      </div>
+      <div class="quiz-feedback" id="qfb-${qi}"></div>`;
+    container.appendChild(card);
+  });
+}
+
+function pickQuiz(qi, oi, btn) {
+  const opts = document.querySelectorAll(`#qopts-${qi} .quiz-opt`);
+  opts.forEach(o => o.classList.add('disabled') || (o.onclick = null));
+  const correct = QUIZ_DATA[qi].correct;
+  const fb = document.getElementById('qfb-' + qi);
+  if (oi === correct) {
+    btn.classList.add('correct');
+    fb.className = 'quiz-feedback ok';
+    fb.textContent = '✓ Chính xác! ' + VOCAB.find(v => v.vi === QUIZ_DATA[qi].opts[correct])?.ex || '';
+    addXP(15);
+    quizScore++;
+  } else {
+    btn.classList.add('wrong');
+    opts[correct].classList.add('correct');
+    fb.className = 'quiz-feedback fail';
+    fb.textContent = '✗ Chưa đúng. Đáp án: ' + QUIZ_DATA[qi].opts[correct];
+    streak = Math.max(0, streak - 1);
+    updateXPUI();
+  }
+  quizAnswered++;
+  if (quizAnswered === QUIZ_DATA.length) showQuizFinal();
+}
+
+function showQuizFinal() {
+  const pct = Math.round(quizScore / QUIZ_DATA.length * 100);
+  const bonus = quizScore === QUIZ_DATA.length ? 30 : 0;
+  if (bonus) addXP(bonus);
+  const emojis = ['💪','👍','😊','🎯','🌟','🎉'];
+  document.getElementById('quiz-emoji').textContent = pct >= 85 ? '🎉' : pct >= 60 ? '👍' : '💪';
+  document.getElementById('quiz-title').textContent = pct >= 85 ? 'Xuất sắc!' : pct >= 60 ? 'Khá tốt!' : 'Cố lên nào!';
+  document.getElementById('quiz-sub').textContent = `Bạn đúng ${quizScore}/${QUIZ_DATA.length} câu (${pct}%).`;
+  document.getElementById('quiz-xp').textContent = bonus ? `🎁 Bonus hoàn hảo: +${bonus} XP!` : '';
+  document.getElementById('quiz-final').classList.add('show');
+}
+
+buildQuiz();
+
+// ─── FILL IN BLANK ───
+function buildFIB() {
+  const container = document.getElementById('fib-container');
+  const key = document.getElementById('fib-ans-key');
+  container.innerHTML = ''; key.innerHTML = '';
+  document.getElementById('fib-result').textContent = '';
+
+  FIB_DATA.forEach((item, i) => {
+    const card = document.createElement('div');
+    card.className = 'fib-card';
+    card.innerHTML = `
+      <div class="fib-num">Câu ${i + 1}</div>
+      <div class="fib-sentence">
+        ${item.before}<input class="fib-input" id="fib${i}" autocomplete="off" spellcheck="false" placeholder="___________">${item.after}
+      </div>
+      <div class="fib-hint">💡 ${item.hint}</div>`;
+    container.appendChild(card);
+    key.innerHTML += `${i + 1}. ${item.ans[0]}<br>`;
+  });
+}
+
+function norm(s) {
+  return s.trim().toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/đ/g, 'd').replace(/\s+/g, ' ');
+}
+
+function checkFIB() {
+  let score = 0;
+  FIB_DATA.forEach((item, i) => {
+    const inp = document.getElementById('fib' + i);
+    const val = norm(inp.value);
+    const ok = item.ans.some(a => norm(a) === val);
+    inp.classList.remove('correct', 'wrong');
+    inp.classList.add(ok ? 'correct' : 'wrong');
+    if (ok) score++;
+  });
+  // award XP for correct ones on first submit
+  const earned = score * 20;
+  if (score > 0) addXP(earned);
+  document.getElementById('fib-result').textContent = `✅ ${score}/${FIB_DATA.length} câu đúng`;
+}
+
+function resetFIB() {
+  FIB_DATA.forEach((_, i) => {
+    const inp = document.getElementById('fib' + i);
+    inp.value = '';
+    inp.classList.remove('correct', 'wrong');
+  });
+  document.getElementById('fib-result').textContent = '';
+}
+
+buildFIB();
+</script>
+</body>
+</html>

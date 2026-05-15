@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chapter 1: Greetings & Introduction — Basic Vietnamese | UCSD</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Newsreader:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+<style>
+/* ── VARIABLES ── */
+:root {
+  --navy:    #182B49;
+  --gold:    #C69214;
+  --red:     #C0392B;
+  --ink:     #1a1410;
+  --paper:   #faf8f3;
+  --surface: #f0ede6;
+  --border:  #e0dbd0;
+  --muted:   #6b6560;
+  --ch-color: #C0392B;  /* Chapter accent */
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Newsreader', Georgia, serif;
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100vh;
+}
+
+/* ── UCSD BAR ── */
+.ucsd-bar {
+  background: var(--navy);
+  display: flex; align-items: center; flex-wrap: wrap; gap: 0;
+  padding: 8px 18px;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  position: relative; z-index: 200;
+}
+.ucsd-wordmark { display: flex; align-items: center; gap: 0; text-decoration: none; line-height: 1; }
+.ucsd-uc   { color: var(--gold); font-weight: 900; font-size: 14px; letter-spacing: -.3px; }
+.ucsd-name { color: #fff; font-weight: 400; font-size: 14px; letter-spacing: .15px; }
+.ucsd-pipe { width: 1px; height: 16px; background: rgba(255,255,255,.3); margin: 0 12px; flex-shrink: 0; }
+.ucsd-course { color: rgba(255,255,255,.78); font-size: 12px; letter-spacing: .3px; font-family: 'Helvetica Neue', Arial, sans-serif; }
+.ucsd-gold-rule { height: 3px; background: var(--gold); position: relative; z-index: 200; }
+
+/* ── FOOTER ── */
+.ucsd-footer {
+  background: var(--navy); color: rgba(255,255,255,.85);
+  padding: 26px 20px; text-align: center;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  margin-top: 40px;
+}
+.ucsd-footer-logo { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,.45); margin-bottom: 10px; }
+.ucsd-footer-instructor { font-size: 14px; margin-bottom: 5px; }
+.ucsd-footer-instructor a { color: var(--gold); text-decoration: none; font-weight: 600; }
+.ucsd-footer-instructor a:hover { text-decoration: underline; }
+.ucsd-footer-dept { font-size: 11px; color: rgba(255,255,255,.45); letter-spacing: .4px; }
+.ucsd-footer-license { font-size: 11px; color: rgba(255,255,255,.38); letter-spacing: .3px; margin-top: 8px; }
+
+/* ── CHAPTER HERO ── */
+.chapter-hero {
+  background: var(--navy);
+  color: #fff;
+  padding: 32px 24px 28px;
+}
+.breadcrumb {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: 'Manrope', sans-serif; font-size: 13px; font-weight: 600;
+  color: rgba(255,255,255,.6); text-decoration: none;
+  margin-bottom: 16px;
+  transition: color .15s;
+}
+.breadcrumb:hover { color: var(--gold); }
+.ch-label {
+  font-family: 'Manrope', sans-serif;
+  font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 8px;
+}
+.ch-title {
+  font-family: 'Manrope', sans-serif;
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  font-weight: 800; color: #fff; line-height: 1.1; margin-bottom: 20px;
+}
+/* XP Progress Bar */
+.xp-bar-wrap {
+  display: flex; align-items: center; gap: 12px;
+  max-width: 460px;
+}
+.xp-bar-track {
+  flex: 1; height: 8px;
+  background: rgba(255,255,255,.18);
+  border-radius: 99px; overflow: hidden;
+}
+.xp-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold), #f0c849);
+  border-radius: 99px;
+  width: 0%;
+  transition: width .5s ease;
+}
+.xp-count {
+  font-family: 'Manrope', sans-serif;
+  font-size: 13px; font-weight: 700;
+  color: var(--gold); white-space: nowrap;
+}
+
+/* ── STICKY TAB BAR ── */
+.tab-bar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #fff;
+  border-bottom: 2px solid var(--border);
+  display: flex;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.tab-bar::-webkit-scrollbar { display: none; }
+.tab-btn {
+  flex-shrink: 0;
+  font-family: 'Manrope', sans-serif;
+  font-size: 13px; font-weight: 700;
+  padding: 13px 18px;
+  border: none; background: none;
+  color: var(--muted);
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  white-space: nowrap;
+  transition: color .15s, border-color .15s;
+}
+.tab-btn:hover { color: var(--ink); }
+.tab-btn.active { color: var(--ch-color); border-bottom-color: var(--ch-color); }
+
+/* ── TAB PANELS ── */
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ── CONTENT WRAP ── */
+.content-wrap {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 28px 20px;
+}
+
+/* ── CARDS ── */
+.card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+.card-header {
+  padding: 12px 18px;
+  font-family: 'Manrope', sans-serif;
+  font-size: 13px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase;
+  color: #fff;
+  background: var(--ch-color);
+}
+.card-body-pad { padding: 18px; }
+
+/* ── OBJECTIVES ── */
+.objectives-card .obj-header {
+  font-family: 'Manrope', sans-serif;
+  font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em;
+  color: var(--gold);
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--gold);
+  margin-bottom: 16px;
+}
+.obj-list { list-style: none; }
+.obj-list li {
+  font-size: 1rem; line-height: 1.65;
+  padding: 5px 0 5px 28px;
+  position: relative;
+  color: var(--ink);
+}
+.obj-list li::before { content: '✅'; position: absolute; left: 0; }
+.start-btn {
+  margin-top: 20px;
+  font-family: 'Manrope', sans-serif; font-size: 14px; font-weight: 800;
+  background: var(--ch-color); color: #fff;
+  border: none; border-radius: 99px;
+  padding: 11px 26px; cursor: pointer;
+  transition: opacity .15s;
+}
+.start-btn:hover { opacity: .88; }
+.start-btn:disabled { opacity: .45; cursor: default; }
+
+/* ── DIALOGUE ── */
+.dialogue-block { margin-bottom: 28px; }
+.dialogue-line {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--surface);
+}
+.dialogue-line:last-child { border-bottom: none; }
+.spk-label {
+  font-family: 'Manrope', sans-serif;
+  font-size: 12px; font-weight: 800;
+  color: var(--ch-color); min-width: 82px; flex-shrink: 0;
+  padding-top: 2px;
+}
+.spk-text {
+  font-family: 'Newsreader', Georgia, serif;
+  font-size: 1.05rem; line-height: 1.55;
+  flex: 1;
+}
+.tts-btn {
+  flex-shrink: 0;
+  background: none; border: 1px solid var(--border);
+  border-radius: 50%; width: 30px; height: 30px;
+  cursor: pointer; font-size: 14px;
+  display: flex; align-items: center; justify-content: center;
+  transition: background .15s;
+}
+.tts-btn:hover { background: var(--surface); }
+
+/* ── EXERCISE HEADER ── */
+.ex-header {
+  font-family: 'Manrope', sans-serif;
+  font-size: 14px; font-weight: 800; letter-spacing: .05em;
+  color: var(--ink); padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+
+/* ── TRUE/FALSE ── */
+.tf-question {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--surface);
+}
+.tf-question:last-child { border-bottom: none; }
+.tf-q-text {
+  font-size: 1rem; line-height: 1.5;
+  margin-bottom: 10px;
+}
+.tf-btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
+.tf-btn {
+  font-family: 'Manrope', sans-serif; font-size: 13px; font-weight: 700;
+  padding: 7px 20px; border-radius: 99px;
+  border: 1px solid var(--border); background: #fff;
+  cursor: pointer; transition: background .15s, color .15s;
+}
+.tf-btn:hover:not(:disabled) { background: var(--surface); }
+.tf-btn:disabled { opacity: .5; cursor: default; }
+.tf-feedback {
+  margin-top: 8px; font-size: .92rem;
+  font-family: 'Manrope', sans-serif; font-weight: 600;
+  min-height: 20px;
+}
+.tf-correct { color: #15803d; }
+.tf-wrong   { color: #b91c1c; }
+
+/* ── FLASHCARD ── */
+.deck-info {
+  font-family: 'Manrope', sans-serif; font-size: 13px; font-weight: 700;
+  color: var(--muted); margin-bottom: 14px; text-align: center;
+}
+.flashcard-wrap {
+  perspective: 1000px;
+  max-width: 440px; margin: 0 auto 18px;
+  height: 220px; cursor: pointer;
+}
+.flashcard {
+  width: 100%; height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform .5s cubic-bezier(.4,0,.2,1);
+  border-radius: 14px;
+}
+.flashcard.flipped { transform: rotateY(180deg); }
+.fc-face {
+  position: absolute; inset: 0;
+  border-radius: 14px;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 24px;
+  border: 1px solid var(--border);
+}
+.fc-front {
+  background: var(--navy); color: #fff;
+}
+.fc-back {
+  background: var(--surface); color: var(--ink);
+  transform: rotateY(180deg);
+}
+.fc-vn {
+  font-family: 'Manrope', sans-serif; font-size: 2rem; font-weight: 800;
+  color: #fff; margin-bottom: 14px; text-align: center;
+}
+.fc-tts {
+  background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.25);
+  border-radius: 99px; padding: 5px 14px;
+  font-size: 14px; cursor: pointer; color: #fff;
+  font-family: 'Manrope', sans-serif; font-weight: 700;
+  transition: background .15s;
+}
+.fc-tts:hover { background: rgba(255,255,255,.22); }
+.fc-en {
+  font-family: 'Newsreader', Georgia, serif;
+  font-size: 1.3rem; text-align: center; margin-bottom: 10px;
+  color: var(--ink);
+}
+.fc-ex {
+  font-family: 'Newsreader', Georgia, serif;
+  font-style: italic; font-size: .92rem;
+  color: var(--muted); text-align: center; line-height: 1.5;
+}
+.fc-nav {
+  display: flex; align-items: center; justify-content: center; gap: 16px;
+  margin-top: 8px;
+}
+.fc-nav-btn {
+  font-family: 'Manrope', sans-serif; font-size: 13px; font-weight: 700;
+  background: #fff; border: 1px solid var(--border); border-radius: 99px;
+  padding: 7px 20px; cursor: pointer;
+  transition: background .15s;
+}
+.fc-nav-btn:hover:not(:disabled) { background: var(--surface); }
+.fc-nav-btn:disabled { opacity: .35; cursor: default; }
+.fc-dots { display: flex; gap: 5px; }
+.fc-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--border);
+  transition: background .2s;
+}
+.fc-dot.active { background: var(--ch-color); }
+
+/* ── GRAMMAR ── */
+.grammar-chip {
+  display: inline-block;
+  font-family: 'Manrope', sans-serif; font-size: 12px; font-weight: 800;
+  letter-spacing: .08em; text-transform: uppercase;
+  background: var(--gold); color: #fff;
+  border-radius: 6px; padding: 4px 10px;
+  margin-bottom: 10px;
+}
+.grammar-explain {
+  font-size: 1rem; line-height: 1.65;
+  margin-bottom: 14px;
+}
+.grammar-explain strong { color: var(--ch-color); }
+.structure-box {
+  background: var(--surface); border-left: 3px solid var(--gold);
+  border-radius: 0 8px 8px 0; padding: 10px 16px;
+  font-family: 'Manrope', sans-serif; font-size: 14px; font-weight: 700;
+  color: var(--ink); margin-bottom: 16px;
+}
+.ex-table {
+  width: 100%; border-collapse: collapse; margin-bottom: 14px;
+}
+.ex-table td {
+  padding: 8px 12px; border: 1px solid var(--border);
+  font-size: .96rem; line-height: 1.45;
+}
+.ex-table td:first-child { background: var(--surface); }
+.ex-table td strong { color: var(--ch-color); }
+
+/* ── MC QUESTIONS ── */
+.mc-question { padding: 14px 18px; border-bottom: 1px solid var(--surface); }
+.mc-question:last-child { border-bottom: none; }
+.mc-q-text { font-size: 1rem; line-height: 1.5; margin-bottom: 10px; }
+.mc-btn-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.mc-btn {
+  font-family: 'Manrope', sans-serif; font-size: 13px; font-weight: 700;
+  padding: 6px 16px; border-radius: 99px;
+  border: 1px solid var(--border); background: #fff;
+  cursor: pointer; transition: background .15s, color .15s, border-color .15s;
+}
+.mc-btn:hover:not(:disabled) { background: var(--surface); }
+.mc-btn:disabled { opacity: .55; cursor: default; }
+.mc-btn.correct { background: #dcfce7; border-color: #15803d; color: #15803d; }
+.mc-btn.wrong   { background: #fee2e2; border-color: #b91c1c; color: #b91c1c; }
+.mc-feedback { margin-top: 8px; font-size: .9rem; font-family: 'Manrope', sans-serif; font-weight: 600; min-height: 18px; }
+
+/* ── CULTURE NOTES ── */
+.culture-section { margin-bottom: 24px; }
+.culture-h2 {
+  font-family: 'Manrope', sans-serif; font-size: 14px; font-weight: 800;
+  letter-spacing: .07em; text-transform: uppercase;
+  color: var(--navy); margin-bottom: 12px;
+  padding-bottom: 6px; border-bottom: 2px solid var(--border);
+}
+.culture-p {
+  font-size: 1rem; line-height: 1.7; margin-bottom: 8px; color: var(--ink);
+}
+.culture-p strong { color: var(--ch-color); }
+.culture-table {
+  width: 100%; border-collapse: collapse; margin: 10px 0 16px;
+  font-size: .95rem;
+}
+.culture-table th {
+  background: var(--navy); color: #fff;
+  font-family: 'Manrope', sans-serif; font-size: 12px; font-weight: 700;
+  letter-spacing: .06em; text-transform: uppercase;
+  padding: 8px 12px; text-align: left;
+}
+.culture-table td { padding: 8px 12px; border: 1px solid var(--border); }
+.culture-table tr:nth-child(even) td { background: var(--surface); }
+
+/* ── CLICK-TO-MATCH ── */
+.match-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 10px; margin: 14px 0;
+}
+.match-col { display: flex; flex-direction: column; gap: 8px; }
+.match-item {
+  font-family: 'Manrope', sans-serif; font-size: 13px; font-weight: 700;
+  padding: 9px 14px; border-radius: 8px;
+  border: 2px solid var(--border); background: #fff;
+  cursor: pointer; transition: border-color .15s, background .15s;
+  line-height: 1.35;
+  user-select: none;
+}
+.match-item:hover:not(.matched):not(.disabled) { border-color: var(--gold); background: var(--surface); }
+.match-item.selected { border-color: var(--gold); background: #fdf8e6; }
+.match-item.matched  { border-color: #15803d; background: #dcfce7; color: #15803d; cursor: default; }
+.match-item.wrong    { border-color: #b91c1c; background: #fee2e2; animation: shake .3s; }
+.match-item.disabled { opacity: .4; cursor: default; }
+@keyframes shake {
+  0%,100%{transform:translateX(0)} 25%{transform:translateX(-4px)} 75%{transform:translateX(4px)}
+}
+
+/* ── PRACTICE / READING ── */
+.reading-passage {
+  background: var(--surface); border-left: 3px solid var(--ch-color);
+  border-radius: 0 8px 8px 0; padding: 18px 20px;
+  font-family: 'Newsreader', Georgia, serif; font-size: 1.05rem; line-height: 1.85;
+  margin-bottom: 20px; color: var(--ink);
+}
+
+/* ── SCORE CARD ── */
+.score-card {
+  background: #fff; border: 2px solid var(--gold);
+  border-radius: 14px; padding: 28px 24px;
+  text-align: center; margin-top: 20px;
+  display: none;
+}
+.score-card.visible { display: block; }
+.score-title {
+  font-family: 'Manrope', sans-serif; font-size: 22px; font-weight: 800;
+  margin-bottom: 6px; color: var(--ink);
+}
+.score-stars { font-size: 28px; margin: 12px 0; }
+.score-badge-earned {
+  font-size: 40px; margin: 10px 0 4px;
+}
+.score-badge-label {
+  font-family: 'Manrope', sans-serif; font-size: 14px; font-weight: 700;
+  color: var(--gold); margin-bottom: 16px;
+}
+.score-back-btn {
+  font-family: 'Manrope', sans-serif; font-size: 14px; font-weight: 800;
+  background: var(--navy); color: #fff;
+  border: none; border-radius: 99px;
+  padding: 11px 24px; cursor: pointer;
+  text-decoration: none; display: inline-block;
+  margin-top: 8px;
+  transition: opacity .15s;
+}
+.score-back-btn:hover { opacity: .85; }
+.submit-btn {
+  font-family: 'Manrope', sans-serif; font-size: 14px; font-weight: 800;
+  background: var(--ch-color); color: #fff;
+  border: none; border-radius: 99px;
+  padding: 11px 26px; cursor: pointer;
+  margin-top: 16px; display: block;
+  transition: opacity .15s;
+}
+.submit-btn:hover { opacity: .88; }
+.submit-btn:disabled { opacity: .4; cursor: default; }
+
+/* ── XP TOAST ── */
+.xp-toast {
+  position: fixed; bottom: 28px; right: 24px; z-index: 9999;
+  background: var(--navy); color: var(--gold);
+  font-family: 'Manrope', sans-serif; font-weight: 800; font-size: 15px;
+  padding: 10px 20px; border-radius: 99px;
+  box-shadow: 0 4px 18px rgba(24,43,73,.25);
+  opacity: 0; transform: translateY(20px);
+  transition: opacity .22s, transform .22s;
+  pointer-events: none;
+}
+.xp-toast.show { opacity: 1; transform: translateY(0); }
+
+/* ── SECTION SPACER ── */
+.section-divider {
+  height: 1px; background: var(--border);
+  margin: 20px 0;
+}
+</style>
+</head>
+<body>
+
+<!-- UCSD Bar -->
+<div class="ucsd-bar">
+  <a class="ucsd-wordmark" href="https://ucsd.edu" target="_blank" rel="noopener">
+    <span class="ucsd-uc">UC</span><span class="ucsd-name">&nbsp;San Diego</span>
+  </a>
+  <div class="ucsd-pipe"></div>
+  <span class="ucsd-course">Heritage Vietnamese Language Program</span>
+</div>
+<div class="ucsd-gold-rule"></div>
+
+<!-- Chapter Hero -->
+<div class="chapter-hero">
+  <a class="breadcrumb" href="index.html">← All Chapters</a>
+  <div class="ch-label">Chapter 1 · Chào hỏi &amp; Giới thiệu</div>
+  <h1 class="ch-title">Greetings &amp; Introduction</h1>
+  <div class="xp-bar-wrap">
+    <div class="xp-bar-track">
+      <div class="xp-bar-fill" id="xpBarFill"></div>
+    </div>
+    <div class="xp-count" id="xpCount">0 XP</div>
+  </div>
+</div>
+
+<!-- Tab Bar -->
+<div class="tab-bar" id="tabBar">
+  <button class="tab-btn active" data-tab="objectives">📋 Mục Tiêu</button>
+  <button class="tab-btn" data-tab="dialogue">🗣️ Hội Thoại</button>
+  <button class="tab-btn" data-tab="vocab">📚 Từ Vựng</button>
+  <button class="tab-btn" data-tab="grammar">✏️ Ngữ Pháp</button>
+  <button class="tab-btn" data-tab="culture">🌏 Văn Hóa</button>
+  <button class="tab-btn" data-tab="practice">🏋️ Luyện Tập</button>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     TAB 1 — MỤC TIÊU (Objectives)
+═══════════════════════════════════════════════ -->
+<div class="tab-panel active" id="tab-objectives">
+  <div class="content-wrap">
+    <div class="card objectives-card">
+      <div class="card-body-pad">
+        <div class="obj-header">Learning Objectives</div>
+        <p style="font-size:1rem;line-height:1.65;margin-bottom:14px;color:var(--muted)">After studying this chapter, students should be able to:</p>
+        <ul class="obj-list">
+          <li>Do greetings and make a self-introduction</li>
+          <li>Correctly use pronouns in familiar settings</li>
+          <li>Provide basic information about themselves and others</li>
+        </ul>
+        <button class="start-btn" id="startLearningBtn" onclick="startLearning()">Start Learning →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     TAB 2 — HỘI THOẠI (Conversations)
+═══════════════════════════════════════════════ -->
+<div class="tab-panel" id="tab-dialogue">
+  <div class="content-wrap">
+
+    <!-- Hội Thoại 1 -->
+    <div class="card dialogue-block">
+      <div class="card-header">HỘI THOẠI 1</div>
+      <div class="card-body-pad" id="dialogue1"></div>
+    </div>
+
+    <!-- Hội Thoại 2 -->
+    <div class="card dialogue-block">
+      <div class="card-header">HỘI THOẠI 2</div>
+      <div class="card-body-pad" id="dialogue2"></div>
+    </div>
+
+    <!-- BÀI TẬP 1 -->
+    <div class="card">
+      <div class="ex-header">✍️ Kiểm tra hiểu biết — BÀI TẬP 1 &nbsp;<small style="font-weight:500;font-size:12px;color:var(--muted)">(+10 XP each)</small></div>
+      <div id="tf1Container"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     TAB 3 — TỪ VỰNG (Vocabulary)
+═══════════════════════════════════════════════ -->
+<div class="tab-panel" id="tab-vocab">
+  <div class="content-wrap">
+    <div class="deck-info" id="deckInfo">Card 1 of 18 · Tap card to flip · 🔊 to hear</div>
+    <div class="flashcard-wrap" id="flashcardWrap">
+      <div class="flashcard" id="flashcard">
+        <div class="fc-face fc-front" id="fcFront"></div>
+        <div class="fc-face fc-back" id="fcBack"></div>
+      </div>
+    </div>
+    <div class="fc-nav">
+      <button class="fc-nav-btn" id="fcPrev" onclick="fcNav(-1)">◀ Prev</button>
+      <div class="fc-dots" id="fcDots"></div>
+      <button class="fc-nav-btn" id="fcNext" onclick="fcNav(1)">Next ▶</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     TAB 4 — NGỮ PHÁP (Grammar)
+═══════════════════════════════════════════════ -->
+<div class="tab-panel" id="tab-grammar">
+  <div class="content-wrap">
+
+    <!-- Grammar 1: LÀ -->
+    <div class="card" style="margin-bottom:24px">
+      <div class="card-body-pad">
+        <div class="grammar-chip">Grammar 1 · LÀ</div>
+        <p class="grammar-explain"><strong>"Là"</strong> = "is / am / are". Used to link NOUNS or PRONOUNS to show identity.</p>
+        <div class="structure-box">Subject + là + Noun / Pronoun</div>
+        <table class="ex-table">
+          <tr><td>Tôi <strong>là</strong> Nam.</td><td>I <strong>am</strong> Nam.</td></tr>
+          <tr><td>Anh ấy <strong>là</strong> sinh viên.</td><td>He <strong>is</strong> a student.</td></tr>
+          <tr><td>Đây <strong>là</strong> thầy giáo.</td><td>This <strong>is</strong> the teacher.</td></tr>
+          <tr><td>Tên tôi <strong>là</strong> Hưng.</td><td>My name <strong>is</strong> Hưng.</td></tr>
+        </table>
+      </div>
+
+      <div class="ex-header">✍️ BÀI TẬP 2 — Fill in the blank <small style="font-weight:500;font-size:12px;color:var(--muted)">(+10 XP each)</small></div>
+      <div id="gr1Container"></div>
+    </div>
+
+    <!-- Grammar 2: GÌ -->
+    <div class="card">
+      <div class="card-body-pad">
+        <div class="grammar-chip" style="background:#2980B9">Grammar 2 · GÌ</div>
+        <p class="grammar-explain"><strong>"Gì"</strong> = "what". Used <em>at the end</em> of a question sentence.</p>
+        <div class="structure-box" style="border-color:#2980B9">Subject + Verb + gì?</div>
+        <table class="ex-table">
+          <tr><td>Tên bạn là <strong>gì</strong>?</td><td><strong>What</strong> is your name?</td></tr>
+          <tr><td>Bạn làm nghề <strong>gì</strong>?</td><td><strong>What</strong> is your job?</td></tr>
+          <tr><td>Bạn học ngành <strong>gì</strong>?</td><td><strong>What</strong> do you study?</td></tr>
+        </table>
+      </div>
+
+      <div class="ex-header">✍️ BÀI TẬP 3 — Choose the correct question word <small style="font-weight:500;font-size:12px;color:var(--muted)">(+10 XP each)</small></div>
+      <div id="gr2Container"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     TAB 5 — VĂN HÓA (Culture)
+═══════════════════════════════════════════════ -->
+<div class="tab-panel" id="tab-culture">
+  <div class="content-wrap">
+
+    <!-- Section A -->
+    <div class="card">
+      <div class="card-header">A · Greetings in Vietnamese</div>
+      <div class="card-body-pad">
+        <div class="culture-section">
+          <p class="culture-p">"<strong>Xin chào</strong>" is the formal way to say hello. "<strong>Chào</strong>" is the everyday greeting — it's versatile and can also mean goodbye.</p>
+          <p class="culture-p">Vietnamese speakers add <em>final particles</em> to adjust social register:</p>
+          <ul style="margin:8px 0 12px 20px;line-height:1.75;font-size:1rem;">
+            <li><strong>Ạ</strong> — formal particle, used when speaker is of lower status: <em>Chào thầy <strong>ạ</strong>!</em></li>
+            <li><strong>Nha / Nhá</strong> — Southern/Northern informal peer: <em>Chào bạn <strong>nha</strong>!</em></li>
+            <li><strong>Nhé</strong> — Northern, soft request or farewell: <em>Chào bạn <strong>nhé</strong>!</em></li>
+          </ul>
+          <p class="culture-p">"<strong>Tạm biệt</strong>" is the formal goodbye. "<strong>Chào</strong>" can substitute informally.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section B -->
+    <div class="card" style="margin-top:20px">
+      <div class="card-header">B · Pronouns in the Classroom</div>
+      <div class="card-body-pad">
+        <table class="culture-table">
+          <thead>
+            <tr><th>Context</th><th>Address as</th><th>Refer to self as</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Addressing male teacher</td><td>Thầy</td><td>Em</td></tr>
+            <tr><td>Addressing female teacher</td><td>Cô</td><td>Em</td></tr>
+            <tr><td>Talking with peers</td><td>Bạn</td><td>Tôi / Mình</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- BÀI TẬP 4 Click-to-Match -->
+    <div class="card" style="margin-top:20px">
+      <div class="ex-header">✍️ BÀI TẬP 4 — Click to Match <small style="font-weight:500;font-size:12px;color:var(--muted)">(+10 XP each)</small></div>
+      <div class="card-body-pad">
+        <p style="font-size:.9rem;color:var(--muted);margin-bottom:12px;font-family:'Manrope',sans-serif">Click a situation on the left, then the matching word on the right.</p>
+        <div class="match-grid">
+          <div class="match-col" id="matchLeft"></div>
+          <div class="match-col" id="matchRight"></div>
+        </div>
+        <div id="matchScore" style="font-family:'Manrope',sans-serif;font-size:13px;font-weight:700;color:var(--muted);margin-top:6px"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     TAB 6 — LUYỆN TẬP (Practice)
+═══════════════════════════════════════════════ -->
+<div class="tab-panel" id="tab-practice">
+  <div class="content-wrap">
+
+    <!-- Reading Passage -->
+    <div class="card">
+      <div class="card-header">Đọc hiểu — Reading Passage</div>
+      <div class="card-body-pad">
+        <div class="reading-passage">
+          Xin chào các bạn. Tôi xin tự giới thiệu về mình.<br><br>
+          Tên tôi là Hoàng Thanh Tùng. Tôi đến từ thành phố Hải Phòng, Việt Nam. Tôi là giáo viên dạy tiếng Việt ở trường Đại học Bang Michigan, Hoa Kỳ.<br><br>
+          Tôi dạy Tiếng Việt cho 20 sinh viên ở Mỹ. Họ thường gọi tôi là Thầy Tùng. Sinh viên của tôi học nhiều ngành, như ngành Kinh tế, ngành Kỹ sư, ngành Hóa học, ngành Giáo dục…<br><br>
+          Tôi rất quý sinh viên của tôi, và tôi mong các bạn ấy sẽ học tiếng Việt thật giỏi.<br><br>
+          Cảm ơn các bạn!
+        </div>
+      </div>
+    </div>
+
+    <!-- Practice Quiz -->
+    <div class="card" style="margin-top:20px">
+      <div class="ex-header">✍️ BÀI TẬP LUYỆN TẬP — True / False</div>
+      <div id="practiceContainer"></div>
+      <div style="padding:14px 18px">
+        <button class="submit-btn" id="submitPracticeBtn" onclick="submitPractice()" disabled>📊 Xem kết quả</button>
+      </div>
+    </div>
+
+    <!-- Score Card -->
+    <div class="score-card" id="scoreCard">
+      <div class="score-title" id="scoreTitle"></div>
+      <div class="score-stars" id="scoreStars"></div>
+      <div id="scoreBadge"></div>
+      <a class="score-back-btn" href="index.html">🏠 Back to All Chapters</a>
+    </div>
+
+  </div>
+</div>
+
+<!-- XP Toast -->
+<div class="xp-toast" id="xpToast"></div>
+
+<script>
+/* ═══════════════════════════════════════
+   DATA
+═══════════════════════════════════════ */
+const CHAP_ID   = 1;
+const MAX_XP    = 200;
+const LS_KEY    = 'basic-vn';
+
+const DIALOGUE1 = [
+  { spk:'A (Hoa)',  text:'Chào bạn, mình là Hoa. Bạn tên là gì?' },
+  { spk:'B (Nam)',  text:'Mình tên là Nam. Bạn làm nghề gì?' },
+  { spk:'A (Hoa)',  text:'Mình là sinh viên. Mình học ngành Tiếng Anh.' },
+  { spk:'B (Nam)',  text:'Mình cũng là sinh viên. Mình học ngành Tiếng Việt.' },
+  { spk:'A (Hoa)',  text:'Rất vui được gặp bạn.' },
+];
+const DIALOGUE2 = [
+  { spk:'A (Thầy)', text:'Thầy chào các bạn.' },
+  { spk:'B (Lớp)',  text:'Chúng em chào thầy.' },
+  { spk:'A (Thầy)', text:'Thầy tên là Tùng. Thầy là thầy giáo mới của các bạn. Thầy sẽ dạy các bạn môn Tiếng Việt. Các bạn giới thiệu về mình đi?' },
+  { spk:'B (Tâm)',  text:'Em tên là Tâm. Đây là Linh và bạn này là Phong.' },
+  { spk:'A (Thầy)', text:'Rất vui được gặp các bạn.' },
+  { spk:'B (Lớp)',  text:'Chúng em rất vui được học thầy.' },
+];
+
+const TF1 = [
+  { q:'Hoa là giáo viên tiếng Việt.', ans:'Sai', exp:'Hoa là sinh viên học ngành Tiếng Anh.' },
+  { q:'Nam học ngành Tiếng Việt.',     ans:'Đúng', exp:'' },
+  { q:'Thầy Tùng là thầy giáo cũ của lớp.', ans:'Sai', exp:'Thầy là thầy giáo mới.' },
+  { q:'Tâm là tên của một sinh viên trong lớp.', ans:'Đúng', exp:'' },
+];
+
+const VOCAB = [
+  { vn:'Tôi',         en:'I / Me (formal)',           ex:'Tôi là sinh viên. — I am a student.' },
+  { vn:'Mình',        en:'I / Me (casual)',            ex:'Mình tên là Hoa. — My name is Hoa.' },
+  { vn:'Bạn',         en:'You (peer / friend)',        ex:'Bạn tên là gì? — What is your name?' },
+  { vn:'Em',          en:'I/You (younger / student)',  ex:'Em chào thầy. — Hello, teacher.' },
+  { vn:'Thầy',        en:'Male teacher',               ex:'Thầy tên là Tùng. — The teacher\'s name is Tùng.' },
+  { vn:'Cô',          en:'Female teacher',             ex:'Cô chào các bạn. — Hello everyone (from female teacher).' },
+  { vn:'Xin chào',    en:'Hello (formal)',             ex:'Xin chào các bạn! — Hello everyone!' },
+  { vn:'Chào',        en:'Hello / Goodbye (informal)', ex:'Chào bạn! — Hey!' },
+  { vn:'Tạm biệt',    en:'Goodbye (formal)',           ex:'Tạm biệt! Hẹn gặp lại! — Goodbye! See you again!' },
+  { vn:'Tên',         en:'Name (noun)',                ex:'Bạn tên là gì? — What is your name?' },
+  { vn:'Nghề',        en:'Job / Occupation',           ex:'Bạn làm nghề gì? — What is your job?' },
+  { vn:'Ngành',       en:'Major / Field of study',     ex:'Mình học ngành Tiếng Anh. — I study English.' },
+  { vn:'Sinh viên',   en:'College student',            ex:'Mình là sinh viên. — I am a student.' },
+  { vn:'Giáo viên',   en:'Teacher',                    ex:'Thầy là giáo viên tiếng Việt. — He is a Vietnamese teacher.' },
+  { vn:'Học',         en:'To study / learn',           ex:'Mình học ngành Tiếng Việt. — I study Vietnamese.' },
+  { vn:'Giới thiệu',  en:'To introduce',               ex:'Các bạn giới thiệu về mình đi. — Please introduce yourself.' },
+  { vn:'Gặp',         en:'To meet',                    ex:'Rất vui được gặp bạn. — Nice to meet you.' },
+  { vn:'Rất vui được',en:'It\'s nice to...',           ex:'Rất vui được gặp bạn. — Nice to meet you.' },
+];
+
+const GR1_QUESTIONS = [
+  { q:'Tôi ___ sinh viên.',       correct:'là', opts:['là','không','có','được'] },
+  { q:'Đây ___ thầy giáo Tùng.',  correct:'là', opts:['là','không','có','được'] },
+  { q:'Tên mình ___ Hoa.',        correct:'là', opts:['là','không','có','được'] },
+  { q:'Anh ấy ___ người Việt.',   correct:'là', opts:['là','không','có','được'] },
+  { q:'Chữ này ___ chữ A.',       correct:'là', opts:['là','không','có','được'] },
+];
+const GR2_QUESTIONS = [
+  { q:'Tên bạn là ___?',    correct:'Gì',  opts:['Gì','Đâu','Nào','Mấy'] },
+  { q:'Bạn làm nghề ___?',  correct:'Gì',  opts:['Gì','Đâu','Nào','Mấy'] },
+  { q:'Bạn học ngành ___?', correct:'Gì',  opts:['Gì','Đâu','Nào','Mấy'] },
+];
+
+const MATCH_PAIRS = [
+  { left:'A student greets a male teacher', right:'Thầy' },
+  { left:'Referring to yourself as a student', right:'Em' },
+  { left:'Saying hello informally to a friend', right:'Chào' },
+  { left:'Saying goodbye formally', right:'Tạm biệt' },
+  { left:'Making speech more formal (particle)', right:'Ạ' },
+];
+
+const PRACTICE_TF = [
+  { q:'Thầy Tùng dạy ở trường Đại học Bang Michigan.',  ans:'Đúng' },
+  { q:'Thầy Tùng đến từ thành phố Hà Nội.',             ans:'Sai' },
+  { q:'Lớp của Thầy Tùng có 20 sinh viên.',             ans:'Đúng' },
+  { q:'Tất cả sinh viên đều học cùng một ngành.',        ans:'Sai' },
+  { q:'Thầy Tùng muốn sinh viên học tiếng Việt thật giỏi.', ans:'Đúng' },
+];
+
+/* ═══════════════════════════════════════
+   LOCALSTORAGE
+═══════════════════════════════════════ */
+function loadData() {
+  try { return JSON.parse(localStorage.getItem(LS_KEY)) || {}; }
+  catch(e) { return {}; }
+}
+function saveData(d) {
+  localStorage.setItem(LS_KEY, JSON.stringify(d));
+}
+function getChapState() {
+  const d = loadData();
+  if (!d[CHAP_ID]) d[CHAP_ID] = { xp:0, stars:0, badge:false, done:{} };
+  return d;
+}
+
+/* ═══════════════════════════════════════
+   XP SYSTEM
+═══════════════════════════════════════ */
+function awardXP(key, amount) {
+  const d = getChapState();
+  const ch = d[CHAP_ID];
+  if (ch.done[key]) return 0;
+  ch.done[key] = true;
+  ch.xp = (ch.xp || 0) + amount;
+  saveData(d);
+  updateXPBar();
+  showToast('+' + amount + ' XP ⚡');
+  return amount;
+}
+function updateXPBar() {
+  const d  = getChapState();
+  const xp = d[CHAP_ID].xp || 0;
+  const pct = Math.min((xp / MAX_XP) * 100, 100);
+  document.getElementById('xpBarFill').style.width = pct + '%';
+  document.getElementById('xpCount').textContent   = xp + ' XP';
+}
+function showToast(msg) {
+  const t = document.getElementById('xpToast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+/* ═══════════════════════════════════════
+   TTS
+═══════════════════════════════════════ */
+function speakVI(text) {
+  if (!window.speechSynthesis) return;
+  speechSynthesis.cancel();
+  const utt = new SpeechSynthesisUtterance(text);
+  utt.lang = 'vi-VN'; utt.rate = 0.9;
+  speechSynthesis.speak(utt);
+}
+
+/* ═══════════════════════════════════════
+   TABS
+═══════════════════════════════════════ */
+document.getElementById('tabBar').addEventListener('click', function(e) {
+  const btn = e.target.closest('.tab-btn');
+  if (!btn) return;
+  // Update buttons
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  // Update panels
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+});
+
+function switchTab(tabId) {
+  const btn = document.querySelector(`.tab-btn[data-tab="${tabId}"]`);
+  if (btn) btn.click();
+}
+
+/* ═══════════════════════════════════════
+   TAB 1 — OBJECTIVES
+═══════════════════════════════════════ */
+function startLearning() {
+  awardXP('obj-read', 5);
+  document.getElementById('startLearningBtn').disabled = true;
+  switchTab('dialogue');
+}
+// Restore button state
+(function() {
+  const d = getChapState();
+  if (d[CHAP_ID].done['obj-read']) {
+    const btn = document.getElementById('startLearningBtn');
+    if (btn) btn.disabled = true;
+  }
+})();
+
+/* ═══════════════════════════════════════
+   TAB 2 — DIALOGUE
+═══════════════════════════════════════ */
+function renderDialogue(lines, containerId) {
+  const wrap = document.getElementById(containerId);
+  wrap.innerHTML = '';
+  lines.forEach(line => {
+    const row = document.createElement('div');
+    row.className = 'dialogue-line';
+    row.innerHTML = `
+      <span class="spk-label">${line.spk}</span>
+      <span class="spk-text">${line.text}</span>
+      <button class="tts-btn" onclick="speakVI('${line.text.replace(/'/g,"\\'")}')">🔊</button>
+    `;
+    wrap.appendChild(row);
+  });
+}
+
+function renderTF1() {
+  const d   = getChapState();
+  const done = d[CHAP_ID].done;
+  const wrap = document.getElementById('tf1Container');
+  wrap.innerHTML = '';
+
+  TF1.forEach((item, i) => {
+    const key = `tf1-q${i+1}`;
+    const answered = !!done[key];
+    const div = document.createElement('div');
+    div.className = 'tf-question';
+    div.innerHTML = `
+      <div class="tf-q-text">${i+1}. ${item.q}</div>
+      <div class="tf-btn-row">
+        <button class="tf-btn" id="tf1-d${i}" onclick="answerTF1(${i},'Đúng')" ${answered?'disabled':''}>Đúng</button>
+        <button class="tf-btn" id="tf1-s${i}" onclick="answerTF1(${i},'Sai')"  ${answered?'disabled':''}>Sai</button>
+      </div>
+      <div class="tf-feedback" id="tf1-fb${i}"></div>
+    `;
+    wrap.appendChild(div);
+  });
+}
+
+function answerTF1(i, choice) {
+  const item = TF1[i];
+  const key  = `tf1-q${i+1}`;
+  const fb   = document.getElementById(`tf1-fb${i}`);
+  document.getElementById(`tf1-d${i}`).disabled = true;
+  document.getElementById(`tf1-s${i}`).disabled = true;
+
+  if (choice === item.ans) {
+    fb.className = 'tf-feedback tf-correct';
+    fb.textContent = '✅ Đúng!' + (item.exp ? ' — ' + item.exp : '');
+    awardXP(key, 10);
+  } else {
+    fb.className = 'tf-feedback tf-wrong';
+    const expLabel = item.exp ? ' — ' + item.exp : '';
+    fb.textContent = `❌ Sai. Đáp án đúng: ${item.ans}.${expLabel}`;
+  }
+}
+
+/* ═══════════════════════════════════════
+   TAB 3 — VOCABULARY FLASHCARDS
+═══════════════════════════════════════ */
+let fcIndex    = 0;
+let fcFlipped  = false;
+let fcMaxSeen  = 0;  // track furthest card seen
+
+function renderFlashcard() {
+  const card = VOCAB[fcIndex];
+  const fc   = document.getElementById('flashcard');
+  const front = document.getElementById('fcFront');
+  const back  = document.getElementById('fcBack');
+
+  // Reset flip without animation
+  fc.style.transition = 'none';
+  fc.classList.remove('flipped');
+  fcFlipped = false;
+  requestAnimationFrame(() => { fc.style.transition = ''; });
+
+  front.innerHTML = `
+    <div class="fc-vn">${card.vn}</div>
+    <button class="fc-tts" onclick="event.stopPropagation();speakVI('${card.vn.replace(/'/g,"\\'")}')">🔊 Hear</button>
+  `;
+  back.innerHTML = `
+    <div class="fc-en">${card.en}</div>
+    <div class="fc-ex">${card.ex}</div>
+  `;
+
+  // Info bar
+  document.getElementById('deckInfo').textContent = `Card ${fcIndex+1} of ${VOCAB.length} · Tap card to flip · 🔊 to hear`;
+
+  // Dots (show up to 18)
+  const dots = document.getElementById('fcDots');
+  dots.innerHTML = '';
+  VOCAB.forEach((_, j) => {
+    const d = document.createElement('div');
+    d.className = 'fc-dot' + (j === fcIndex ? ' active' : '');
+    dots.appendChild(d);
+  });
+
+  // Nav buttons
+  document.getElementById('fcPrev').disabled = (fcIndex === 0);
+  document.getElementById('fcNext').disabled = false;
+
+  // Track max seen
+  if (fcIndex > fcMaxSeen) {
+    fcMaxSeen = fcIndex;
+    if (fcMaxSeen === VOCAB.length - 1) {
+      // Reached last card
+      awardXP('vocab-deck', 20);
+    }
+  }
+}
+
+function fcNav(dir) {
+  fcIndex = Math.max(0, Math.min(VOCAB.length - 1, fcIndex + dir));
+  renderFlashcard();
+}
+
+document.getElementById('flashcardWrap').addEventListener('click', function() {
+  const fc = document.getElementById('flashcard');
+  fcFlipped = !fcFlipped;
+  fc.classList.toggle('flipped', fcFlipped);
+});
+
+/* ═══════════════════════════════════════
+   TAB 4 — GRAMMAR
+═══════════════════════════════════════ */
+function renderGrammar(questions, containerId, keyPrefix) {
+  const d    = getChapState();
+  const done = d[CHAP_ID].done;
+  const wrap = document.getElementById(containerId);
+  wrap.innerHTML = '';
+
+  questions.forEach((item, i) => {
+    const key = `${keyPrefix}${i+1}`;
+    const answered = !!done[key];
+    const div = document.createElement('div');
+    div.className = 'mc-question';
+
+    const btnHTML = item.opts.map(opt =>
+      `<button class="mc-btn" onclick="answerMC('${containerId}',${i},'${opt}','${item.correct}','${key}')" ${answered?'disabled':''}>${opt}</button>`
+    ).join('');
+
+    div.innerHTML = `
+      <div class="mc-q-text">${i+1}. ${item.q}</div>
+      <div class="mc-btn-row" id="${containerId}-row${i}">${btnHTML}</div>
+      <div class="mc-feedback" id="${containerId}-fb${i}"></div>
+    `;
+    wrap.appendChild(div);
+  });
+}
+
+function answerMC(containerId, i, chosen, correct, key) {
+  // Disable all buttons in this row
+  const row = document.getElementById(`${containerId}-row${i}`);
+  row.querySelectorAll('.mc-btn').forEach(b => {
+    b.disabled = true;
+    if (b.textContent === correct) b.classList.add('correct');
+  });
+  const fb = document.getElementById(`${containerId}-fb${i}`);
+
+  if (chosen === correct) {
+    fb.className = 'mc-feedback tf-correct';
+    fb.textContent = '✅ Đúng!';
+    awardXP(key, 10);
+  } else {
+    fb.className = 'mc-feedback tf-wrong';
+    row.querySelectorAll('.mc-btn').forEach(b => {
+      if (b.textContent === chosen) b.classList.add('wrong');
+    });
+    fb.textContent = `❌ Sai. Đáp án đúng: ${correct}.`;
+  }
+}
+
+/* ═══════════════════════════════════════
+   TAB 5 — CULTURE MATCH
+═══════════════════════════════════════ */
+let matchSelected = null;   // { side: 'left'|'right', idx }
+const matchPaired = {};     // idx → true if matched
+
+function renderMatch() {
+  const d    = getChapState();
+  const done = d[CHAP_ID].done;
+  const leftCol  = document.getElementById('matchLeft');
+  const rightCol = document.getElementById('matchRight');
+  leftCol.innerHTML  = '';
+  rightCol.innerHTML = '';
+
+  // Shuffle right side
+  const rightOrder = MATCH_PAIRS.map((_, i) => i);
+  // Fixed deterministic "shuffle" (just reverse for a visual mix)
+  const rightShuffled = [2, 0, 4, 1, 3];
+
+  MATCH_PAIRS.forEach((pair, i) => {
+    const alreadyMatched = !!done[`match-${i}`];
+    // Left item
+    const lItem = document.createElement('div');
+    lItem.className = 'match-item' + (alreadyMatched ? ' matched' : '');
+    lItem.dataset.side = 'left';
+    lItem.dataset.idx  = i;
+    lItem.textContent  = pair.left;
+    if (!alreadyMatched) lItem.addEventListener('click', onMatchClick);
+    leftCol.appendChild(lItem);
+  });
+
+  rightShuffled.forEach(i => {
+    const pair = MATCH_PAIRS[i];
+    const alreadyMatched = !!done[`match-${i}`];
+    const rItem = document.createElement('div');
+    rItem.className = 'match-item' + (alreadyMatched ? ' matched' : '');
+    rItem.dataset.side = 'right';
+    rItem.dataset.idx  = i;
+    rItem.textContent  = pair.right;
+    if (!alreadyMatched) rItem.addEventListener('click', onMatchClick);
+    rightCol.appendChild(rItem);
+  });
+}
+
+function onMatchClick(e) {
+  const item = e.currentTarget;
+  const side = item.dataset.side;
+  const idx  = parseInt(item.dataset.idx, 10);
+
+  if (item.classList.contains('matched')) return;
+
+  if (!matchSelected) {
+    // Select
+    clearMatchHighlight();
+    item.classList.add('selected');
+    matchSelected = { side, idx, el: item };
+  } else {
+    if (matchSelected.side === side) {
+      // Same side clicked again — reselect
+      clearMatchHighlight();
+      item.classList.add('selected');
+      matchSelected = { side, idx, el: item };
+      return;
+    }
+    // Different side — check match
+    const leftIdx  = side === 'left' ? idx : matchSelected.idx;
+    const rightIdx = side === 'right' ? idx : matchSelected.idx;
+    const leftEl   = side === 'left' ? item : matchSelected.el;
+    const rightEl  = side === 'right' ? item : matchSelected.el;
+
+    if (leftIdx === rightIdx) {
+      // Correct
+      leftEl.classList.remove('selected');
+      rightEl.classList.remove('selected');
+      leftEl.classList.add('matched');
+      rightEl.classList.add('matched');
+      leftEl.removeEventListener('click', onMatchClick);
+      rightEl.removeEventListener('click', onMatchClick);
+      awardXP(`match-${leftIdx}`, 10);
+    } else {
+      // Wrong
+      leftEl.classList.add('wrong');
+      rightEl.classList.add('wrong');
+      setTimeout(() => {
+        leftEl.classList.remove('wrong','selected');
+        rightEl.classList.remove('wrong','selected');
+      }, 600);
+    }
+    matchSelected = null;
+  }
+}
+
+function clearMatchHighlight() {
+  document.querySelectorAll('.match-item.selected').forEach(el => el.classList.remove('selected'));
+}
+
+/* ═══════════════════════════════════════
+   TAB 6 — PRACTICE
+═══════════════════════════════════════ */
+let practiceAnswers = new Array(PRACTICE_TF.length).fill(null);
+let practiceSubmitted = false;
+
+function renderPractice() {
+  const wrap = document.getElementById('practiceContainer');
+  wrap.innerHTML = '';
+
+  PRACTICE_TF.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.className = 'tf-question';
+    div.innerHTML = `
+      <div class="tf-q-text">${i+1}. ${item.q}</div>
+      <div class="tf-btn-row">
+        <button class="tf-btn" id="prac-d${i}" onclick="answerPrac(${i},'Đúng')">Đúng</button>
+        <button class="tf-btn" id="prac-s${i}" onclick="answerPrac(${i},'Sai')">Sai</button>
+      </div>
+      <div class="tf-feedback" id="prac-fb${i}"></div>
+    `;
+    wrap.appendChild(div);
+  });
+}
+
+function answerPrac(i, choice) {
+  if (practiceSubmitted) return;
+  practiceAnswers[i] = choice;
+
+  // Visual feedback for selection (highlight chosen button)
+  const dBtn = document.getElementById(`prac-d${i}`);
+  const sBtn = document.getElementById(`prac-s${i}`);
+  dBtn.style.background = choice === 'Đúng' ? '#dbeafe' : '';
+  sBtn.style.background = choice === 'Sai'  ? '#dbeafe' : '';
+  dBtn.style.borderColor = choice === 'Đúng' ? '#3b82f6' : '';
+  sBtn.style.borderColor = choice === 'Sai'  ? '#3b82f6' : '';
+
+  // Enable submit when all answered
+  const allAnswered = practiceAnswers.every(a => a !== null);
+  document.getElementById('submitPracticeBtn').disabled = !allAnswered;
+}
+
+function submitPractice() {
+  if (practiceSubmitted) return;
+  practiceSubmitted = true;
+  document.getElementById('submitPracticeBtn').disabled = true;
+
+  let correct = 0;
+  PRACTICE_TF.forEach((item, i) => {
+    const dBtn = document.getElementById(`prac-d${i}`);
+    const sBtn = document.getElementById(`prac-s${i}`);
+    dBtn.disabled = true;
+    sBtn.disabled = true;
+
+    const fb = document.getElementById(`prac-fb${i}`);
+    if (practiceAnswers[i] === item.ans) {
+      correct++;
+      fb.className = 'tf-feedback tf-correct';
+      fb.textContent = '✅ Đúng!';
+    } else {
+      fb.className = 'tf-feedback tf-wrong';
+      fb.textContent = `❌ Sai. Đáp án đúng: ${item.ans}.`;
+    }
+  });
+
+  // Stars
+  let stars;
+  if (correct === 5)      stars = 3;
+  else if (correct >= 3)  stars = 2;
+  else if (correct >= 1)  stars = 1;
+  else                    stars = 0;
+  const starStr = '⭐'.repeat(stars) + '☆'.repeat(3 - stars);
+
+  // Save & award XP
+  const d  = getChapState();
+  const ch = d[CHAP_ID];
+  const prevStars = ch.stars || 0;
+
+  // Award XP once
+  awardXP('practice-done', 50);
+
+  // Update stars if improved
+  if (stars > prevStars) {
+    ch.stars = stars;
+    if (stars === 3) ch.badge = true;
+    saveData(d);
+  }
+
+  // Show score card
+  const sc = document.getElementById('scoreCard');
+  document.getElementById('scoreTitle').textContent = `${correct} / 5 correct`;
+  document.getElementById('scoreStars').textContent = starStr;
+
+  const badgeDiv = document.getElementById('scoreBadge');
+  if (stars === 3) {
+    badgeDiv.innerHTML = `<div class="score-badge-earned">🙋</div><div class="score-badge-label">Badge Earned: "First Hello!"</div>`;
+  } else {
+    badgeDiv.innerHTML = `<p style="font-family:'Manrope',sans-serif;font-size:13px;color:var(--muted);margin-bottom:16px">Get 3/5 or more to earn the badge!</p>`;
+  }
+  sc.classList.add('visible');
+  sc.scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+
+/* ═══════════════════════════════════════
+   INIT
+═══════════════════════════════════════ */
+(function init() {
+  updateXPBar();
+  renderDialogue(DIALOGUE1, 'dialogue1');
+  renderDialogue(DIALOGUE2, 'dialogue2');
+  renderTF1();
+  renderFlashcard();
+  renderGrammar(GR1_QUESTIONS, 'gr1Container', 'gr-la-q');
+  renderGrammar(GR2_QUESTIONS, 'gr2Container', 'gr-gi-q');
+  renderMatch();
+  renderPractice();
+})();
+</script>
+
+<!-- Footer -->
+<footer class="ucsd-footer">
+  <div class="ucsd-footer-logo">UC San Diego</div>
+  <div class="ucsd-footer-instructor">Interactive edition by <a href="https://hoantn.net" target="_blank" rel="noopener">Instructor Hoan Nguyen</a></div>
+  <div class="ucsd-footer-dept">Heritage Vietnamese Language Program &nbsp;·&nbsp; UC San Diego</div>
+  <div class="ucsd-footer-license">Adapted from <em>Basic Vietnamese</em> by Tung Hoang &nbsp;·&nbsp; CC BY-NC 4.0 &nbsp;·&nbsp; Michigan State University Libraries</div>
+</footer>
+</body>
+</html>

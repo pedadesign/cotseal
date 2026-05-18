@@ -238,7 +238,7 @@ body {
 const CHAPTERS = [
   { id:1,  en:"Greetings & Introduction",   vn:"Chào hỏi & Giới thiệu",     badge:"🙋", color:"#C0392B", available:true  },
   { id:2,  en:"Countries & Languages",      vn:"Quốc gia & Ngôn ngữ",        badge:"🌍", color:"#2980B9", available:true  },
-  { id:3,  en:"Numbers & Counting",         vn:"Số đếm & Tính toán",          badge:"🔢", color:"#27AE60", available:false },
+  { id:3,  en:"Numbers & Counting",         vn:"Số đếm & Tính toán",          badge:"🔢", color:"#27AE60", available:true  },
   { id:4,  en:"Telling the Time",           vn:"Nói về thời gian",            badge:"⏰", color:"#8E44AD", available:false },
   { id:5,  en:"Days & Dates",              vn:"Ngày tháng & Lịch",           badge:"📅", color:"#E67E22", available:false },
   { id:6,  en:"Family",                    vn:"Gia đình",                     badge:"👨‍👩‍👧", color:"#16A085", available:false },
@@ -347,7 +347,7 @@ function renderGrid() {
     let card;
     if (ch.available) {
       card = document.createElement('a');
-      card.href = `ch0${ch.id}.html`;
+      card.href = `ch${String(ch.id).padStart(2,'0')}.html`;
       card.className = 'chapter-card';
     } else {
       card = document.createElement('div');

@@ -9,6 +9,9 @@ _brain/
 _archived/
 shared/
 work/
+site/zlg/vie/203-m2/
+site/zlg/vie/ipa*/
+site/zlg/vie/vie*/
 
 # Claude Code internals
 .claude/
